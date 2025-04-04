@@ -231,7 +231,7 @@ function _init()
   pspeed = 8
   frame = 1
   moving = false
-  level = 15
+  level = 17
   has_key = false
   fuzz_time = 0
   last_direction = nil
@@ -334,9 +334,9 @@ function _init()
       zoom = 1,
       "wwwwwwwwwwwwwwww",
       "w..............w",
-      "w.......ccc....w",
+      "w..............w",
       "w......wwcww...w",
-      "w.....w..c..w..w",
+      "w.....w.....w..w",
       "w.....w.....w..w",
       "w.....w..p..w..w",
       "w......w.d.w...w",
@@ -469,7 +469,7 @@ function _init()
     [15] = {
       zoom = 1,
       "wwwwwwwwwwwwwwww",
-      "w..............w",
+      "wp.............w",
       "w.wwwwwwwwwwww.w",
       "w.cc.........w.w",
       "w.cc.r.r.....w.w",
@@ -477,11 +477,39 @@ function _init()
       "w.cc.hhkhhVV.w.w",
       "w.cc.hhdhhVV.w.w",
       "w.cc.hcwwhVV.w.w",
-      "w.cc..>V.c<V.w.w",
-      "w.ccr.^V..<<.w.w",
-      "w.cc..r<.....w.w",
-      "w.wwwwpwwwwwww.w",
+      "w.cc.....c<V.w.w",
+      "w.ccr.....<<.w.w",
+      "w.cc.........w.w",
+      "w.wwwwwwwwwwww.w",
       "w..............w",
+      "wwwwwwwwwwwwwwww"
+    },
+    [16] = {
+      zoom = 2,
+      "wwwwwwww",
+      "w.V<<<pw",
+      "w.>.rVVw",
+      "w..rc..w",
+      "wcc<r.ww",
+      "wkhhhhdw",
+      "wwwwwwww"
+    },
+    [17] = {
+      zoom = 1,
+      "wwwwwwwwwwwwwwww",
+      "wd.....Vr.....pw",
+      "whhhhhhhhhhhhhhw",
+      "whhhhhh........w",
+      "whhhhhh........w",
+      "w..............w",
+      "ww.wwwwwwwwwwwww",
+      "w..<.>.........w",
+      "w...c>....c..r.w",
+      "w.c..<.v...r...w",
+      "w..c..<c.....k.w",
+      "w..c..c....r...w",
+      "w..c..vc...r...w",
+      "w..w^^.........w",
       "wwwwwwwwwwwwwwww"
     },
   }
