@@ -851,7 +851,7 @@ function check_rock_conveyor(r)
   local rock_target_tile_x = flr(nx/8)
   local rock_target_tile_y = flr(ny/8)
   
-  -- First: if the player occupies the target tile, try to push the player.
+  -- Check if the player's tile occupies the target.
   local player_tile_x = moving and flr(target_px/8) or flr(px/8)
   local player_tile_y = moving and flr(target_py/8) or flr(py/8)
   if rock_target_tile_x == player_tile_x and rock_target_tile_y == player_tile_y then
@@ -866,12 +866,25 @@ function check_rock_conveyor(r)
     end
   end
   
-  -- Next: check if another rock occupies the target tile.
+  -- Now check for a blocking rock.
   local blocking_rock = get_rock_at(nx, ny)
   if blocking_rock and blocking_rock ~= r then
-    -- Calculate the blocking rock's next pixel position.
     local new_br_x = blocking_rock.x + dx
     local new_br_y = blocking_rock.y + dy
+    -- Before pushing the blocking rock, check if its target tile is occupied by the player.
+    local br_tile_x = flr(new_br_x/8)
+    local br_tile_y = flr(new_br_y/8)
+    if br_tile_x == player_tile_x and br_tile_y == player_tile_y then
+      local p_nx = (player_tile_x + dx/8) * 8
+      local p_ny = (player_tile_y + dy/8) * 8
+      if not collide(p_nx, p_ny, false, nil) then
+        push_snapshot()
+        target_px, target_py = p_nx, p_ny
+        moving = true
+      else
+        return
+      end
+    end
     if not collide(new_br_x, new_br_y, true, blocking_rock) then
       -- Initiate both moves in the same update cycle:
       push_snapshot()
@@ -891,6 +904,7 @@ function check_rock_conveyor(r)
     r.moving = true
   end
 end
+
  
 
 
