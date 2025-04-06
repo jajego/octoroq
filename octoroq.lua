@@ -1,247 +1,247 @@
---------------------------------------------------
--- octoroq with step-by-step "full rewind"
--- + fix for rock conveyors during rewind
---------------------------------------------------
+---------------------------
+-- 0) screen / menu state
+---------------------------
+screen_mode      = "title"   -- title | levelselect | game | pause
+menu_index       = 1         -- title‑screen highlight
+level_select_idx = 1         -- level‑select highlight
+pause_index      = 1         -- pause‑menu highlight
+max_levels       = 20        -- total levels
 
-------------------------------------------
--- 1) easing, comparison, helpers
-------------------------------------------
-local function ease(val, target)
-  return val + (target - val) * 0.5
+---------------------------
+-- 1) helpers
+---------------------------
+function ease(v,t) return v+(t-v)*0.5 end
+function b2s(b) return b and "1" or "0" end
+function s2b(c) return c=="1" end
+
+-- simple join / split
+function join(list)
+  local out=""
+  for i=1,#list do
+    if i>1 then out=out.."," end
+    out=out..list[i]
+  end
+  return out
 end
 
-function states_equal(a, b)
-  -- same basic comparison as before ...
-  if a.px ~= b.px or a.py ~= b.py then return false end
-  if a.has_key ~= b.has_key then return false end
-  if a.last_tile_x ~= b.last_tile_x then return false end
-  if a.last_tile_y ~= b.last_tile_y then return false end
-  if #a.rocks ~= #b.rocks then return false end
+function split_csv(str)
+  local t,field={}, ""
+  for i=1,#str do
+    local ch=sub(str,i,i)
+    if ch=="," then
+      add(t,field) field=""
+    else
+      field=field..ch
+    end
+  end
+  add(t,field)
+  return t
+end
+
+---------------------------
+-- 1a) state comparison
+---------------------------
+function states_equal(a,b)
+  if a.px~=b.px or a.py~=b.py then return false end
+  if a.has_key~=b.has_key then return false end
+  if a.last_tile_x~=b.last_tile_x or a.last_tile_y~=b.last_tile_y then return false end
+  if #a.rocks~=#b.rocks then return false end
   for i=1,#a.rocks do
-    local r1 = a.rocks[i]
-    local r2 = b.rocks[i]
-    if r1.id ~= r2.id or r1.x ~= r2.x or r1.y ~= r2.y 
-       or r1.target_x ~= r2.target_x or r1.target_y ~= r2.target_y
-       or r1.moving ~= r2.moving then
+    local r1=a.rocks[i] local r2=b.rocks[i]
+    if r1.id~=r2.id or r1.x~=r2.x or r1.y~=r2.y
+       or r1.target_x~=r2.target_x or r1.target_y~=r2.target_y
+       or r1.moving~=r2.moving then
       return false
     end
   end
-  if #a.holes ~= #b.holes then return false end
+  if #a.holes~=#b.holes then return false end
   for i=1,#a.holes do
-    local h1 = a.holes[i]
-    local h2 = b.holes[i]
-    if h1.x ~= h2.x or h1.y ~= h2.y or h1.filled ~= h2.filled then
-      return false
-    end
+    local h1=a.holes[i] local h2=b.holes[i]
+    if h1.x~=h2.x or h1.y~=h2.y or h1.filled~=h2.filled then return false end
   end
-  if #a.cracks ~= #b.cracks then return false end
+  if #a.cracks~=#b.cracks then return false end
   for i=1,#a.cracks do
-    local c1 = a.cracks[i]
-    local c2 = b.cracks[i]
-    if c1.x ~= c2.x or c1.y ~= c2.y or c1.broken ~= c2.broken then
-      return false
-    end
+    local c1=a.cracks[i] local c2=b.cracks[i]
+    if c1.x~=c2.x or c1.y~=c2.y or c1.broken~=c2.broken then return false end
   end
-  if a.key_collected ~= b.key_collected then return false end
-  if a.fill_action ~= b.fill_action then return false end
+  if a.key_collected~=b.key_collected then return false end
+  if a.fill_action~=b.fill_action then return false end
   return true
 end
 
-local function find_entity_at(list, x, y, filter)
+---------------------------
+-- 1b) entity helpers
+---------------------------
+function find_entity_at(list,x,y,flt)
   for e in all(list) do
-    if flr(e.x) == flr(x) and flr(e.y) == flr(y)
-       and (not filter or filter(e)) then
+    if flr(e.x)==flr(x) and flr(e.y)==flr(y) and (not flt or flt(e)) then
       return e
     end
   end
 end
-
-function get_rock_at(x, y)  return find_entity_at(rocks, x, y) end
-function get_hole_at(x, y)  return find_entity_at(holes, x, y) end
-function get_crack_at(x, y) return find_entity_at(cracks, x, y, function(e) return not e.broken end) end
-
+function get_rock_at(x,y)  return find_entity_at(rocks,x,y) end
+function get_hole_at(x,y)  return find_entity_at(holes,x,y) end
+function get_crack_at(x,y) return find_entity_at(cracks,x,y,function(e) return not e.broken end) end
 function any_rock_moving()
-  for r in all(rocks) do
-    if r.moving then return true end
-  end
+  for r in all(rocks) do if r.moving then return true end end
   return false
 end
-
-function draw_sprite(id, x, y, zoom)
-  zoom = zoom or 1
-  if zoom > 1 then
-    local sx = (id % 16) * 8
-    local sy = flr(id / 16) * 8
-    sspr(sx, sy, 8, 8, x * zoom, y * zoom, 8 * zoom, 8 * zoom)
+function draw_sprite(id,x,y,z)
+  z=z or 1
+  if z>1 then
+    local sx=(id%16)*8
+    local sy=flr(id/16)*8
+    sspr(sx,sy,8,8,x*z,y*z,8*z,8*z)
   else
-    spr(id, x, y)
+    spr(id,x,y)
   end
 end
 
-------------------------------------------
--- 1a) conveyor detection + sprite
-------------------------------------------
-function is_conveyor(char)
-  return (char == "v" or char == "^" or char == "<" or char == ">")
+---------------------------
+-- 1c) conveyors
+---------------------------
+function is_conveyor(c) return (c=="v" or c=="^" or c=="<" or c==">") end
+function conveyor_sprite(c)
+  if c=="v" then return 192
+  elseif c==">" then return 193
+  elseif c=="<" then return 194
+  elseif c=="^" then return 195 end
 end
 
-function conveyor_sprite(char)
-  if char == "v" then return 192
-  elseif char == ">" then return 193
-  elseif char == "<" then return 194
-  elseif char == "^" then return 195
-  end
-  return nil
-end
-
-------------------------------------------
--- 2) stable id system for rocks
-------------------------------------------
-next_rock_id = 0
-rock_removal_positions = {}
-
-function make_rock(x, y)
-  local r = {
-    id = next_rock_id,
-    x = x, y = y,
-    target_x = x, target_y = y,
-    moving = false
-  }
-  next_rock_id += 1
-  add(rocks, r)
+---------------------------
+-- 2) rocks with stable ids
+---------------------------
+next_rock_id=0
+rock_removal_positions={}
+function make_rock(x,y)
+  local r={id=next_rock_id,x=x,y=y,target_x=x,target_y=y,moving=false}
+  next_rock_id+=1
+  add(rocks,r)
   return r
 end
-
-function find_rock_by_id(rid)
-  for r in all(rocks) do
-    if r.id == rid then return r end
-  end
-  return nil
+function find_rock_by_id(i)
+  for r in all(rocks) do if r.id==i then return r end end
 end
 
-------------------------------------------
--- 3) rewind system (step-by-step)
-------------------------------------------
-history = {}
-rewinding = false
-rewind_snapshot = nil
-rewind_move_id = nil
-state_saved = false
-last_action_filled = false
-current_move_id = 0  -- increments once per manual user input
+---------------------------
+-- 3) history (100) + (de)serialization
+---------------------------
+history={}              -- array of serialized strings
+last_snapshot_table=nil -- last full table for equality check
+rewinding=false
+rewind_move_id=nil
+state_saved=false
+last_action_filled=false
+current_move_id=0
+
+-- serialize table -> csv string
+function serialize_state(s)
+  local p={}
+  add(p,s.px) add(p,s.py) add(p,b2s(s.has_key))
+  add(p,s.last_tile_x) add(p,s.last_tile_y)
+  add(p,b2s(s.key_collected)) add(p,b2s(s.fill_action))
+  add(p,s.move_id)
+  add(p,#s.rocks)
+  for r in all(s.rocks) do
+    add(p,r.id) add(p,r.x) add(p,r.y)
+    add(p,r.target_x) add(p,r.target_y) add(p,b2s(r.moving))
+  end
+  add(p,#s.holes)
+  for h in all(s.holes) do
+    add(p,h.x) add(p,h.y) add(p,b2s(h.filled))
+  end
+  add(p,#s.cracks)
+  for c in all(s.cracks) do
+    add(p,c.x) add(p,c.y) add(p,b2s(c.broken))
+  end
+  return join(p)
+end
+
+-- deserialize csv string -> table
+function deserialize_state(str)
+  local a=split_csv(str)
+  local i=1
+  local function nxt() local v=a[i] i+=1 return v end
+  local s={}
+  s.px=tonum(nxt()) s.py=tonum(nxt())
+  s.has_key=s2b(nxt())
+  s.last_tile_x=tonum(nxt()) s.last_tile_y=tonum(nxt())
+  s.key_collected=s2b(nxt())
+  s.fill_action=s2b(nxt())
+  s.move_id=tonum(nxt())
+  local rc=tonum(nxt())
+  s.rocks={}
+  for r=1,rc do
+    add(s.rocks,{
+      id=tonum(nxt()),
+      x=tonum(nxt()),y=tonum(nxt()),
+      target_x=tonum(nxt()),target_y=tonum(nxt()),
+      moving=s2b(nxt())
+    })
+  end
+  local hc=tonum(nxt())
+  s.holes={}
+  for h=1,hc do
+    add(s.holes,{x=tonum(nxt()),y=tonum(nxt()),filled=s2b(nxt())})
+  end
+  local cc=tonum(nxt())
+  s.cracks={}
+  for c=1,cc do
+    add(s.cracks,{x=tonum(nxt()),y=tonum(nxt()),broken=s2b(nxt())})
+  end
+  return s
+end
 
 function clone_state()
-  local s = {}
-  s.px = px
-  s.py = py
-  s.has_key = has_key
-  s.last_tile_x = last_tile_x
-  s.last_tile_y = last_tile_y
-  s.rocks = {}
-  for i, r in ipairs(rocks) do
-    s.rocks[i] = {
-      id = r.id, x = r.x, y = r.y,
-      target_x = r.target_x,
-      target_y = r.target_y,
-      moving = r.moving
-    }
+  local s={
+    px=px,py=py,has_key=has_key,
+    last_tile_x=last_tile_x,last_tile_y=last_tile_y,
+    rocks={},holes={},cracks={},
+    key_collected=key and key.collected or false,
+    fill_action=last_action_filled,
+    move_id=current_move_id
+  }
+  for r in all(rocks) do
+    add(s.rocks,{id=r.id,x=r.x,y=r.y,
+      target_x=r.target_x,target_y=r.target_y,moving=r.moving})
   end
-  s.holes = {}
-  for i, h in pairs(holes) do
-    s.holes[i] = { x = h.x, y = h.y, filled = h.filled }
-  end
-  s.cracks = {}
-  for i, c in pairs(cracks) do
-    s.cracks[i] = { x = c.x, y = c.y, broken = c.broken }
-  end
-  if key then
-    s.key_collected = key.collected
-  end
-  s.fill_action = last_action_filled
-  -- tag each snapshot with current_move_id
-  s.move_id = current_move_id
+  for h in all(holes) do add(s.holes,{x=h.x,y=h.y,filled=h.filled}) end
+  for c in all(cracks) do add(s.cracks,{x=c.x,y=c.y,broken=c.broken}) end
   return s
 end
 
 function push_snapshot()
-  local new_snap = clone_state()
-  if #history > 0 then
-    local prev = history[#history]
-    if states_equal(new_snap, prev) then
-      return
-    end
-  end
-  add(history, new_snap)
-  last_action_filled = false
-  -- cap at 50
-  while #history > 50 do
-    deli(history, 1)
-  end
+  local new=clone_state()
+  if last_snapshot_table and states_equal(new,last_snapshot_table) then return end
+  add(history,serialize_state(new))
+  last_snapshot_table=new
+  while #history>100 do deli(history,1) end
+  last_action_filled=false
 end
 
--- revert entire game state to snapshot "s"
-function revert_to_snapshot(s)
-  holes = {}
-  for i, h_snap in pairs(s.holes) do
-    add(holes, { x = h_snap.x, y = h_snap.y, filled = h_snap.filled })
-  end
-  cracks = {}
-  for i, c_snap in pairs(s.cracks) do
-    add(cracks, { x = c_snap.x, y = c_snap.y, broken = c_snap.broken })
-  end
-  has_key = s.has_key
-  last_tile_x = s.last_tile_x
-  last_tile_y = s.last_tile_y
-  if key then
-    key.collected = s.key_collected
-  end
-
-  -- rebuild rocks
-  local keep_ids = {}
-  for i, r_snap in ipairs(s.rocks) do
-    keep_ids[r_snap.id] = true
-  end
-  for r in all(rocks) do
-    if not keep_ids[r.id] then
-      del(rocks, r)
-    end
-  end
-  for i, r_snap in ipairs(s.rocks) do
-    local cr = find_rock_by_id(r_snap.id)
-    if not cr then
-      local nr = make_rock(r_snap.x, r_snap.y)
-      nr.id = r_snap.id
-      nr.target_x = r_snap.x
-      nr.target_y = r_snap.y
-      nr.moving = true
-    else
-      cr.target_x = r_snap.x
-      cr.target_y = r_snap.y
-      cr.moving = true
-    end
-  end
-end
-
-------------------------------------------
--- 4) initialization + load
-------------------------------------------
+---------------------------
+-- 4) init + level data
+---------------------------
 function _init()
-  px = 64; py = 64
-  target_px = px; target_py = py
-  pspeed = 8
-  frame = 1
-  moving = false
-  level = 17
-  has_key = false
-  fuzz_time = 0
-  last_direction = nil
-  last_tile_x = flr(px / 8) * 8
-  last_tile_y = flr(py / 8) * 8
-  forcedconveyor = false
+  screen_mode="title"
+  px,py=64,64 
+  target_px,target_py=px,py
+  pspeed=8
+  frame=1
+  moving=false
+  level=1
+  has_key=false
+  fuzz_time=0
+  last_direction=nil
+  last_tile_x=flr(px/8)*8
+  last_tile_y=flr(py/8)*8
+  forcedconveyor=false
 
-  levels = {
-    [1] = {
-      zoom = 1,
+  ------------------------------------
+  -- levels table
+  ------------------------------------
+  levels={
+    [1]={zoom=1,
       "wwwwwwwwwwwwwwww",
       "w....h.....w...w",
       "w....h........hw",
@@ -256,10 +256,8 @@ function _init()
       "w....w.....w...w",
       "w....h.........w",
       "w.d..h.........w",
-      "wwwwwwwwwwwwwwww"
-    },
-    [2] = {
-      zoom = 1,
+      "wwwwwwwwwwwwwwww"},
+    [2]={zoom=1,
       "wwwwwwwwwwwwwwww",
       "wh...hh....w...w",
       "w..h.hhw...w...w",
@@ -274,10 +272,8 @@ function _init()
       "w....wh....wh..w",
       "w....hh......h.w",
       "w.d..hh.......hw",
-      "wwwwwwwwwwwwwwww"
-    },
-    [3] = {
-      zoom = 1,
+      "wwwwwwwwwwwwwwww"},
+    [3]={zoom=1,
       "wwwwwwwwwwwwwwww",
       "wkhhh..........w",
       "wwwwww.hhhhh...w",
@@ -292,10 +288,8 @@ function _init()
       "w.....r.....h..w",
       "w....rrr.......w",
       "w......p.....wdw",
-      "wwwwwwwwwwwwwwww"
-    },
-    [4] = {
-      zoom = 1,
+      "wwwwwwwwwwwwwwww"},
+    [4]={zoom=1,
       "wwwwwwwwwwwwwwww",
       "wrhrhrhrhrhrhhhd",
       "whrhrhrhrhrhrhrw",
@@ -310,10 +304,8 @@ function _init()
       "whrhr.rhrhrhrhrw",
       "wrkrhrhrhrhrhrhw",
       "whrhrhrhrhrhrhrw",
-      "wwwwwwwwwwwwwwww"
-    },
-    [5] = {
-      zoom = 1,
+      "wwwwwwwwwwwwwwww"},
+    [5]={zoom=1,
       "wwwwwwwwwwwwwwww",
       "w.rp...........w",
       "wwwwwwwww......w",
@@ -328,10 +320,8 @@ function _init()
       "whw.r.rww......w",
       "w.hr.r.hh......w",
       "w.h....hhr.r.r.w",
-      "wwwwwwwwwwwwwwww"
-    },
-    [6] = {
-      zoom = 1,
+      "wwwwwwwwwwwwwwww"},
+    [6]={zoom=1,
       "wwwwwwwwwwwwwwww",
       "w..............w",
       "w..............w",
@@ -346,20 +336,16 @@ function _init()
       "w.............cw",
       "w.r.r.r.r.r.rckw",
       "w.............cw",
-      "wwwwwwwwwwwwwwww"
-    },
-    [7] = {
-      zoom = 2,
+      "wwwwwwwwwwwwwwww"},
+    [7]={zoom=2,
       "wwwwwwww",
       "w....hdw",
       "wcrcrcrw",
       "wr.c.c.w",
       "w..r..hw",
       "wp...hkw",
-      "wwwwwwww"
-    },
-    [8] = {
-      zoom = 1,
+      "wwwwwwww"},
+    [8]={zoom=1,
       "wwwwwwwwwwwwwwww",
       "wdw....h.....h.w",
       "whrhc..h..hh.h.w",
@@ -374,10 +360,8 @@ function _init()
       "w..............w",
       "w..............w",
       "w..............w",
-      "wwwwwwwwwwwwwwww"
-    },
-    [9] = {
-      zoom = 1,
+      "wwwwwwwwwwwwwwww"},
+    [9]={zoom=1,
       "wwwwwwwwwwwwwwww",
       "wp.............w",
       "w..r..rrrr..r..w",
@@ -392,64 +376,56 @@ function _init()
       "w..cccccccccc..w",
       "w..r..rrrr..r..w",
       "w..............w",
-      "wwwwwwwwwwwwwwww"
-    },
-    [10] = {
-      zoom = 2,
+      "wwwwwwwwwwwwwwww"},
+    [10]={zoom=2,
       "wwwwwwww",
       "wkhhhhdw",
       "wwr.ccww",
       "w..rc..w",
       "w.rrrwww",
       "w.....pw",
-      "wwwwwwww"
-    },
-    [11] = {
-      zoom = 2,
+      "wwwwwwww"},
+    [11]={zoom=2,
       "wwwwwwww",
       "wglglglw",
       "wlglglgw",
       "wp.bk.dw",
       "wglglglw",
       "wlglglgw",
-      "wwwwwwww"
-    },
-    [12] = {
-        "wwwwwwwwwwwwwwww",
-        "whhhhhhhhhhhhhhw",
-        "whhhhhhhhhhhhhhw",
-        "whhhhhhhhhhhhdhw",
-        "whhhhhhhhhhhhhhw",
-        "whhhhhhhhhhhhhhw",
-        "w.........>>>vww",
-        "wp....r.ccwwwhdw",
-        "w.......ck<<<<ww",
-        "whhhhhhhhhhhhhhw",
-        "whhhhhhhhhhhhhhw",
-        "whhhhhhhhhhhhhhw",
-        "whhhhhhhhhhhhhhw",
-        "whhhhhhhhhhhhhhw",
-        "wwwwwwwwwwwwwwww"
-    },
-    [13] = {
-        "wwwwwwwwwwwwwwww",
-        "whhhhhhhhhhhhhhw",
-        "whhhhhhhhhhhhhhw",
-        "whhhhhhhhhhhhhhw",
-        "whhhhhhhhhhhhhhw",
-        "whhhhhhhhhhhhhhw",
-        "w^^^^^V<<<<<<hhw",
-        "w^^^^^Vkcwww^r.w",
-        "w<<<<<<crr.r..pw",
-        "wwwwdwwcc.r.c..w",
-        "whhhhhhhhcccchhw",
-        "whhhhhhhhhhhhhhw",
-        "whhhhhhhhhhhhhhw",
-        "whhhhhhhhhhhhhhw",
-        "wwwwwwwwwwwwwwww"
-    },
-    [14] = {
-      zoom = 1,
+      "wwwwwwww"},
+    [12]={zoom=1,
+      "wwwwwwwwwwwwwwww",
+      "whhhhhhhhhhhhhhw",
+      "whhhhhhhhhhhhhhw",
+      "whhhhhhhhhhhhdhw",
+      "whhhhhhhhhhhhhhw",
+      "whhhhhhhhhhhhhhw",
+      "w.........>>>vww",
+      "wp....r.ccwwwhdw",
+      "w.......ck<<<<ww",
+      "whhhhhhhhhhhhhhw",
+      "whhhhhhhhhhhhhhw",
+      "whhhhhhhhhhhhhhw",
+      "whhhhhhhhhhhhhhw",
+      "whhhhhhhhhhhhhhw",
+      "wwwwwwwwwwwwwwww"},
+    [13]={zoom=1,
+      "wwwwwwwwwwwwwwww",
+      "whhhhhhhhhhhhhhw",
+      "whhhhhhhhhhhhhhw",
+      "whhhhhhhhhhhhhhw",
+      "whhhhhhhhhhhhhhw",
+      "whhhhhhhhhhhhhhw",
+      "w^^^^^V<<<<<<hhw",
+      "w^^^^^Vkcwww^r.w",
+      "w<<<<<<crr.r..pw",
+      "wwwwdwwcc.r.c..w",
+      "whhhhhhhhcccchhw",
+      "whhhhhhhhhhhhhhw",
+      "whhhhhhhhhhhhhhw",
+      "whhhhhhhhhhhhhhw",
+      "wwwwwwwwwwwwwwww"},
+    [14]={zoom=1,
       "wwwwwwwwwwwwwwww",
       "wp.............w",
       "wwwwwwwwwwwwwr.w",
@@ -464,10 +440,8 @@ function _init()
       "w...hchchchcw..w",
       "w...wwwwwwwww..w",
       "w..............w",
-      "wwwwwwwwwwwwwwww"
-    },
-    [15] = {
-      zoom = 1,
+      "wwwwwwwwwwwwwwww"},
+    [15]={zoom=1,
       "wwwwwwwwwwwwwwww",
       "wp.............w",
       "w.wwwwwwwwwwww.w",
@@ -482,20 +456,16 @@ function _init()
       "w.cc.........w.w",
       "w.wwwwwwwwwwww.w",
       "w..............w",
-      "wwwwwwwwwwwwwwww"
-    },
-    [16] = {
-      zoom = 2,
+      "wwwwwwwwwwwwwwww"},
+    [16]={zoom=2,
       "wwwwwwww",
       "w.V<<<pw",
       "w.>.rVVw",
       "w..rc..w",
       "wcc<r.ww",
       "wkhhhhdw",
-      "wwwwwwww"
-    },
-    [17] = {
-      zoom = 1,
+      "wwwwwwww"},
+    [17]={zoom=1,
       "wwwwwwwwwwwwwwww",
       "wd.....Vr.....pw",
       "whhhhhhhhhhhhhhw",
@@ -510,262 +480,272 @@ function _init()
       "w..c..c....r...w",
       "w..c..vc...r...w",
       "w..w^^.........w",
-      "wwwwwwwwwwwwwwww"
-    },
+      "wwwwwwwwwwwwwwww"},
+    [18]={zoom=1,
+      "wwwwwwwwwwwwwwww",
+      "w...V..<.hcchhkw",
+      "w.c.>..<.h<.rVww",
+      "w.rw..w<vh^^>hhw",
+      "w....c.<...r.r.w",
+      "w..h..ww.ww....w",
+      "w....ww...w^^^^w",
+      "w..h....p...rr.w",
+      "wvvvvww...w^^^^w",
+      "w..h.V.wwww....w",
+      "w....<.h..c.r..w",
+      "w...r.r.c..h...w",
+      "w..r.whwchh.hc.w",
+      "wd....h<dhh....w",
+      "wwwwwwwwwwwwwwww"},
+    [19]={zoom=1,
+      "wwwwwwwwwwwwwwww",
+      "wpccccwcccccccw.",
+      ".wcccccccwcccwcw",
+      "wcccccwccccwccw.",
+      ".wcccccccwcccwcw",
+      "wcccccwccwcwccw.",
+      ".wcccccccccccwcw",
+      "wcccccwccrcwccw.",
+      ".wcccccccccccwcw",
+      "wcccccwccwcwccw.",
+      ".wcccccccwcccwcw",
+      "wcccccwccccwrcw.",
+      ".wcccccccwcrcwcw",
+      "wdccccwccccrckw.",
+      "wwwwwwwwwwwwwwww"},
+    [20]={zoom=1,
+      "wwwwwwwwwwwwwwww",
+      "w...>.>..>.>...w",
+      "w...<.<.r>.>...w",
+      "w^^^<.<^^>.>>>ww",
+      "w....r....r....w",
+      "w^^^<.<^^>.>>>ww",
+      "whhh>.>..<.<hwhw",
+      "whkh>.>rr<.<hdhw",
+      "whhh>.>..<.<hwhw",
+      "w^^^^.^^^^.>>>ww",
+      "w....r....r....w",
+      "w^^^>.>vv<.<>>ww",
+      "w.r.<.<r.>.>.r.w",
+      "w...^.^..^.<...w",
+      "wwwwwwwwwwwwwwww"}
   }
-  load_level(level)
 end
 
 function load_level(lvl)
-  if lvl > #levels then lvl = 1 end
-  level = lvl
-  map = levels[level]
-  rocks, holes, cracks = {}, {}, {}
-  key, door = nil, nil
-  rock_removal_positions = {}
-  next_rock_id = 0
-  forcedconveyor = false
+  if lvl>#levels then lvl=1 end
+  level=lvl map=levels[level]
+  rocks,holes,cracks={}, {}, {}
+  key,door=nil,nil
+  rock_removal_positions={}
+  next_rock_id=0
+  forcedconveyor=false
 
-  local actions = {
-    r = function(x, y) make_rock(x, y) end,
-    h = function(x, y) add(holes, { x = x, y = y, filled = false }) end,
-    c = function(x, y) add(cracks, { x = x, y = y, broken = false }) end,
-    k = function(x, y) key = { x = x, y = y, collected = false } end,
-    d = function(x, y) door = { x = x, y = y } end,
-    p = function(x, y)
-      px = x; py = y
-      target_px = x; target_py = y
-      last_tile_x = x; last_tile_y = y
+  local actions={
+    r=function(x,y) make_rock(x,y) end,
+    h=function(x,y) add(holes,{x=x,y=y,filled=false}) end,
+    c=function(x,y) add(cracks,{x=x,y=y,broken=false}) end,
+    k=function(x,y) key={x=x,y=y,collected=false} end,
+    d=function(x,y) door={x=x,y=y} end,
+    p=function(x,y)
+      px,py=x,y target_px,target_py=x,y last_tile_x=x last_tile_y=y
     end
   }
 
-  for y = 0, 15 do
-    local row = map[y + 1]
+  for y=0,15 do
+    local row=map[y+1]
     if row then
-      for x = 0, 15 do
-        local ch = sub(row, x + 1, x + 1)
-        if actions[ch] then
-          actions[ch](x * 8, y * 8)
-        end
+      for x=0,15 do
+        local ch=sub(row,x+1,x+1)
+        if actions[ch] then actions[ch](x*8,y*8) end
       end
     end
   end
-  moving = false
-  has_key = false
-  last_direction = nil
-  state_saved = false
-
-  history = {}
-  rewinding = false
-  rewind_snapshot = nil
-  rewind_move_id = nil
-  last_action_filled = false
-  current_move_id = 0
-
-  push_snapshot() -- initial state
+  moving=false has_key=false last_direction=nil state_saved=false
+  history={} last_snapshot_table=nil rewinding=false
+  rewind_move_id=nil last_action_filled=false current_move_id=0
+  push_snapshot()
 end
 
-function collide(x, y, ignore_rocks, current_rock)
-  if x < 0 or x > 120 or y < 0 or y > 120 then
+---------------------------
+-- 5) collision
+---------------------------
+function collide(x,y,ignore_rocks,cur_rock)
+  if x<0 or x>120 or y<0 or y>120 then return true end
+  local gx,gy=flr(x/8),flr(y/8)
+  local tile=sub(map[gy+1],gx+1,gx+1)
+  if tile=="w" or tile=="l" then return true end
+  if not ignore_rocks and find_entity_at(holes,x,y,function(e) return not e.filled end) then
     return true
   end
-  local gx, gy = flr(x / 8), flr(y / 8)
-  local tile = sub(map[gy + 1], gx + 1, gx + 1)
-
-  if tile == "w" then return true end
-  if tile == "l" then return true end
-
-  if not ignore_rocks and find_entity_at(holes, x, y, function(e) return not e.filled end) then
-    return true
-  end
-
   for r in all(rocks) do
-    if r ~= current_rock and flr(r.x) == flr(x) and flr(r.y) == flr(y) then
-      return true
-    end
+    if r~=cur_rock and flr(r.x)==flr(x) and flr(r.y)==flr(y) then return true end
   end
   return false
 end
 
-----------------------------------------------
--- 5) main update + step-by-step rewind
-----------------------------------------------
+---------------------------
+-- 6) master update
+---------------------------
 function _update()
-  fuzz_time += 0.01
+  -- fuzz_time+=.01
+  if     screen_mode=="title"       then update_title()
+  elseif screen_mode=="levelselect" then update_level_select()
+  elseif screen_mode=="pause"       then update_pause()
+  else                               update_game() end
+end
 
-  -- trigger rewind if pressed
-  if btnp(5) and not moving and not rewinding and #history > 0 then
-    rewinding = true
-    rewind_move_id = history[#history].move_id
+-- title screen
+function update_title()
+  if btnp(2) then menu_index=menu_index==1 and 2 or 1 end
+  if btnp(3) then menu_index=menu_index==2 and 1 or 2 end
+  if btnp(4) or btnp(5) then
+    if menu_index==1 then load_level(1) screen_mode="game"
+    else screen_mode="levelselect" end
+  end
+end
+
+-- level select
+function update_level_select()
+  if btnp(2) then level_select_idx=level_select_idx>1 and level_select_idx-1 or max_levels end
+  if btnp(3) then level_select_idx=level_select_idx<max_levels and level_select_idx+1 or 1 end
+  if btnp(4) or btnp(5) then load_level(level_select_idx) screen_mode="game" end
+  if btnp(1) then screen_mode="title" end
+end
+
+-- pause menu
+function update_pause()
+  if btnp(2) then pause_index=pause_index>1 and pause_index-1 or 3 end
+  if btnp(3) then pause_index=pause_index<3 and pause_index+1 or 1 end
+  if btnp(4) or btnp(5) then
+    if pause_index==1 then screen_mode="game"
+    elseif pause_index==2 then load_level(level) screen_mode="game"
+    else screen_mode="title" end
+  end
+end
+
+function update_game()
+  if btnp(4) and not moving and not rewinding then
+    pause_index=1 screen_mode="pause" return
+  end
+  if btnp(5) and not moving and not rewinding and #history>0 then
+    rewinding=true
+    rewind_move_id=deserialize_state(history[#history]).move_id
   end
 
-  -- rewinding?
+  -- rewinding animation
   if rewinding then
-    if not moving and not any_rock_moving() and #history > 0 then
-      local top = history[#history]
-      if top.move_id == rewind_move_id then
-        del(history, top)
-        rewind_snapshot = top
-        revert_to_snapshot(top)
-        target_px, target_py = top.px, top.py
-        moving = true
+    if not moving and not any_rock_moving() and #history>0 then
+      local snap=deserialize_state(history[#history])
+      if snap.move_id==rewind_move_id then
+        deli(history,#history)
+        revert_to_snapshot(snap)
+        target_px,target_py=snap.px,snap.py
+        moving=true
+        last_snapshot_table=snap
       else
-        rewinding = false
-        rewind_snapshot = nil
+        rewinding=false
       end
     elseif not moving and not any_rock_moving() then
-      rewinding = false
-      rewind_snapshot = nil
+      rewinding=false
     end
     do_movement_animations()
     return
   end
 
-  -- normal (non-rewind) logic
+  -- normal movement / conveyor logic
   do_movement_animations()
+  if moving or any_rock_moving() then return end
 
-  if moving or any_rock_moving() then
-    return
-  end
-
-  -- additional update: check non-moving rocks on conveyors
   if not rewinding then
     for r in all(rocks) do
       if not r.moving then
-        local gx, gy = flr(r.x / 8), flr(r.y / 8)
-        local tile = sub(map[gy + 1], gx + 1, gx + 1)
-        if is_conveyor(tile) then
+        local gx,gy=flr(r.x/8),flr(r.y/8)
+        if is_conveyor(sub(map[gy+1],gx+1,gx+1)) then
           check_rock_conveyor(r)
         end
       end
     end
   end
 
-  -- normal user input
-  if forcedconveyor then
-    return
-  end
-  local direction = nil
-  local dir_btn = { left = 0, right = 1, up = 2, down = 3 }
-  for d, b in pairs(dir_btn) do
-    if btn(b) then direction = d end
-  end
-  if last_direction and btn(dir_btn[last_direction]) then
-    direction = last_direction
-  end
+  if forcedconveyor then return end
+  local dir_btn={left=0,right=1,up=2,down=3}
+  local direction=nil
+  for d,b in pairs(dir_btn) do if btn(b) then direction=d end end
+  if last_direction and btn(dir_btn[last_direction]) then direction=last_direction end
   if direction then
-    if not state_saved then
-      current_move_id += 1
-      push_snapshot()
-      state_saved = true
-    end
-    local dx, dy = 0, 0
-    if direction == "left" then dx = -pspeed; last_direction = "left" end
-    if direction == "right" then dx = pspeed; last_direction = "right" end
-    if direction == "up" then dy = -pspeed; last_direction = "up" end
-    if direction == "down" then dy = pspeed; last_direction = "down" end
-
-    local nx, ny = px + dx, py + dy
-    if collide(nx, ny, false, nil) then
-      local r = get_rock_at(nx, ny)
+    if not state_saved then current_move_id+=1 push_snapshot() state_saved=true end
+    local dx,dy=0,0
+    if direction=="left" then dx=-pspeed last_direction="left"
+    elseif direction=="right" then dx=pspeed last_direction="right"
+    elseif direction=="up" then dy=-pspeed last_direction="up"
+    elseif direction=="down" then dy=pspeed last_direction="down" end
+    local nx,ny=px+dx,py+dy
+    if collide(nx,ny,false,nil) then
+      local r=get_rock_at(nx,ny)
       if r then
-        local rx, ry = r.x + dx, r.y + dy
-        if not collide(rx, ry, true, r) then
-          -- pushing a rock
-          r.target_x, r.target_y = rx, ry
-          r.moving = true
-          target_px, target_py = nx, ny
-          moving = true
-          push_snapshot()
+        local rx,ry=r.x+dx,r.y+dy
+        if not collide(rx,ry,true,r) then
+          r.target_x, r.target_y=rx,ry r.moving=true
+          target_px,target_py=nx,ny moving=true push_snapshot()
         end
       end
     else
-      -- normal walk
-      target_px, target_py = nx, ny
-      moving = true
-      push_snapshot()
+      target_px,target_py=nx,ny moving=true push_snapshot()
     end
-    state_saved = false
+    state_saved=false
   end
 end
 
--- this function handles the actual animation 
--- for both the player and any moving rocks.
+---------------------------
+-- 7) animation / conveyors / snapshot revert
+---------------------------
 function do_movement_animations()
-  -- player movement
+  -- player
   if moving then
-    px = ease(px, target_px)
-    py = ease(py, target_py)
-    if abs(px - target_px) < 0.5 and abs(py - target_py) < 0.5 then
-      px, py = target_px, target_py
-      moving = false
-      last_direction = nil
-
+    px=ease(px,target_px) py=ease(py,target_py)
+    if abs(px-target_px)<.5 and abs(py-target_py)<.5 then
+      px,py=target_px,target_py moving=false last_direction=nil
       if not rewinding then
-        local cx = flr(px / 8) * 8
-        local cy = flr(py / 8) * 8
-        if cx ~= last_tile_x or cy ~= last_tile_y then
-          local prev_crack = get_crack_at(last_tile_x, last_tile_y)
-          if prev_crack then
-            prev_crack.broken = true
-            add(holes, { x = prev_crack.x, y = prev_crack.y, filled = false })
-            del(cracks, prev_crack)
+        local cx,cy=flr(px/8)*8,flr(py/8)*8
+        if cx~=last_tile_x or cy~=last_tile_y then
+          local pc=get_crack_at(last_tile_x,last_tile_y)
+          if pc then
+            pc.broken=true
+            add(holes,{x=pc.x,y=pc.y,filled=false})
+            del(cracks,pc)
           end
-          last_tile_x, last_tile_y = cx, cy
+          last_tile_x,last_tile_y=cx,cy
         end
-
-        -- pick up key?
-        if key and not key.collected and flr(px) == flr(key.x) and flr(py) == flr(key.y) then
-          has_key = true
-          key.collected = true
+        if key and not key.collected and flr(px)==flr(key.x) and flr(py)==flr(key.y) then
+          has_key=true key.collected=true
         end
-
-        -- check door
-        if door and flr(px) == flr(door.x) and flr(py) == flr(door.y) and has_key then
-          history = {}
-          rewinding = false
-          rewind_snapshot = nil
-          state_saved = false
-          last_action_filled = false
-          load_level(level + 1)
-          return
+        if door and flr(px)==flr(door.x) and flr(py)==flr(door.y) and has_key then
+          history={} rewinding=false last_action_filled=false load_level(level+1) return
         end
-
-        -- belts
         check_conveyor_chain_player()
       end
     end
   end
 
-  -- rock movement
+  -- rocks
   for r in all(rocks) do
     if r.moving then
-      r.x = ease(r.x, r.target_x)
-      r.y = ease(r.y, r.target_y)
-      if abs(r.x - r.target_x) < 0.5 and abs(r.y - r.target_y) < 0.5 then
-        r.x, r.y = r.target_x, r.target_y
-        r.moving = false
-        -- check crack => hole => fill
-        local cr = get_crack_at(r.x, r.y)
+      r.x=ease(r.x,r.target_x) r.y=ease(r.y,r.target_y)
+      if abs(r.x-r.target_x)<.5 and abs(r.y-r.target_y)<.5 then
+        r.x,r.y=r.target_x,r.target_y r.moving=false
+        local cr=get_crack_at(r.x,r.y)
         if cr and not cr.broken then
-          cr.broken = true
-          add(holes, { x = cr.x, y = cr.y, filled = true })
-          del(cracks, cr)
-          rock_removal_positions[r.id] = { x = r.x, y = r.y }
-          del(rocks, r)
-          last_action_filled = true
+          cr.broken=true add(holes,{x=cr.x,y=cr.y,filled=true})
+          rock_removal_positions[r.id]={x=r.x,y=r.y} del(rocks,r)
+          last_action_filled=true
         else
-          local h = get_hole_at(r.x, r.y)
+          local h=get_hole_at(r.x,r.y)
           if h and not h.filled then
-            h.filled = true
-            rock_removal_positions[r.id] = { x = r.x, y = r.y }
-            del(rocks, r)
-            last_action_filled = true
-          else
-            -- >>> only run conveyor logic if not rewinding <<<
-            if not rewinding then
-              check_rock_conveyor(r)
-            end
+            h.filled=true rock_removal_positions[r.id]={x=r.x,y=r.y}
+            del(rocks,r) last_action_filled=true
+          elseif not rewinding then
+            check_rock_conveyor(r)
           end
         end
       end
@@ -773,206 +753,172 @@ function do_movement_animations()
   end
 end
 
----------------------------------------
--- player conveyor check
----------------------------------------
 function check_conveyor_chain_player()
-  forcedconveyor = false
+  forcedconveyor=false
   while true do
-    local gx, gy = flr(px/8), flr(py/8)
-    local tile = sub(map[gy+1], gx+1, gx+1)
+    local gx,gy=flr(px/8),flr(py/8)
+    local tile=sub(map[gy+1],gx+1,gx+1)
     if is_conveyor(tile) then
-      forcedconveyor = true
-      local dx, dy = 0, 0
-      if tile == "v" then 
-        dy = 8 
-      elseif tile == "^" then 
-        dy = -8 
-      elseif tile == ">" then 
-        dx = 8 
-      elseif tile == "<" then 
-        dx = -8 
-      end
-      local nx, ny = px + dx, py + dy
-      
-      -- If a rock occupies the target tile, try to push it concurrently:
-      local blocking_rock = get_rock_at(nx, ny)
+      forcedconveyor=true
+      local dx,dy=0,0
+      if tile=="v" then dy=8 elseif tile=="^" then dy=-8
+      elseif tile==">" then dx=8 else dx=-8 end
+      local nx,ny=px+dx,py+dy
+      local blocking_rock=get_rock_at(nx,ny)
       if blocking_rock then
-        local new_rx = blocking_rock.x + dx
-        local new_ry = blocking_rock.y + dy
-        if not collide(new_rx, new_ry, true, blocking_rock) then
+        local nrx,nry=blocking_rock.x+dx,blocking_rock.y+dy
+        if not collide(nrx,nry,false,blocking_rock) then
           push_snapshot()
-          blocking_rock.target_x, blocking_rock.target_y = new_rx, new_ry
-          blocking_rock.moving = true
-        else
-          forcedconveyor = false
-          return
-        end
-      elseif collide(nx, ny, false, nil) then
-        forcedconveyor = false
-        return
-      end
-      
-      push_snapshot()
-      target_px, target_py = nx, ny
-      moving = true
-      return  -- do one tile step and let _update() animate
-    else
-      forcedconveyor = false
-      return
-    end
-  end
-end  
-
----------------------------------------
--- rock conveyor check
----------------------------------------
-function check_rock_conveyor(r)
-  -- Only proceed if r is on a conveyor tile.
-  local gx, gy = flr(r.x/8), flr(r.y/8)
-  local tile = sub(map[gy+1], gx+1, gx+1)
-  if not is_conveyor(tile) then return end
-  
-  -- Determine movement delta from the conveyor tile.
-  local dx, dy = 0, 0
-  if tile == "v" then 
-    dy = 8 
-  elseif tile == "^" then 
-    dy = -8 
-  elseif tile == ">" then 
-    dx = 8 
-  elseif tile == "<" then 
-    dx = -8 
-  end
-  
-  local nx, ny = r.x + dx, r.y + dy  -- r's proposed new pixel position
-  
-  -- Compute the target tile for r.
-  local rock_target_tile_x = flr(nx/8)
-  local rock_target_tile_y = flr(ny/8)
-  
-  -- Check if the player's tile occupies the target.
-  local player_tile_x = moving and flr(target_px/8) or flr(px/8)
-  local player_tile_y = moving and flr(target_py/8) or flr(py/8)
-  if rock_target_tile_x == player_tile_x and rock_target_tile_y == player_tile_y then
-    local p_nx = (player_tile_x + dx/8) * 8
-    local p_ny = (player_tile_y + dy/8) * 8
-    if not collide(p_nx, p_ny, false, nil) then
-      push_snapshot()
-      target_px, target_py = p_nx, p_ny
-      moving = true
-    else
-      return
-    end
-  end
-  
-  -- Now check for a blocking rock.
-  local blocking_rock = get_rock_at(nx, ny)
-  if blocking_rock and blocking_rock ~= r then
-    local new_br_x = blocking_rock.x + dx
-    local new_br_y = blocking_rock.y + dy
-    -- Before pushing the blocking rock, check if its target tile is occupied by the player.
-    local br_tile_x = flr(new_br_x/8)
-    local br_tile_y = flr(new_br_y/8)
-    if br_tile_x == player_tile_x and br_tile_y == player_tile_y then
-      local p_nx = (player_tile_x + dx/8) * 8
-      local p_ny = (player_tile_y + dy/8) * 8
-      if not collide(p_nx, p_ny, false, nil) then
-        push_snapshot()
-        target_px, target_py = p_nx, p_ny
-        moving = true
-      else
-        return
-      end
-    end
-    if not collide(new_br_x, new_br_y, true, blocking_rock) then
-      -- Initiate both moves in the same update cycle:
-      push_snapshot()
-      blocking_rock.target_x, blocking_rock.target_y = new_br_x, new_br_y
-      blocking_rock.moving = true
-      push_snapshot()
-      r.target_x, r.target_y = nx, ny
-      r.moving = true
-    else
-      return
-    end
-  else
-    -- If no blocking rock (or it's not there), and no other collision:
-    if collide(nx, ny, true, r) then return end
-    push_snapshot()
-    r.target_x, r.target_y = nx, ny
-    r.moving = true
+          blocking_rock.target_x,blocking_rock.target_y=nrx,nry blocking_rock.moving=true
+        else forcedconveyor=false return end
+      elseif collide(nx,ny,false,nil) then forcedconveyor=false return end
+      push_snapshot() target_px,target_py=nx,ny moving=true return
+    else forcedconveyor=false return end
   end
 end
 
- 
+function check_rock_conveyor(r)
+  local gx,gy=flr(r.x/8),flr(r.y/8)
+  local tile=sub(map[gy+1],gx+1,gx+1)
+  if not is_conveyor(tile) then return end
+  local dx,dy=0,0
+  if tile=="v" then dy=8 elseif tile=="^" then dy=-8
+  elseif tile==">" then dx=8 else dx=-8 end
+  local nx,ny=r.x+dx,r.y+dy
+  local rtx,rty=flr(nx/8),flr(ny/8)
+  local ptx,pty=moving and flr(target_px/8) or flr(px/8),
+                moving and flr(target_py/8) or flr(py/8)
+  if rtx==ptx and rty==pty then
+    local pnx,pny=(ptx+dx/8)*8,(pty+dy/8)*8
+    if not collide(pnx,pny,false,nil) then
+      push_snapshot()
+      target_px,target_py=pnx,pny
+      moving=true
+    else return end
+  end
+  local br=get_rock_at(nx,ny)
+  if br and br~=r then
+    local nbx,nby=br.x+dx,br.y+dy
+    local brtx,brty=flr(nbx/8),flr(nby/8)
+    if brtx==ptx and brty==pty then
+      local pnx,pny=(ptx+dx/8)*8,(pty+dy/8)*8
+      if not collide(pnx,pny,false,nil) then
+        push_snapshot()
+        target_px,target_py=pnx,pny
+        moving=true
+      else return end
+    end
+    if not collide(nbx,nby,true,br) then
+      push_snapshot()
+      br.target_x,br.target_y=nbx,nby
+      br.moving=true
+      push_snapshot()
+      r.target_x,r.target_y=nx,ny r.moving=true
+    end
+  elseif not collide(nx,ny,true,r) then
+    push_snapshot() r.target_x,r.target_y=nx,ny r.moving=true
+  end
+end
 
+function revert_to_snapshot(s)
+  holes={} for h in all(s.holes) do add(holes,{x=h.x,y=h.y,filled=h.filled}) end
+  cracks={} for c in all(s.cracks) do add(cracks,{x=c.x,y=c.y,broken=c.broken}) end
+  has_key=s.has_key last_tile_x=s.last_tile_x last_tile_y=s.last_tile_y
+  if key then key.collected=s.key_collected end
+  local keep={} for r in all(s.rocks) do keep[r.id]=true end
+  for r in all(rocks) do if not keep[r.id] then del(rocks,r) end end
+  for sr in all(s.rocks) do
+    local cr=find_rock_by_id(sr.id)
+    if not cr then
+      local nr=make_rock(sr.x,sr.y) nr.id=sr.id
+      nr.target_x,nr.target_y=sr.x,sr.y nr.moving=true
+    else
+      cr.target_x,cr.target_y=sr.x,sr.y cr.moving=true
+    end
+  end
+end
 
----------------------------------------
--- drawing
----------------------------------------
+---------------------------
+-- 8) drawing
+---------------------------
 function _draw()
   cls()
-  local z = map.zoom or 1
+  if screen_mode=="title" then draw_title()
+  elseif screen_mode=="levelselect" then draw_level_select()
+  else
+    draw_game()
+    if screen_mode=="pause" then draw_pause_overlay() end
+  end
+end
 
-  for y = 0, 15 do
-    local row = map[y + 1]
-    for x = 0, 15 do
-      local char = sub(row, x + 1, x + 1)
-      local sx, sy = x * 8, y * 8
-      if char == "." then
-        draw_sprite(((y % 2 == 0) == (x % 2 == 0)) and 83 or 84, sx, sy, z)
-      elseif char == "w" then
-        draw_sprite((x % 2 == 0 and y % 5 == 0) and (y == 0 and 70 or 69) or 64, sx, sy, z)
-      elseif char == "l" then
-        draw_sprite(85, sx, sy, z)
-      elseif char == "g" then
-        draw_sprite(36, sx, sy, z)
-      elseif char == "b" then
-        draw_sprite(51, sx, sy, z)
-      elseif char == "c" then
-        if get_crack_at(sx, sy) then
-          draw_sprite(66, sx, sy, z)
-        end
+function draw_title()
+  print("OCTOROQ",48,40,7)
+  local o1,o2="START GAME","LEVEL SELECT"
+  spr(1, 42, 50)
+  spr(1, 48, 50)
+  spr(1, 56, 50)
+  spr(65, 64, 50)
+  spr(1, 72, 50)
+  print((menu_index==1 and ">" or " ")..o1,38,70,10)
+  print((menu_index==2 and ">" or " ")..o2,38,80,10)
+end
+
+function draw_level_select()
+  print("SELECT LEVEL",38,30,7)
+  print("level: "..level_select_idx,50,50,10)
+  print("⬆️/⬇️ move  ❎/🅾️ pick  ➡️ back",4,110,6)
+end
+
+function draw_game()
+  local z=map.zoom or 1
+  for y=0,15 do
+    local row=map[y+1]
+    for x=0,15 do
+      local ch=sub(row,x+1,x+1)
+      local sx,sy=x*8,y*8
+      if ch=="." then
+        draw_sprite(((y%2==0)==(x%2==0)) and 83 or 84,sx,sy,z)
+      elseif ch=="w" then
+        draw_sprite((x%2==0 and y%5==0) and (y==0 and 70 or 69) or 64,sx,sy,z)
+      elseif ch=="l" then
+        draw_sprite(85,sx,sy,z)
+      elseif ch=="g" then
+        draw_sprite(36,sx,sy,z)
+      elseif ch=="b" then
+        draw_sprite(51,sx,sy,z)
+      elseif ch=="c" then
+        if get_crack_at(sx,sy) then draw_sprite(66,sx,sy,z) end
       else
-        local csp = conveyor_sprite(char)
-        if csp then
-          draw_sprite(csp, sx, sy, z)
-        end
+        local sp=conveyor_sprite(ch)
+        if sp then draw_sprite(sp,sx,sy,z) end
       end
     end
   end
 
   for h in all(holes) do
-    draw_sprite(h.filled and 71 or 68, h.x, h.y, z)
+    draw_sprite(h.filled and 71 or 68,h.x,h.y,z)
   end
-
-  if key and not key.collected then
-    draw_sprite(128, key.x, key.y, z)
-  end
-  if door then
-      if has_key then
-          draw_sprite(99, door.x, door.y, z)
-      else
-          draw_sprite(97, door.x, door.y, z)
-      end
-  end
+  if key and not key.collected then draw_sprite(128,key.x,key.y,z) end
+  if door then draw_sprite(has_key and 99 or 97,door.x,door.y,z) end
 
   for r in all(rocks) do
-    local fx = r.x + cos(fuzz_time + r.x * 0.1) * 0.15
-    local fy = r.y + cos(fuzz_time + r.y * 0.1) * 0.15
-    if r.moving then
-      fx, fy = r.x, r.y
-    end
-    draw_sprite(65, fx, fy, z)
+    -- local fx=r.x+cos(fuzz_time+r.x*.1)*.15
+    -- local fy=r.y+cos(fuzz_time+r.y*.1)*.15
+    -- if r.moving then fx,fy=r.x,r.y end
+    draw_sprite(65,r.x,r.y,z)
   end
+  draw_sprite(frame,px,py,z)
 
-  draw_sprite(frame, px, py, z)
+  print("level "..level,96,122,7)
+  print("octoroq",0,122,122)
+end
 
-  if level > 9 then
-    print("level " .. level, 96, 122, 7)
-  else
-    print("level 0" .. level, 96, 122, 7)
+function draw_pause_overlay()
+  rectfill(0,0,127,127,1) rectfill(2,2,125,125,0)
+  print("PAUSED",50,30,7)
+  local opts={"RESUME","RESTART","BACK TO TITLE"}
+  for i=1,3 do
+    local col=(pause_index==i) and 10 or 7
+    print((pause_index==i and ">" or " ")..opts[i],30,50+i*12,col)
   end
-  print("octoroq", 0, 122, 122)
 end
