@@ -5,7 +5,7 @@ screen_mode      = "title"   -- title | levelselect | game | pause
 menu_index       = 1         -- title‑screen highlight
 level_select_idx = 1         -- level‑select highlight
 pause_index      = 1         -- pause‑menu highlight
-max_levels       = 20        -- total levels
+max_levels       = 21        -- total levels
 
 ---------------------------
 -- 1) helpers
@@ -528,7 +528,24 @@ function _init()
       "w^^^>.>vv<.<>>ww",
       "w.r.<.<r.>.>.r.w",
       "w...^.^..^.<...w",
-      "wwwwwwwwwwwwwwww"}
+      "wwwwwwwwwwwwwwww"},
+    [21]={zoom=1,
+      "wwwwwwwwwwwwwwww",
+      "w......p.......w",
+      "wrrrrrrrrrrrrrrw",
+      "w..............w",
+      "wv<vv<v<>Vvvv<<w",
+      "wv>vv>>>^>v>V^^w",
+      "w>vv>>vvvvv>vv^w",
+      "w^v>v>>v>>v^vv^w",
+      "wvv>>>^hv<h>>vvw",
+      "wvvv>vvwv<wv<<vw",
+      "w>>h^v>>vv<<vv<w",
+      "w>vwvwvv>>>v>vww",
+      "wv<<<h<>>v<>^>hw",
+      "w>>>>>>^>>>^^v^w",
+      "wwwwwwwwwwwwwwww",
+    }
   }
 end
 
@@ -852,15 +869,33 @@ function _draw()
 end
 
 function draw_title()
-  print("OCTOROQ",48,40,7)
   local o1,o2="START GAME","LEVEL SELECT"
-  spr(1, 42, 50)
-  spr(1, 48, 50)
-  spr(1, 56, 50)
-  spr(65, 64, 50)
-  spr(1, 72, 50)
-  print((menu_index==1 and ">" or " ")..o1,38,70,10)
-  print((menu_index==2 and ">" or " ")..o2,38,80,10)
+
+      for y = 0, 15 do
+        for x = 0, 15 do
+      
+          if (y == 3  and x > 1  and x < 14) or     -- top edge
+             (y == 12 and x > 1  and x < 14) or     -- bottom edge
+             (x == 1  and y > 3  and y < 12) or     -- left edge
+             (x == 14 and y > 3  and y < 12) then   -- right edge
+            spr(64, x*8, y*8)
+      
+          elseif x < 2 or x > 13 or y < 3 or y > 12 then
+            spr(73, x*8, y*8)
+          end
+      
+    end
+  end
+  -- spr(1, 42, 54)
+  -- spr(1, 48, 54)
+  spr(1, 48, 56)
+  spr(65, 56, 56)
+  spr(68, 64, 56)
+  spr(128, 72, 56)
+  print((menu_index==1 and ">" or " ")..o1,38,72,10)
+  print((menu_index==2 and ">" or " ")..o2,38,82,10)
+  print("\^w\^tOCTOROQ",37,40,7)
+  print("\^-w\^-tyamsoft", 101, 123, 3)
 end
 
 function draw_level_select()
@@ -879,7 +914,7 @@ function draw_game()
       if ch=="." then
         draw_sprite(((y%2==0)==(x%2==0)) and 83 or 84,sx,sy,z)
       elseif ch=="w" then
-        draw_sprite((x%2==0 and y%5==0) and (y==0 and 70 or 69) or 64,sx,sy,z)
+        draw_sprite(x%2==0 and y==0 and 70 or 64,sx,sy,z)
       elseif ch=="l" then
         draw_sprite(85,sx,sy,z)
       elseif ch=="g" then
