@@ -5,7 +5,24 @@ screen_mode      = "title"   -- title | levelselect | game | pause
 menu_index       = 1         -- title‑screen highlight
 level_select_idx = 1         -- level‑select highlight
 pause_index      = 1         -- pause‑menu highlight
-max_levels       = 21        -- total levels
+max_levels       = 20        -- total levels
+
+---------------------------
+-- 0a) native pause hooks
+---------------------------
+-- these items appear *after* PICO‑8’s built‑in
+-- resume / reset cart / mute / music options
+menuitem(1, "restart level", function()
+  if screen_mode == "game" then load_level(level) end
+end)
+menuitem(2, "back to title", function()
+  screen_mode = "title"
+end)
+
+-- optional: react when the user toggles pause
+function _pause()
+  -- return true to suppress the menu (not used here)
+end
 
 ---------------------------
 -- 1) helpers
@@ -215,7 +232,7 @@ function push_snapshot()
   if last_snapshot_table and states_equal(new,last_snapshot_table) then return end
   add(history,serialize_state(new))
   last_snapshot_table=new
-  while #history>100 do deli(history,1) end
+  while #history>1000 do deli(history,1) end
   last_action_filled=false
 end
 
@@ -237,6 +254,8 @@ function _init()
   last_tile_y=flr(py/8)*8
   forcedconveyor=false
 
+  palt(0, false)
+
   ------------------------------------
   -- levels table
   ------------------------------------
@@ -244,26 +263,26 @@ function _init()
     [1]={zoom=1,
       "wwwwwwwwwwwwwwww",
       "w....h.....w...w",
+      "w....h.........w",
+      "w....h.w......hw",
+      "w....h..rr...hkw",
       "w....h........hw",
-      "w....h.w...w..hw",
-      "w..r.h..rr...hkw",
-      "w....h........hw",
-      "w..h.h.........w",
+      "w....h.........w",
       "w....h.........w",
       "w....h...p.....w",
       "w....h.........w",
       "w....h.........w",
-      "w....w.....w...w",
+      "w....w.........w",
       "w....h.........w",
       "w.d..h.........w",
       "wwwwwwwwwwwwwwww"},
     [2]={zoom=1,
       "wwwwwwwwwwwwwwww",
-      "wh...hh....w...w",
-      "w..h.hhw...w...w",
-      "w..r.hh.rr.....w",
+      "w....hh....w...w",
+      "w....hhw...w...w",
+      "w....hh.rr.....w",
       "w....hh..h.....w",
-      "w..h.hh.....h..w",
+      "w....hh.....h..w",
       "w....hhh...hkh.w",
       "w....hh.h...h..w",
       "w....hh..h.....w",
@@ -285,29 +304,13 @@ function _init()
       "wwhhwwwwwwwwwwww",
       "ww..........r..w",
       "w.hhh..........w",
-      "w.....r.....h..w",
+      "w.....r........w",
       "w....rrr.......w",
       "w......p.....wdw",
       "wwwwwwwwwwwwwwww"},
     [4]={zoom=1,
       "wwwwwwwwwwwwwwww",
-      "wrhrhrhrhrhrhhhd",
-      "whrhrhrhrhrhrhrw",
-      "wrhrhrhrhrhrhrhw",
-      "whrhrhrhrhrhrhrw",
-      "whrhr.rhr.rhrhrw",
-      "wrhrhr.r.rhrhrhw",
-      "whrhr.rpr.rhrhrw",
-      "wrhrhrhr.rhrhrhw",
-      "whrhrhrhrhrhrhrw",
-      "wrhrhrhrhrhrhrhw",
-      "whrhr.rhrhrhrhrw",
-      "wrkrhrhrhrhrhrhw",
-      "whrhrhrhrhrhrhrw",
-      "wwwwwwwwwwwwwwww"},
-    [5]={zoom=1,
-      "wwwwwwwwwwwwwwww",
-      "w.rp...........w",
+      "w..p...........w",
       "wwwwwwwww......w",
       "wdwk..hww......w",
       "whw..h.ww......w",
@@ -321,7 +324,7 @@ function _init()
       "w.hr.r.hh......w",
       "w.h....hhr.r.r.w",
       "wwwwwwwwwwwwwwww"},
-    [6]={zoom=1,
+    [5]={zoom=1,
       "wwwwwwwwwwwwwwww",
       "w..............w",
       "w..............w",
@@ -337,7 +340,7 @@ function _init()
       "w.r.r.r.r.r.rckw",
       "w.............cw",
       "wwwwwwwwwwwwwwww"},
-    [7]={zoom=2,
+    [6]={zoom=2,
       "wwwwwwww",
       "w....hdw",
       "wcrcrcrw",
@@ -345,12 +348,12 @@ function _init()
       "w..r..hw",
       "wp...hkw",
       "wwwwwwww"},
-    [8]={zoom=1,
+    [7]={zoom=1,
       "wwwwwwwwwwwwwwww",
-      "wdw....h.....h.w",
-      "whrhc..h..hh.h.w",
-      "wpcrhc.h..kh.h.w",
-      "wwwcrhrh.h.h.h.w",
+      "wdw....h.......w",
+      "whrhc..h..hh...w",
+      "wp.rhc.h..kh...w",
+      "www.rhrh.h.h...w",
       "wllwcrhh.......w",
       "wlllwcrh.......w",
       "wlgllwcrhhchchcw",
@@ -361,7 +364,7 @@ function _init()
       "w..............w",
       "w..............w",
       "wwwwwwwwwwwwwwww"},
-    [9]={zoom=1,
+    [8]={zoom=1,
       "wwwwwwwwwwwwwwww",
       "wp.............w",
       "w..r..rrrr..r..w",
@@ -377,7 +380,7 @@ function _init()
       "w..r..rrrr..r..w",
       "w..............w",
       "wwwwwwwwwwwwwwww"},
-    [10]={zoom=2,
+    [9]={zoom=2,
       "wwwwwwww",
       "wkhhhhdw",
       "wwr.ccww",
@@ -385,7 +388,7 @@ function _init()
       "w.rrrwww",
       "w.....pw",
       "wwwwwwww"},
-    [11]={zoom=2,
+    [10]={zoom=2,
       "wwwwwwww",
       "wglglglw",
       "wlglglgw",
@@ -393,7 +396,7 @@ function _init()
       "wglglglw",
       "wlglglgw",
       "wwwwwwww"},
-    [12]={zoom=1,
+    [11]={zoom=1,
       "wwwwwwwwwwwwwwww",
       "whhhhhhhhhhhhhhw",
       "whhhhhhhhhhhhhhw",
@@ -409,7 +412,7 @@ function _init()
       "whhhhhhhhhhhhhhw",
       "whhhhhhhhhhhhhhw",
       "wwwwwwwwwwwwwwww"},
-    [13]={zoom=1,
+    [12]={zoom=1,
       "wwwwwwwwwwwwwwww",
       "whhhhhhhhhhhhhhw",
       "whhhhhhhhhhhhhhw",
@@ -425,7 +428,7 @@ function _init()
       "whhhhhhhhhhhhhhw",
       "whhhhhhhhhhhhhhw",
       "wwwwwwwwwwwwwwww"},
-    [14]={zoom=1,
+    [13]={zoom=1,         --Remove this level
       "wwwwwwwwwwwwwwww",
       "wp.............w",
       "wwwwwwwwwwwwwr.w",
@@ -441,7 +444,7 @@ function _init()
       "w...wwwwwwwww..w",
       "w..............w",
       "wwwwwwwwwwwwwwww"},
-    [15]={zoom=1,
+    [14]={zoom=1,
       "wwwwwwwwwwwwwwww",
       "wp.............w",
       "w.wwwwwwwwwwww.w",
@@ -457,7 +460,7 @@ function _init()
       "w.wwwwwwwwwwww.w",
       "w..............w",
       "wwwwwwwwwwwwwwww"},
-    [16]={zoom=2,
+    [15]={zoom=2,
       "wwwwwwww",
       "w.V<<<pw",
       "w.>.rVVw",
@@ -465,7 +468,7 @@ function _init()
       "wcc<r.ww",
       "wkhhhhdw",
       "wwwwwwww"},
-    [17]={zoom=1,
+    [16]={zoom=1,
       "wwwwwwwwwwwwwwww",
       "wd.....Vr.....pw",
       "whhhhhhhhhhhhhhw",
@@ -481,7 +484,7 @@ function _init()
       "w..c..vc...r...w",
       "w..w^^.........w",
       "wwwwwwwwwwwwwwww"},
-    [18]={zoom=1,
+    [17]={zoom=1,
       "wwwwwwwwwwwwwwww",
       "w...V..<.hcchhkw",
       "w.c.>..<.h<.rVww",
@@ -497,7 +500,7 @@ function _init()
       "w..r.whwchh.hc.w",
       "wd....h<dhh....w",
       "wwwwwwwwwwwwwwww"},
-    [19]={zoom=1,
+    [18]={zoom=1,
       "wwwwwwwwwwwwwwww",
       "wpccccwcccccccw.",
       ".wcccccccwcccwcw",
@@ -512,6 +515,22 @@ function _init()
       "wcccccwccccwrcw.",
       ".wcccccccwcrcwcw",
       "wdccccwccccrckw.",
+      "wwwwwwwwwwwwwwww"},
+      [19]={zoom=1,
+      "wwwwwwwwwwwwwwww",
+      "wrhrhrhrhrhrhhhd",
+      "whrhrhrhrhrhrhrw",
+      "wrhrhrhrhrhrhrhw",
+      "whrhrhrhrhrhrhrw",
+      "whrhr.rhr.rhrhrw",
+      "wrhrhr.r.rhrhrhw",
+      "whrhr.rpr.rhrhrw",
+      "wrhrhrhr.rhrhrhw",
+      "whrhrhrhrhrhrhrw",
+      "wrhrhrhrhrhrhrhw",
+      "whrhr.rhrhrhrhrw",
+      "wrkrhrhrhrhrhrhw",
+      "whrhrhrhrhrhrhrw",
       "wwwwwwwwwwwwwwww"},
     [20]={zoom=1,
       "wwwwwwwwwwwwwwww",
@@ -529,23 +548,6 @@ function _init()
       "w.r.<.<r.>.>.r.w",
       "w...^.^..^.<...w",
       "wwwwwwwwwwwwwwww"},
-    [21]={zoom=1,
-      "wwwwwwwwwwwwwwww",
-      "w......p.......w",
-      "wrrrrrrrrrrrrrrw",
-      "w..............w",
-      "wv<vv<v<>Vvvv<<w",
-      "wv>vv>>>^>v>V^^w",
-      "w>vv>>vvvvv>vv^w",
-      "w^v>v>>v>>v^vv^w",
-      "wvv>>>^hv<h>>vvw",
-      "wvvv>vvwv<wv<<vw",
-      "w>>h^v>>vv<<vv<w",
-      "w>vwvwvv>>>v>vww",
-      "wv<<<h<>>v<>^>hw",
-      "w>>>>>>^>>>^^v^w",
-      "wwwwwwwwwwwwwwww",
-    }
   }
 end
 
@@ -592,6 +594,7 @@ function collide(x,y,ignore_rocks,cur_rock)
   local gx,gy=flr(x/8),flr(y/8)
   local tile=sub(map[gy+1],gx+1,gx+1)
   if tile=="w" or tile=="l" then return true end
+  if tile =="d" and not has_key then return true end
   if not ignore_rocks and find_entity_at(holes,x,y,function(e) return not e.filled end) then
     return true
   end
@@ -608,7 +611,6 @@ function _update()
   -- fuzz_time+=.01
   if     screen_mode=="title"       then update_title()
   elseif screen_mode=="levelselect" then update_level_select()
-  elseif screen_mode=="pause"       then update_pause()
   else                               update_game() end
 end
 
@@ -630,21 +632,7 @@ function update_level_select()
   if btnp(1) then screen_mode="title" end
 end
 
--- pause menu
-function update_pause()
-  if btnp(2) then pause_index=pause_index>1 and pause_index-1 or 3 end
-  if btnp(3) then pause_index=pause_index<3 and pause_index+1 or 1 end
-  if btnp(4) or btnp(5) then
-    if pause_index==1 then screen_mode="game"
-    elseif pause_index==2 then load_level(level) screen_mode="game"
-    else screen_mode="title" end
-  end
-end
-
 function update_game()
-  if btnp(4) and not moving and not rewinding then
-    pause_index=1 screen_mode="pause" return
-  end
   if btnp(5) and not moving and not rewinding and #history>0 then
     rewinding=true
     rewind_move_id=deserialize_state(history[#history]).move_id
@@ -864,7 +852,6 @@ function _draw()
   elseif screen_mode=="levelselect" then draw_level_select()
   else
     draw_game()
-    if screen_mode=="pause" then draw_pause_overlay() end
   end
 end
 
@@ -946,14 +933,4 @@ function draw_game()
 
   print("level "..level,96,122,7)
   print("octoroq",0,122,122)
-end
-
-function draw_pause_overlay()
-  rectfill(0,0,127,127,1) rectfill(2,2,125,125,0)
-  print("PAUSED",50,30,7)
-  local opts={"RESUME","RESTART","BACK TO TITLE"}
-  for i=1,3 do
-    local col=(pause_index==i) and 10 or 7
-    print((pause_index==i and ">" or " ")..opts[i],30,50+i*12,col)
-  end
 end
