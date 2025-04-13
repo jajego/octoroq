@@ -5,7 +5,7 @@ screen_mode      = "title"   -- title | levelselect | game | pause
 menu_index       = 1         -- title‑screen highlight
 level_select_idx = 1         -- level‑select highlight
 pause_index      = 1         -- pause‑menu highlight
-max_levels       = 20        -- total levels
+max_levels       = 21        -- total levels
 
 ---------------------------
 -- 0a) native pause hooks
@@ -301,11 +301,11 @@ function _init()
       "w......hhhhh...w",
       "w..............w",
       "w.h............w",
-      "wwhhwwwwwwwwwwww",
+      "wwhwwwwwwwwwwwww",
       "ww..........r..w",
       "w.hhh..........w",
       "w.....r........w",
-      "w....rrr.......w",
+      "w....r.r.......w",
       "w......p.....wdw",
       "wwwwwwwwwwwwwwww"},
     [4]={zoom=1,
@@ -428,21 +428,21 @@ function _init()
       "whhhhhhhhhhhhhhw",
       "whhhhhhhhhhhhhhw",
       "wwwwwwwwwwwwwwww"},
-    [13]={zoom=1,         --Remove this level
+    [13]={zoom=1,
       "wwwwwwwwwwwwwwww",
-      "wp.............w",
-      "wwwwwwwwwwwwwr.w",
-      "w.......r.r....w",
-      "w...crr.r.hr..rw",
-      "w....hcchh..r.vw",
-      "w.r.chchchchr.vw",
-      "w.r.h.w.w..c.r<w",
-      "w...c.wkww.hw..w",
-      "w...h.wwdwwcw..w",
-      "w.r.c.hhccchw..w",
-      "w...hchchchcw..w",
-      "w...wwwwwwwww..w",
-      "w..............w",
+      "w.rv<...c...hhhw",
+      "w.r.^..>..c.<d.w",
+      "w.r.^..^.c.hhwww",
+      "w.r.^..^...c...w",
+      "w.r.^..<.cc.<..w",
+      "w.r.^..^<..>^..w",
+      "wpr.wwwww..wwwww",
+      "w.r.vk.........w",
+      "w.r.v^w........w",
+      "w.r.vhwllllllllw",
+      "w.r.vhwllllllllw",
+      "w.r.v.wlllgglllw",
+      "w.r.>^wllllllllw",
       "wwwwwwwwwwwwwwww"},
     [14]={zoom=1,
       "wwwwwwwwwwwwwwww",
@@ -498,7 +498,7 @@ function _init()
       "w....<.h..c.r..w",
       "w...r.r.c..h...w",
       "w..r.whwchh.hc.w",
-      "wd....h<dhh....w",
+      "w.....h<dhh....w",
       "wwwwwwwwwwwwwwww"},
     [18]={zoom=1,
       "wwwwwwwwwwwwwwww",
@@ -541,14 +541,30 @@ function _init()
       "w^^^<.<^^>.>>>ww",
       "whhh>.>..<.<hwhw",
       "whkh>.>rr<.<hdhw",
-      "whhh>.>..<.<hwhw",
+      "whhh>.>.p<.<hwhw",
       "w^^^^.^^^^.>>>ww",
       "w....r....r....w",
       "w^^^>.>vv<.<>>ww",
       "w.r.<.<r.>.>.r.w",
       "w...^.^..^.<...w",
       "wwwwwwwwwwwwwwww"},
-  }
+      [21]={zoom=1,
+      "wwwwwwwwwwwwwwww",
+      "wv<...v.<<...r.w",
+      "w.>>..v..>>..r<w",
+      "w..<>..r>>>>...w",
+      "w>..<>..p..<<..w",
+      "w..v.<^.c..<<>.w",
+      "w.vr..<>.c.<.<>w",
+      "w.>...^<>..<...w",
+      "wv<<<<<.<>.>...w",
+      "w.....>..<>>.r.w",
+      "w>....>...<>..<w",
+      "w.r...>.>..<>..w",
+      "wwwwh.>..cr.<>.w",
+      "wdhhh.>......>^w",
+      "wwwwwwwwwwwwwwww"},
+    }
 end
 
 function load_level(lvl)
@@ -679,27 +695,47 @@ function update_game()
   for d,b in pairs(dir_btn) do if btn(b) then direction=d end end
   if last_direction and btn(dir_btn[last_direction]) then direction=last_direction end
   if direction then
-    if not state_saved then current_move_id+=1 push_snapshot() state_saved=true end
-    local dx,dy=0,0
-    if direction=="left" then dx=-pspeed last_direction="left"
-    elseif direction=="right" then dx=pspeed last_direction="right"
-    elseif direction=="up" then dy=-pspeed last_direction="up"
-    elseif direction=="down" then dy=pspeed last_direction="down" end
-    local nx,ny=px+dx,py+dy
-    if collide(nx,ny,false,nil) then
-      local r=get_rock_at(nx,ny)
+    if not state_saved then 
+      current_move_id += 1 
+      push_snapshot() 
+      state_saved = true 
+    end
+  
+    local dx, dy = 0, 0
+    if direction == "left" then 
+      dx = -pspeed 
+      last_direction = "left"
+    elseif direction == "right" then 
+      dx = pspeed 
+      last_direction = "right"
+    elseif direction == "up" then 
+      dy = -pspeed 
+      last_direction = "up"
+    elseif direction == "down" then 
+      dy = pspeed 
+      last_direction = "down"
+    end
+    local nx, ny = px + dx, py + dy
+    if collide(nx, ny, false, nil) then
+      local r = get_rock_at(nx, ny)
       if r then
-        local rx,ry=r.x+dx,r.y+dy
-        if not collide(rx,ry,true,r) then
-          r.target_x, r.target_y=rx,ry r.moving=true
-          target_px,target_py=nx,ny moving=true push_snapshot()
+        local rx, ry = r.x + dx, r.y + dy
+        if not collide(rx, ry, true, r) then
+          r.target_x, r.target_y = rx, ry 
+          r.moving = true
+          target_px, target_py = nx, ny 
+          moving = true
+          -- No second push_snapshot!
         end
       end
     else
-      target_px,target_py=nx,ny moving=true push_snapshot()
+      target_px, target_py = nx, ny 
+      moving = true
+      -- No second push_snapshot!
     end
-    state_saved=false
+    state_saved = false
   end
+  
 end
 
 ---------------------------
