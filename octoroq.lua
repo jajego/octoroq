@@ -548,6 +548,22 @@ function _init()
       "w.r.<.<r.>.>.r.w",
       "w...^.^..^.<...w",
       "wwwwwwwwwwwwwwww"},
+      [21]={zoom=1,
+      "wwwwwwwwwwwwwwww",
+      "wv<...v.<<...r.w",
+      "w.>>..v..>>..r<w",
+      "w..<>..r>>>>...w",
+      "w>..<>..p..<<..w",
+      "w..v.<^.c..<<>.w",
+      "w.vr..<>.c.<.<>w",
+      "w.>...^<>..<...w",
+      "wv<<<<<.<>.>...w",
+      "w.....>..<>>.r.w",
+      "w>....>...<>..<w",
+      "w.r...>.>..<>..w",
+      "wwwwh.>..cr.<>.w",
+      "wdhhh.>......>^w",
+      "wwwwwwwwwwwwwwww"},
   }
 end
 
