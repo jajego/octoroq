@@ -5,7 +5,7 @@ screen_mode      = "title"   -- title | levelselect | game | pause
 menu_index       = 1         -- title‑screen highlight
 level_select_idx = 1         -- level‑select highlight
 pause_index      = 1         -- pause‑menu highlight
-max_levels       = 20        -- total levels
+max_levels       = 22        -- total levels
 
 ---------------------------
 -- 0a) native pause hooks
@@ -239,6 +239,7 @@ end
 ---------------------------
 -- 4) init + level data
 ---------------------------
+
 function _init()
   screen_mode="title"
   px,py=64,64 
@@ -254,7 +255,7 @@ function _init()
   last_tile_y=flr(py/8)*8
   forcedconveyor=false
 
-  palt(0, false)
+  palt(0, true)
 
   ------------------------------------
   -- levels table
@@ -295,7 +296,7 @@ function _init()
     [3]={zoom=1,
       "wwwwwwwwwwwwwwww",
       "wkhhh..........w",
-      "wwwwww.hhhhh...w",
+      "wwwwww.hhhhh.w.w",
       "w.....hr.r.rh..w",
       "w.r...h.r.r.h..w",
       "w......hhhhh...w",
@@ -340,14 +341,26 @@ function _init()
       "w.r.r.r.r.r.rckw",
       "w.............cw",
       "wwwwwwwwwwwwwwww"},
-    [6]={zoom=2,
-      "wwwwwwww",
-      "w....hdw",
-      "wcrcrcrw",
-      "wr.c.c.w",
-      "w..r..hw",
-      "wp...hkw",
-      "wwwwwwww"},
+    [6]={zoom=1,
+    "................",
+    "................",
+    "................",
+    "................",
+
+      "....wwwwwwww",
+      "....w....hdw",
+      "....wcrcrcrw",
+      "....wr.c.c.w",
+      "....w..r..hw",
+      "....wp...hkw",
+      "....wwwwwwww",
+    
+      "................",
+      "................",
+      "................",
+      "................",
+
+    },
     [7]={zoom=1,
       "wwwwwwwwwwwwwwww",
       "wdw....h.......w",
@@ -430,19 +443,19 @@ function _init()
       "wwwwwwwwwwwwwwww"},
     [13]={zoom=1,         --Remove this level
       "wwwwwwwwwwwwwwww",
-      "wp.............w",
-      "wwwwwwwwwwwwwr.w",
-      "w.......r.r....w",
-      "w...crr.r.hr..rw",
-      "w....hcchh..r.vw",
-      "w.r.chchchchr.vw",
-      "w.r.h.w.w..c.r<w",
-      "w...c.wkww.hw..w",
-      "w...h.wwdwwcw..w",
-      "w.r.c.hhccchw..w",
-      "w...hchchchcw..w",
-      "w...wwwwwwwww..w",
-      "w..............w",
+      "w.rv<...c...hhhw",
+      "w.r.^..>..c.<d.w",
+      "w.r.^..^.c.hhwww",
+      "w.r.^..^...c...w",
+      "w.r.^..<.cc.<..w",
+      "w.r.^..^<..>^..w",
+      "wpr.wwwww..wwwww",
+      "w.r.vk.........w",
+      "w.r.v^w........w",
+      "w.r.vhwllllllllw",
+      "w.r.vhwllllllllw",
+      "w.r.v.wlllgglllw",
+      "w.r.>^wllllllllw",
       "wwwwwwwwwwwwwwww"},
     [14]={zoom=1,
       "wwwwwwwwwwwwwwww",
@@ -564,6 +577,23 @@ function _init()
       "wwwwh.>..cr.<>.w",
       "wdhhh.>......>^w",
       "wwwwwwwwwwwwwwww"},
+      [22]={zoom=1,
+      "................",
+      "................",
+      "................",
+      "................",
+      "wwwwwwwwwwwwwwww",
+      "w.......h.....kw",
+      "w...rrrr>v>v.<<w",
+      "w...vvc>^cw<>>^w",
+      "w...c>>whr..hhhw",
+      "wp.......>.^w<dw",
+      "wwwwwwwwwwwwwwww",
+      "................",
+      "................",
+      "................",
+      "................",
+    },
   }
 end
 
