@@ -302,11 +302,11 @@ function _init()
       "w......hhhhh...w",
       "w..............w",
       "w.h............w",
-      "wwhhwwwwwwwwwwww",
+      "wwhwwwwwwwwwwwww",
       "ww..........r..w",
       "w.hhh..........w",
       "w.....r........w",
-      "w....rrr.......w",
+      "w....r.r.......w",
       "w......p.....wdw",
       "wwwwwwwwwwwwwwww"},
     [4]={zoom=1,
@@ -441,7 +441,7 @@ function _init()
       "whhhhhhhhhhhhhhw",
       "whhhhhhhhhhhhhhw",
       "wwwwwwwwwwwwwwww"},
-    [13]={zoom=1,         --Remove this level
+    [13]={zoom=1,
       "wwwwwwwwwwwwwwww",
       "w.rv<...c...hhhw",
       "w.r.^..>..c.<d.w",
@@ -511,7 +511,7 @@ function _init()
       "w....<.h..c.r..w",
       "w...r.r.c..h...w",
       "w..r.whwchh.hc.w",
-      "wd....h<dhh....w",
+      "w.....h<dhh....w",
       "wwwwwwwwwwwwwwww"},
     [18]={zoom=1,
       "wwwwwwwwwwwwwwww",
@@ -554,7 +554,7 @@ function _init()
       "w^^^<.<^^>.>>>ww",
       "whhh>.>..<.<hwhw",
       "whkh>.>rr<.<hdhw",
-      "whhh>.>..<.<hwhw",
+      "whhh>.>.p<.<hwhw",
       "w^^^^.^^^^.>>>ww",
       "w....r....r....w",
       "w^^^>.>vv<.<>>ww",
@@ -594,7 +594,23 @@ function _init()
       "................",
       "................",
     },
-  }
+      [21]={zoom=1,
+      "wwwwwwwwwwwwwwww",
+      "wv<...v.<<...r.w",
+      "w.>>..v..>>..r<w",
+      "w..<>..r>>>>...w",
+      "w>..<>..p..<<..w",
+      "w..v.<^.c..<<>.w",
+      "w.vr..<>.c.<.<>w",
+      "w.>...^<>..<...w",
+      "wv<<<<<.<>.>...w",
+      "w.....>..<>>.r.w",
+      "w>....>...<>..<w",
+      "w.r...>.>..<>..w",
+      "wwwwh.>..cr.<>.w",
+      "wdhhh.>......>^w",
+      "wwwwwwwwwwwwwwww"},
+    }
 end
 
 function load_level(lvl)
@@ -725,27 +741,47 @@ function update_game()
   for d,b in pairs(dir_btn) do if btn(b) then direction=d end end
   if last_direction and btn(dir_btn[last_direction]) then direction=last_direction end
   if direction then
-    if not state_saved then current_move_id+=1 push_snapshot() state_saved=true end
-    local dx,dy=0,0
-    if direction=="left" then dx=-pspeed last_direction="left"
-    elseif direction=="right" then dx=pspeed last_direction="right"
-    elseif direction=="up" then dy=-pspeed last_direction="up"
-    elseif direction=="down" then dy=pspeed last_direction="down" end
-    local nx,ny=px+dx,py+dy
-    if collide(nx,ny,false,nil) then
-      local r=get_rock_at(nx,ny)
+    if not state_saved then 
+      current_move_id += 1 
+      push_snapshot() 
+      state_saved = true 
+    end
+  
+    local dx, dy = 0, 0
+    if direction == "left" then 
+      dx = -pspeed 
+      last_direction = "left"
+    elseif direction == "right" then 
+      dx = pspeed 
+      last_direction = "right"
+    elseif direction == "up" then 
+      dy = -pspeed 
+      last_direction = "up"
+    elseif direction == "down" then 
+      dy = pspeed 
+      last_direction = "down"
+    end
+    local nx, ny = px + dx, py + dy
+    if collide(nx, ny, false, nil) then
+      local r = get_rock_at(nx, ny)
       if r then
-        local rx,ry=r.x+dx,r.y+dy
-        if not collide(rx,ry,true,r) then
-          r.target_x, r.target_y=rx,ry r.moving=true
-          target_px,target_py=nx,ny moving=true push_snapshot()
+        local rx, ry = r.x + dx, r.y + dy
+        if not collide(rx, ry, true, r) then
+          r.target_x, r.target_y = rx, ry 
+          r.moving = true
+          target_px, target_py = nx, ny 
+          moving = true
+          -- No second push_snapshot!
         end
       end
     else
-      target_px,target_py=nx,ny moving=true push_snapshot()
+      target_px, target_py = nx, ny 
+      moving = true
+      -- No second push_snapshot!
     end
-    state_saved=false
+    state_saved = false
   end
+  
 end
 
 ---------------------------
