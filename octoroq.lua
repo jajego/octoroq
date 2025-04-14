@@ -261,7 +261,7 @@ function _init()
   -- levels table
   ------------------------------------
   levels={
-      [0]={zoom=1,
+      [0]={zoom=1,  -- HOW TO ROQ
       "................",
       "................",
       ".....r>h>.......",
@@ -278,7 +278,7 @@ function _init()
       "................",
       "................",
     },
-    [1]={zoom=1,
+    [1]={zoom=1,     -- THE CAVE
       "................",
       "................",
       "................",
@@ -295,7 +295,7 @@ function _init()
       "................",
       "................",
     },
-    [2]={zoom=1,
+    [2]={zoom=1,   -- THE BRIDGE
       "wwwwwwwwwwwwwwww",
       "w....hh....w...w",
       "w....hhw...w...w",
@@ -311,7 +311,7 @@ function _init()
       "w....hh......h.w",
       "w.d..hh.......hw",
       "wwwwwwwwwwwwwwww"},
-    [3]={zoom=1,
+    [3]={zoom=1,   -- GRIDLOCK
       "wwwwwwwwwwwwwwww",
       "wkhhh..........w",
       "wwwwww.hhhhh.w.w",
@@ -327,7 +327,7 @@ function _init()
       "w....r.r.......w",
       "w......p.....wdw",
       "wwwwwwwwwwwwwwww"},
-    [4]={zoom=1,
+    [4]={zoom=1,   -- HIGHS AND LOWS
       "wwwwwwwwwwwwwwww",
       "w..p...........w",
       "wwwwwwwww......w",
@@ -343,7 +343,7 @@ function _init()
       "w.hr.r.hh......w",
       "w.h....hhr.r.r.w",
       "wwwwwwwwwwwwwwww"},
-    [5]={zoom=1,
+    [5]={zoom=1,  -- CRACKS
       "wwwwwwwwwwwwwwww",
       "w..............w",
       "w..............w",
@@ -359,7 +359,7 @@ function _init()
       "w.r.r.r.r.r.rckw",
       "w.............cw",
       "wwwwwwwwwwwwwwww"},
-    [6]={zoom=1,
+    [6]={zoom=1, -- FILLING IN
     "................",
     "................",
     "................",
@@ -379,7 +379,7 @@ function _init()
       "................",
 
     },
-    [7]={zoom=1,
+    [7]={zoom=1, -- DAY AT THE LAKE
       "wwwwwwwwwwwwwwww",
       "wdw....h.......w",
       "whrhc..h..hh...w",
@@ -395,7 +395,7 @@ function _init()
       "w..............w",
       "w..............w",
       "wwwwwwwwwwwwwwww"},
-    [8]={zoom=1,
+    [8]={zoom=1,   -- RUINS
       "wwwwwwwwwwwwwwww",
       "wp.............w",
       "w..r..rrrr..r..w",
@@ -411,7 +411,7 @@ function _init()
       "w..r..rrrr..r..w",
       "w..............w",
       "wwwwwwwwwwwwwwww"},
-    [9]={zoom=2,
+    [9]={zoom=2, -- CAVE II
       "wwwwwwww",
       "wkhhhhdw",
       "wwr.ccww",
@@ -419,7 +419,7 @@ function _init()
       "w.rrrwww",
       "w.....pw",
       "wwwwwwww"},
-    [10]={zoom=2,
+    [10]={zoom=2, -- BREAD TIME
       "wwwwwwww",
       "wglglglw",
       "wlglglgw",
@@ -427,7 +427,7 @@ function _init()
       "wglglglw",
       "wlglglgw",
       "wwwwwwww"},
-    [11]={zoom=1,
+    [11]={zoom=1, -- AUTOMATIC
       "wwwwwwwwwwwwwwww",
       "whhhhhhhhhhhhhhw",
       "whhhhhhhhhhhhhhw",
@@ -443,7 +443,7 @@ function _init()
       "whhhhhhhhhhhhhhw",
       "whhhhhhhhhhhhhhw",
       "wwwwwwwwwwwwwwww"},
-    [12]={zoom=1,
+    [12]={zoom=1, -- FACTORY FLOOR
       "wwwwwwwwwwwwwwww",
       "whhhhhhhhhhhhhhw",
       "whhhhhhhhhhhhhhw",
@@ -459,7 +459,7 @@ function _init()
       "whhhhhhhhhhhhhhw",
       "whhhhhhhhhhhhhhw",
       "wwwwwwwwwwwwwwww"},
-    [13]={zoom=1,
+    [13]={zoom=1, -- BEACH
       "wwwwwwwwwwwwwwww",
       "w.rv<...c...hhhw",
       "w.r.^..>..c.<d.w",
@@ -475,7 +475,7 @@ function _init()
       "w.r.v.wlllgglllw",
       "w.r.>^wllllllllw",
       "wwwwwwwwwwwwwwww"},
-    [14]={zoom=1,
+    [14]={zoom=1, -- DOMAIN
       "wwwwwwwwwwwwwwww",
       "wp.............w",
       "w.wwwwwwwwwwww.w",
@@ -491,7 +491,7 @@ function _init()
       "w.wwwwwwwwwwww.w",
       "w..............w",
       "wwwwwwwwwwwwwwww"},
-    [15]={zoom=2,
+    [15]={zoom=2, -- CAVE III
       "wwwwwwww",
       "w.V<<<pw",
       "w.>.rVVw",
@@ -499,7 +499,7 @@ function _init()
       "wcc<r.ww",
       "wkhhhhdw",
       "wwwwwwww"},
-    [16]={zoom=1,
+    [16]={zoom=1, -- JUNKYARD
       "wwwwwwwwwwwwwwww",
       "wd.....Vr.....pw",
       "whhhhhhhhhhhhhhw",
@@ -515,7 +515,7 @@ function _init()
       "w..c..vc...r...w",
       "w..w^^.........w",
       "wwwwwwwwwwwwwwww"},
-    [17]={zoom=1,
+    [17]={zoom=1, -- WHEEL
       "wwwwwwwwwwwwwwww",
       "w...V..<.hcchhkw",
       "w.c.>..<.h<.rVww",
@@ -531,7 +531,7 @@ function _init()
       "w..r.whwchh.hc.w",
       "w.....h<dhh....w",
       "wwwwwwwwwwwwwwww"},
-    [18]={zoom=1,
+    [18]={zoom=1, -- THIN ICE
       "wwwwwwwwwwwwwwww",
       "wpccccwcccccccw.",
       ".wcccccccwcccwcw",
@@ -547,7 +547,7 @@ function _init()
       ".wcccccccwcrcwcw",
       "wdccccwccccrckw.",
       "wwwwwwwwwwwwwwww"},
-      [19]={zoom=1,
+      [19]={zoom=1, -- QUARRY
       "wwwwwwwwwwwwwwww",
       "wrhrhrhrhrhrhhhd",
       "whrhrhrhrhrhrhrw",
@@ -563,7 +563,7 @@ function _init()
       "wrkrhrhrhrhrhrhw",
       "whrhrhrhrhrhrhrw",
       "wwwwwwwwwwwwwwww"},
-    [20]={zoom=1,
+    [20]={zoom=1, -- OFFICE
       "wwwwwwwwwwwwwwww",
       "w...>.>..>.>...w",
       "w...<.<.r>.>...w",
@@ -579,7 +579,7 @@ function _init()
       "w.r.<.<r.>.>.r.w",
       "w...^.^..^.<...w",
       "wwwwwwwwwwwwwwww"},
-      [21]={zoom=1,
+      [21]={zoom=1, -- LEARN TO WEAVE
       "wwwwwwwwwwwwwwww",
       "wv<...v.<<...r.w",
       "w.>>..v..>>..r<w",
@@ -595,7 +595,7 @@ function _init()
       "wwwwh.>..cr.<>.w",
       "wdhhh.>......>^w",
       "wwwwwwwwwwwwwwww"},
-      [22]={zoom=1,
+      [22]={zoom=1, -- MINESHAFT
       "................",
       "................",
       "................",
@@ -612,7 +612,7 @@ function _init()
       "................",
       "................",
     },
-      [23]={zoom=1,
+      [23]={zoom=1, -- DOMAIN II
       "wwwwwwwwwwwwwwww",
       "www..........www",
       "wpw..rcr.r>c.w.w",
