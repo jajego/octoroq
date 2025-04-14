@@ -5,7 +5,7 @@ screen_mode      = "title"   -- title | levelselect | game | pause
 menu_index       = 1         -- title‑screen highlight
 level_select_idx = 1         -- level‑select highlight
 pause_index      = 1         -- pause‑menu highlight
-max_levels       = 22        -- total levels
+max_levels       = 23        -- total levels
 
 ---------------------------
 -- 0a) native pause hooks
@@ -262,21 +262,22 @@ function _init()
   ------------------------------------
   levels={
     [1]={zoom=1,
+      "................",
+      "................",
+      "................",
+      "................",
+      "................",
       "wwwwwwwwwwwwwwww",
-      "w....h.....w...w",
-      "w....h.........w",
-      "w....h.w......hw",
-      "w....h..rr...hkw",
-      "w....h........hw",
-      "w....h.........w",
-      "w....h.........w",
-      "w....h...p.....w",
-      "w....h.........w",
-      "w....h.........w",
-      "w....w.........w",
-      "w....h.........w",
-      "w.d..h.........w",
-      "wwwwwwwwwwwwwwww"},
+      "w.....rh......hw",
+      "wp....rh..k..hdw",
+      "w.....rh......hw",
+      "wwwwwwwwwwwwwwww",
+      "................",
+      "................",
+      "................",
+      "................",
+      "................",
+    },
     [2]={zoom=1,
       "wwwwwwwwwwwwwwww",
       "w....hh....w...w",
@@ -594,22 +595,22 @@ function _init()
       "................",
       "................",
     },
-      [21]={zoom=1,
+      [23]={zoom=1,
       "wwwwwwwwwwwwwwww",
-      "wv<...v.<<...r.w",
-      "w.>>..v..>>..r<w",
-      "w..<>..r>>>>...w",
-      "w>..<>..p..<<..w",
-      "w..v.<^.c..<<>.w",
-      "w.vr..<>.c.<.<>w",
-      "w.>...^<>..<...w",
-      "wv<<<<<.<>.>...w",
-      "w.....>..<>>.r.w",
-      "w>....>...<>..<w",
-      "w.r...>.>..<>..w",
-      "wwwwh.>..cr.<>.w",
-      "wdhhh.>......>^w",
-      "wwwwwwwwwwwwwwww"},
+      "www..........www",
+      "wpw...crr.>c.w.w",
+      "w..>>.^.....v..w",
+      "w...w>>vwc.w...w",
+      "w....wccccw.c..w",
+      "w.r..cwhhwc..r.w",
+      "w..r^chkwhc^r..w",
+      "w.rvwchwdhcwvr.w",
+      "w..>>^whhwc.<..w",
+      "w....w>cccw....w",
+      "w...w.^w>..w...w",
+      "w..^...rr...<..w",
+      "www..........www",
+      "wwwwwwwwwwwwwwww",}
     }
 end
 
@@ -704,15 +705,15 @@ function update_game()
   if rewinding then
     if not moving and not any_rock_moving() and #history>0 then
       local snap=deserialize_state(history[#history])
-      if snap.move_id==rewind_move_id then
-        deli(history,#history)
+      if snap.move_id == rewind_move_id then
+        deli(history, #history)
         revert_to_snapshot(snap)
-        target_px,target_py=snap.px,snap.py
-        moving=true
-        last_snapshot_table=snap
+        target_px, target_py = snap.px, snap.py
+        moving = true
+        last_snapshot_table = nil  -- Clear the last snapshot so that the next move pushes a new snapshot.
       else
-        rewinding=false
-      end
+        rewinding = false
+      end      
     elseif not moving and not any_rock_moving() then
       rewinding=false
     end
