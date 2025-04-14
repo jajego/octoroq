@@ -247,7 +247,7 @@ function _init()
   pspeed=8
   frame=1
   moving=false
-  level=1
+  level=0
   has_key=false
   fuzz_time=0
   last_direction=nil
@@ -261,6 +261,23 @@ function _init()
   -- levels table
   ------------------------------------
   levels={
+      [0]={zoom=1,
+      "................",
+      "................",
+      ".....r>h>.......",
+      "................",
+      "................",
+      "wwwwwwwwwwwwwwww",
+      "w......ww......w",
+      "wp.....rh..k..dw",
+      "w......ww......w",
+      "wwwwwwwwwwwwwwww",
+      "................",
+      "................",
+      "................",
+      "................",
+      "................",
+    },
     [1]={zoom=1,
       "................",
       "................",
@@ -288,9 +305,9 @@ function _init()
       "w....hhh...hkh.w",
       "w....hh.h...h..w",
       "w....hh..h.....w",
-      "w....hh.p.h....w",
+      "w....hh...h....w",
       "w....hhrr..h...w",
-      "w....wh....wh..w",
+      "w....wh.p..wh..w",
       "w....hh......h.w",
       "w.d..hh.......hw",
       "wwwwwwwwwwwwwwww"},
@@ -598,17 +615,17 @@ function _init()
       [23]={zoom=1,
       "wwwwwwwwwwwwwwww",
       "www..........www",
-      "wpw...crr.>c.w.w",
-      "w..>>.^.....v..w",
-      "w...w>>vwc.w...w",
+      "wpw..rcr.r>c.w.w",
+      "w..>..^.....v..w",
+      "w...<>>vwc.^...w",
       "w....wccccw.c..w",
       "w.r..cwhhwc..r.w",
       "w..r^chkwhc^r..w",
       "w.rvwchwdhcwvr.w",
       "w..>>^whhwc.<..w",
       "w....w>cccw....w",
-      "w...w.^w>..w...w",
-      "w..^...rr...<..w",
+      "w...v.^wv..>...w",
+      "w..^.r.r.r..<..w",
       "www..........www",
       "wwwwwwwwwwwwwwww",}
     }
@@ -682,7 +699,7 @@ function update_title()
   if btnp(2) then menu_index=menu_index==1 and 2 or 1 end
   if btnp(3) then menu_index=menu_index==2 and 1 or 2 end
   if btnp(4) or btnp(5) then
-    if menu_index==1 then load_level(1) screen_mode="game"
+    if menu_index==1 then load_level(0) screen_mode="game"
     else screen_mode="levelselect" end
   end
 end
@@ -1016,4 +1033,15 @@ function draw_game()
 
   print("level "..level,96,122,7)
   print("octoroq",0,122,122)
+  if level == 1 then
+    print("Stuck? Press ❎ to rewind", 20, 30, 7)
+  end
+  if level == 0 then
+    spr(71, 72, 16)
+    spr(1, 40, 96)
+    spr(193, 48, 96)
+    spr(128, 56, 96)
+    spr(193, 64, 96)
+    spr(97, 72, 96)
+  end
 end
