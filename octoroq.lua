@@ -513,22 +513,23 @@ function _init()
       "w..c..vc...r...w",
       "w..w^^.........w",
       "wwwwwwwwwwwwwwww"},
-    [17]={zoom=1, -- WHEEL
+    [17]={
       "wwwwwwwwwwwwwwww",
-      "w...V..<.hcchhkw",
-      "w.c.>..<.h<.rVww",
-      "w.rw..w<vh^^>hhw",
-      "w....c.<...r.r.w",
-      "w..h..ww.ww....w",
-      "w....ww...w^^^^w",
-      "w..h....p...rr.w",
-      "wvvvvww...w^^^^w",
-      "w..h.V.wwww....w",
-      "w....<.h..c.r..w",
-      "w...r.r.c..h...w",
-      "w..r.whwchh.hc.w",
-      "w.....h<dhh....w",
-      "wwwwwwwwwwwwwwww"},
+"wp.............w",
+"w.cccccccccccccw",
+"w.cw.w.w.w.w.wcw",
+"w.c.r.r.r.r.r.cw",
+"w.cw.w.w.w.w.wcw",
+"w.c.r.<.^.>.r.cw",
+"w.cw.w.wkw.w.wcw",
+"w.c.r.>.>.^.r.cw",
+"w.cw.w.w.w.w.wcw",
+"w.c.r.r.r.r.r.cw",
+"w.cw.w.w.w.w.wcw",
+"w.cccccccccccccw",
+"w.............dw",
+"wwwwwwwwwwwwwwww",
+    },
     [18]={zoom=1, -- THIN ICE
       "wwwwwwwwwwwwwwww",
       "wpccccwcccccccw.",
@@ -625,8 +626,10 @@ function _init()
       "w...v.^wv..>...w",
       "w..^.r.r.r..<..w",
       "www..........www",
-      "wwwwwwwwwwwwwwww",}
+      "wwwwwwwwwwwwwwww",},
+
     }
+    
 end
 
 function load_level(lvl)
@@ -973,6 +976,10 @@ function draw_title()
   end
   -- spr(1, 42, 54)
   -- spr(1, 48, 54)
+  -- sspr(8,0,8,8,40,40,64,64)
+  -- sspr(0,64,8,8,40,20,64,64)
+  -- sspr(32, 32, 8, 8, 40, 60, 64, 64)
+
   spr(1, 48, 56)
   spr(65, 56, 56)
   spr(68, 64, 56)
