@@ -344,27 +344,26 @@ function _init()
       "w.h....hhr.r.r.w",
       "wwwwwwwwwwwwwwww"},
     [5]={zoom=1,  -- CRACKS
-      "wwwwwwwwwwwwwwww",
-      "w..............w",
-      "w..............w",
-      "w......wwcww...w",
-      "w.....w.....w..w",
-      "w.....w.....w..w",
-      "w.....w..p..w..w",
-      "w......w.d.w...w",
-      "w.......www....w",
-      "w..............w",
-      "wccccccccccccccw",
-      "w.............cw",
-      "w.r.r.r.r.r.rckw",
-      "w.............cw",
-      "wwwwwwwwwwwwwwww"},
+      "....wwwwwwww....",
+      "....w..p...w....",
+      "....wccccccw....",
+      "....wccccccw....",
+      "....wccccccw....",
+      "....wccccccw....",
+      "....wccckccw....",
+      "....wccccccw....",
+      "....wccccccw....",
+      "....wccccccw....",
+      "....wwrrrrww....",
+      "....wwccccww....",
+      "....w......w....",
+      "....w.....dw....",
+      "....wwwwwwww...."},
     [6]={zoom=1, -- FILLING IN
     "................",
     "................",
     "................",
     "................",
-
       "....wwwwwwww",
       "....w....hdw",
       "....wcrcrcrw",
@@ -372,7 +371,6 @@ function _init()
       "....w..r..hw",
       "....wp...hkw",
       "....wwwwwwww",
-    
       "................",
       "................",
       "................",
@@ -872,7 +870,7 @@ function check_conveyor_chain_player()
       local blocking_rock=get_rock_at(nx,ny)
       if blocking_rock then
         local nrx,nry=blocking_rock.x+dx,blocking_rock.y+dy
-        if not collide(nrx,nry,false,blocking_rock) then
+        if not collide(nrx,nry,true,blocking_rock) then
           push_snapshot()
           blocking_rock.target_x,blocking_rock.target_y=nrx,nry blocking_rock.moving=true
         else forcedconveyor=false return end
@@ -1034,7 +1032,7 @@ function draw_game()
   print("level "..level,96,122,7)
   print("octoroq",0,122,122)
   if level == 1 then
-    print("Stuck? Press ❎ to rewind", 20, 30, 7)
+    print("Stuck? Press ❎ to rewind", 16, 30, 7)
   end
   if level == 0 then
     spr(71, 72, 16)
