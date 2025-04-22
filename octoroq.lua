@@ -257,14 +257,16 @@ function _init()
 
   palt(0, true)
 
+  -- music(0)
+
   ------------------------------------
   -- levels table
   ------------------------------------
   levels={
       [0]={zoom=1,  -- HOW TO ROQ
       "................",
-      "................",
       ".....r>h>.......",
+      "................",
       "................",
       "................",
       "wwwwwwwwwwwwwwww",
@@ -345,7 +347,7 @@ function _init()
       "wwwwwwwwwwwwwwww"},
     [5]={zoom=1,  -- CRACKS
       "....wwwwwwww....",
-      "....w..p...w....",
+      "....w...p..w....",
       "....wccccccw....",
       "....wccccccw....",
       "....wccccccw....",
@@ -377,27 +379,30 @@ function _init()
       "................",
 
     },
-    [7]={zoom=1, -- DAY AT THE LAKE
-      "wwwwwwwwwwwwwwww",
-      "wdw....h.......w",
-      "whrhc..h..hh...w",
-      "wp.rhc.h..kh...w",
-      "www.rhrh.h.h...w",
-      "wllwcrhh.......w",
-      "wlllwcrh.......w",
-      "wlgllwcrhhchchcw",
-      "wllgllwcrrrrrrrw",
-      "wllllllww.r.r.cw",
-      "w..............w",
-      "w..............w",
-      "w..............w",
-      "w..............w",
-      "wwwwwwwwwwwwwwww"},
-    [8]={zoom=1,   -- RUINS
+    -- [7]={zoom=1, -- DAY AT THE LAKE
+    -- "................",
+    -- "................",
+
+    --   "wwwwwwwwwwwwwwww",
+    --   "wdw....h.......w",
+    --   "whrhc..h..hh...w",
+    --   "wp.rhc.h..kh...w",
+    --   "www.rhrh.h.h...w",
+    --   "wllwcrhh.......w",
+    --   "wlllwcrh.......w",
+    --   "wlgllwcrhhchchcw",
+    --   "wllgllwcrrrrrrrw",
+    --   "wllllllww.r.r.cw",
+    --   "w..............w",
+    --   "wwwwwwwwwwwwwwww",
+    --   "................",
+    --   "................",
+    -- },
+    [7]={zoom=1,   -- RUINS
       "wwwwwwwwwwwwwwww",
       "wp.............w",
       "w..r..rrrr..r..w",
-      "w..cccccwcccc..w",
+      "w.......w......w",
       "w..hhhwwhhwwh..w",
       "w..hcccccccch..w",
       "w..h.rcwcwwch..w",
@@ -405,10 +410,27 @@ function _init()
       "w..h.rcwwwwch..w",
       "w..hcccccccch..w",
       "w..hwhwhhwhhw..w",
-      "w..cccccccccc..w",
+      "w..............w",
       "w..r..rrrr..r..w",
       "w..............w",
       "wwwwwwwwwwwwwwww"},
+      [8]={zoom=1,
+      "................",
+      "................",
+      "................",
+      "wwwwwwwwwwwwwwww",
+      "wlllll.......llw",
+      "wlllllcccccccwww",
+      "wwwwwwccc.r.chkw",
+      "wp....cccrcrcwww",
+      "wwwwwwccc.r.chdw",
+      "wlllllcccccccwww",
+      "wlllll.......llw",
+      "wwwwwwwwwwwwwwww",
+      "................",
+      "................",
+      "................",
+    },
     [9]={zoom=2, -- CAVE II
       "wwwwwwww",
       "wkhhhhdw",
@@ -417,15 +439,15 @@ function _init()
       "w.rrrwww",
       "w.....pw",
       "wwwwwwww"},
-    [10]={zoom=2, -- BREAD TIME
-      "wwwwwwww",
-      "wglglglw",
-      "wlglglgw",
-      "wp.bk.dw",
-      "wglglglw",
-      "wlglglgw",
-      "wwwwwwww"},
-    [11]={zoom=1, -- AUTOMATIC
+    -- [11]={zoom=2, -- BREAD TIME
+    --   "wwwwwwww",
+    --   "wglglglw",
+    --   "wlglglgw",
+    --   "wp.bk.dw",
+    --   "wglglglw",
+    --   "wlglglgw",
+    --   "wwwwwwww"},
+    [10]={zoom=1, -- AUTOMATIC
       "wwwwwwwwwwwwwwww",
       "whhhhhhhhhhhhhhw",
       "whhhhhhhhhhhhhhw",
@@ -441,7 +463,7 @@ function _init()
       "whhhhhhhhhhhhhhw",
       "whhhhhhhhhhhhhhw",
       "wwwwwwwwwwwwwwww"},
-    [12]={zoom=1, -- FACTORY FLOOR
+    [11]={zoom=1, -- FACTORY FLOOR
       "wwwwwwwwwwwwwwww",
       "whhhhhhhhhhhhhhw",
       "whhhhhhhhhhhhhhw",
@@ -457,7 +479,7 @@ function _init()
       "whhhhhhhhhhhhhhw",
       "whhhhhhhhhhhhhhw",
       "wwwwwwwwwwwwwwww"},
-    [13]={zoom=1, -- BEACH
+    [12]={zoom=1, -- BEACH
       "wwwwwwwwwwwwwwww",
       "w.rv<...c...hhhw",
       "w.r.^..>..c.<d.w",
@@ -473,7 +495,7 @@ function _init()
       "w.r.v.wlllgglllw",
       "w.r.>^wllllllllw",
       "wwwwwwwwwwwwwwww"},
-    [14]={zoom=1, -- DOMAIN
+    [13]={zoom=1, -- DOMAIN
       "wwwwwwwwwwwwwwww",
       "wp.............w",
       "w.wwwwwwwwwwww.w",
@@ -489,7 +511,7 @@ function _init()
       "w.wwwwwwwwwwww.w",
       "w..............w",
       "wwwwwwwwwwwwwwww"},
-    [15]={zoom=2, -- CAVE III
+    [14]={zoom=2, -- CAVE III
       "wwwwwwww",
       "w.V<<<pw",
       "w.>.rVVw",
@@ -497,7 +519,7 @@ function _init()
       "wcc<r.ww",
       "wkhhhhdw",
       "wwwwwwww"},
-    [16]={zoom=1, -- JUNKYARD
+    [15]={zoom=1, -- JUNKYARD
       "wwwwwwwwwwwwwwww",
       "wd.....Vr.....pw",
       "whhhhhhhhhhhhhhw",
@@ -513,7 +535,7 @@ function _init()
       "w..c..vc...r...w",
       "w..w^^.........w",
       "wwwwwwwwwwwwwwww"},
-    [17]={
+    [16]={
       "wwwwwwwwwwwwwwww",
 "wp.............w",
 "w.cccccccccccccw",
@@ -530,7 +552,7 @@ function _init()
 "w.............dw",
 "wwwwwwwwwwwwwwww",
     },
-    [18]={zoom=1, -- THIN ICE
+    [17]={zoom=1, -- THIN ICE
       "wwwwwwwwwwwwwwww",
       "wpccccwcccccccw.",
       ".wcccccccwcccwcw",
@@ -546,23 +568,7 @@ function _init()
       ".wcccccccwcrcwcw",
       "wdccccwccccrckw.",
       "wwwwwwwwwwwwwwww"},
-      [19]={zoom=1, -- QUARRY
-      "wwwwwwwwwwwwwwww",
-      "wrhrhrhrhrhrhhhd",
-      "whrhrhrhrhrhrhrw",
-      "wrhrhrhrhrhrhrhw",
-      "whrhrhrhrhrhrhrw",
-      "whrhr.rhr.rhrhrw",
-      "wrhrhr.r.rhrhrhw",
-      "whrhr.rpr.rhrhrw",
-      "wrhrhrhr.rhrhrhw",
-      "whrhrhrhrhrhrhrw",
-      "wrhrhrhrhrhrhrhw",
-      "whrhr.rhrhrhrhrw",
-      "wrkrhrhrhrhrhrhw",
-      "whrhrhrhrhrhrhrw",
-      "wwwwwwwwwwwwwwww"},
-    [20]={zoom=1, -- OFFICE
+    [18]={zoom=1, -- OFFICE
       "wwwwwwwwwwwwwwww",
       "w...>.>..>.>...w",
       "w...<.<.r>.>...w",
@@ -578,7 +584,7 @@ function _init()
       "w.r.<.<r.>.>.r.w",
       "w...^.^..^.<...w",
       "wwwwwwwwwwwwwwww"},
-      [21]={zoom=1, -- LEARN TO WEAVE
+      [19]={zoom=1, -- LEARN TO WEAVE
       "wwwwwwwwwwwwwwww",
       "wv<...v.<<...r.w",
       "w.>>..v..>>..r<w",
@@ -594,7 +600,7 @@ function _init()
       "wwwwh.>..cr.<>.w",
       "wdhhh.>......>^w",
       "wwwwwwwwwwwwwwww"},
-      [22]={zoom=1, -- MINESHAFT
+      [20]={zoom=1, -- MINESHAFT
       "................",
       "................",
       "................",
@@ -611,7 +617,7 @@ function _init()
       "................",
       "................",
     },
-      [23]={zoom=1, -- DOMAIN II
+      [21]={zoom=1, -- DOMAIN II
       "wwwwwwwwwwwwwwww",
       "www..........www",
       "wpw..rcr.r>c.w.w",
@@ -627,8 +633,7 @@ function _init()
       "w..^.r.r.r..<..w",
       "www..........www",
       "wwwwwwwwwwwwwwww",},
-
-    }
+  }
     
 end
 
@@ -697,19 +702,19 @@ end
 
 -- title screen
 function update_title()
-  if btnp(2) then menu_index=menu_index==1 and 2 or 1 end
-  if btnp(3) then menu_index=menu_index==2 and 1 or 2 end
+  if btnp(2) then sfx(0) menu_index=menu_index==1 and 2 or 1 end
+  if btnp(3) then sfx(0) menu_index=menu_index==2 and 1 or 2 end
   if btnp(4) or btnp(5) then
-    if menu_index==1 then load_level(0) screen_mode="game"
+    if menu_index==1 then music(-1) load_level(0) screen_mode="game"
     else screen_mode="levelselect" end
   end
 end
 
 -- level select
 function update_level_select()
-  if btnp(2) then level_select_idx=level_select_idx>1 and level_select_idx-1 or max_levels end
-  if btnp(3) then level_select_idx=level_select_idx<max_levels and level_select_idx+1 or 1 end
-  if btnp(4) or btnp(5) then load_level(level_select_idx) screen_mode="game" end
+  if btnp(2) then sfx(0) level_select_idx=level_select_idx>1 and level_select_idx-1 or max_levels end
+  if btnp(3) then sfx(0) level_select_idx=level_select_idx<max_levels and level_select_idx+1 or 1 end
+  if btnp(4) or btnp(5) then music(-1) load_level(level_select_idx) screen_mode="game" end
   if btnp(1) then screen_mode="title" end
 end
 
@@ -717,6 +722,14 @@ function update_game()
   if btnp(5) and not moving and not rewinding and #history>0 then
     rewinding=true
     rewind_move_id=deserialize_state(history[#history]).move_id
+  end
+
+  if btnp(4) then
+    if level + 1 > #levels then
+      load_level(0)
+    else
+      load_level(level + 1)
+    end
   end
 
   -- rewinding animation
@@ -959,34 +972,79 @@ end
 function draw_title()
   local o1,o2="START GAME","LEVEL SELECT"
 
-      for y = 0, 15 do
-        for x = 0, 15 do
+  --     for y = 0, 15 do
+  --       for x = 0, 15 do
       
-          if (y == 3  and x > 1  and x < 14) or     -- top edge
-             (y == 12 and x > 1  and x < 14) or     -- bottom edge
-             (x == 1  and y > 3  and y < 12) or     -- left edge
-             (x == 14 and y > 3  and y < 12) then   -- right edge
-            spr(64, x*8, y*8)
+  --         if (y == 3  and x > 1  and x < 14) or     -- top edge
+  --            (y == 12 and x > 1  and x < 14) or     -- bottom edge
+  --            (x == 1  and y > 3  and y < 12) or     -- left edge
+  --            (x == 14 and y > 3  and y < 12) then   -- right edge
+  --           spr(64, x*8, y*8)
       
-          elseif x < 2 or x > 13 or y < 3 or y > 12 then
-            spr(73, x*8, y*8)
-          end
+  --         elseif x < 2 or x > 13 or y < 3 or y > 12 then
+  --           spr(73, x*8, y*8)
+  --         end
       
-    end
-  end
+  --   end
+  -- end
   -- spr(1, 42, 54)
   -- spr(1, 48, 54)
   -- sspr(8,0,8,8,40,40,64,64)
   -- sspr(0,64,8,8,40,20,64,64)
   -- sspr(32, 32, 8, 8, 40, 60, 64, 64)
 
-  spr(1, 48, 56)
-  spr(65, 56, 56)
-  spr(68, 64, 56)
-  spr(128, 72, 56)
-  print((menu_index==1 and ">" or " ")..o1,38,72,10)
-  print((menu_index==2 and ">" or " ")..o2,38,82,10)
-  print("\^w\^tOCTOROQ",37,40,7)
+  -- spr(1, 48, 56)
+  -- spr(65, 56, 56)
+  -- spr(68, 64, 56)
+  -- spr(128, 72, 56)
+
+  spr(196, 24, 40)
+  spr(197, 32, 40)
+  spr(198, 40, 40)
+  spr(199, 48, 40)
+  spr(200, 56, 40)
+  spr(201, 64, 40)
+  spr(202, 72, 40)
+  spr(203, 80, 40)
+  spr(204, 88, 40)
+  spr(205, 96, 40)
+
+  -- spr(212, 24, 48)
+  -- spr(213, 32, 48)
+  spr(214, 40, 48)
+  spr(215, 48, 48)
+  spr(216, 56, 48)
+  spr(217, 64, 48)
+  spr(218, 72, 48)
+  spr(219, 80, 48)
+  -- spr(220, 88, 48)
+  -- spr(221, 96, 48)
+
+  spr(228, 24, 56)
+  spr(229, 32, 56)
+  spr(230, 40, 56)
+  spr(231, 48, 56)
+  spr(232, 56, 56)
+  spr(233, 64, 56)
+  spr(234, 72, 56)
+  spr(235, 80, 56)
+  spr(236, 88, 56)
+  spr(237, 96, 56)
+
+  spr(244, 24, 64)
+  spr(245, 32, 64)
+  spr(246, 40, 64)
+  spr(247, 48, 64)
+  spr(248, 56, 64)
+  spr(249, 64, 64)
+  spr(250, 72, 64)
+  spr(251, 80, 64)
+  spr(252, 88, 64)
+  spr(253, 96, 64)
+
+  print((menu_index==1 and ">" or " ")..o1,38,92,10)
+  print((menu_index==2 and ">" or " ")..o2,38,102,10)
+  -- print("\^w\^tOCTOROQ",37,40,7)
   print("\^-w\^-tyamsoft", 101, 123, 3)
 end
 
@@ -1042,11 +1100,11 @@ function draw_game()
     print("Stuck? Press ❎ to rewind", 16, 30, 7)
   end
   if level == 0 then
-    spr(71, 72, 16)
-    spr(1, 40, 96)
-    spr(193, 48, 96)
-    spr(128, 56, 96)
-    spr(193, 64, 96)
-    spr(97, 72, 96)
+    spr(71, 72, 8)
+    spr(1, 40, 24)
+    spr(193, 48, 24)
+    spr(128, 56, 24)
+    spr(193, 64, 24)
+    spr(97, 72, 24)
   end
 end
