@@ -439,7 +439,23 @@ function _init()
       ".wcccccccwcrcwcw",
       "wdccccwccccrckw.",
       "wwwwwwwwwwwwwwww"},
-      [10]={zoom=1,   -- RUINS
+      [10]={zoom=1, -- DOMAIN II
+      "wwwwwwwwwwwwwwww",
+      "w..h........h..w",
+      "w.hkh......hdh.w",
+      "w..h........h..w",
+      "whhhhhhhhhhhhhhw",
+      "w..............w",
+      "w....h....h....w",
+      "w...hch..hch...w",
+      "w....hr..rhr...w",
+      "w...cr.hh.rc...w",
+      "w...rhr..rh....w",
+      "w...hch..hch...w",
+      "w....h....h....w",
+      "w......p.......w",
+      "wwwwwwwwwwwwwwww",},
+      [11]={zoom=1,   -- RUINS
       "wwwwwwwwwwwwwwww",
       "wp.............w",
       "w..r..rrrr..r..w",
@@ -463,7 +479,7 @@ function _init()
     --   "wglglglw",
     --   "wlglglgw",
     --   "wwwwwwww"},
-    [11]={zoom=1, -- AUTOMATIC
+    [12]={zoom=1, -- AUTOMATIC
       "wwwwwwwwwwwwwwww",
       "whhhhhhhhhhhhhhw",
       "whhhhhhhhhhhhhhw",
@@ -479,7 +495,7 @@ function _init()
       "whhhhhhhhhhhhhhw",
       "whhhhhhhhhhhhhhw",
       "wwwwwwwwwwwwwwww"},
-    [12]={zoom=1, -- FACTORY FLOOR
+    [13]={zoom=1, -- FACTORY FLOOR
       "wwwwwwwwwwwwwwww",
       "whhhhhhhhhhhhhhw",
       "whhhhhhhhhhhhhhw",
@@ -495,7 +511,7 @@ function _init()
       "whhhhhhhhhhhhhhw",
       "whhhhhhhhhhhhhhw",
       "wwwwwwwwwwwwwwww"},
-    [13]={zoom=1, -- BEACH
+    [14]={zoom=1, -- BEACH
       "wwwwwwwwwwwwwwww",
       "w.rv<...c...hhhw",
       "w.r.^..>..c.<d.w",
@@ -511,7 +527,7 @@ function _init()
       "w.r.v.wlllgglllw",
       "w.r.>^wllllllllw",
       "wwwwwwwwwwwwwwww"},
-    [14]={zoom=1, -- DOMAIN
+    [15]={zoom=1, -- DOMAIN
       "wwwwwwwwwwwwwwww",
       "wp.............w",
       "w.wwwwwwwwwwww.w",
@@ -527,7 +543,7 @@ function _init()
       "w.wwwwwwwwwwww.w",
       "w..............w",
       "wwwwwwwwwwwwwwww"},
-    [15]={zoom=2, -- CAVE III
+    [16]={zoom=2, -- CAVE III
       "wwwwwwww",
       "w.V<<<pw",
       "w.>.rVVw",
@@ -535,7 +551,7 @@ function _init()
       "wcc<r.ww",
       "wkhhhhdw",
       "wwwwwwww"},
-    [16]={zoom=1, -- JUNKYARD
+    [17]={zoom=1, -- JUNKYARD
       "wwwwwwwwwwwwwwww",
       "wd.....Vr.....pw",
       "whhhhhhhhhhhhhhw",
@@ -551,7 +567,7 @@ function _init()
       "w..c..vc...r...w",
       "w..w^^.........w",
       "wwwwwwwwwwwwwwww"},
-    [17]={
+    [18]={
       "wwwwwwwwwwwwwwww",
       "wp.............w",
       "w.cccccccccccccw",
@@ -568,7 +584,7 @@ function _init()
       "w.............dw",
       "wwwwwwwwwwwwwwww",
     },
-    [18]={zoom=1, -- OFFICE
+    [19]={zoom=1, -- OFFICE
       "wwwwwwwwwwwwwwww",
       "w...>.>..>.>...w",
       "w...<.<.r>.>...w",
@@ -584,7 +600,7 @@ function _init()
       "w.r.<.<r.>.>.r.w",
       "w...^.^..^.<...w",
       "wwwwwwwwwwwwwwww"},
-    [19]={zoom=1, -- LEARN TO WEAVE
+    [20]={zoom=1, -- LEARN TO WEAVE
       "wwwwwwwwwwwwwwww",
       "wv<...v.<<...r.w",
       "w.>>..v..>>..r<w",
@@ -600,7 +616,7 @@ function _init()
       "wwwwh.>..cr.<>.w",
       "wdhhh.>......>^w",
       "wwwwwwwwwwwwwwww"},
-      [20]={zoom=1, -- MINESHAFT
+      [21]={zoom=1, -- MINESHAFT
       "................",
       "................",
       "................",
@@ -617,23 +633,24 @@ function _init()
       "................",
       "................",
     },
-      [21]={zoom=1, -- DOMAIN II
-      "wwwwwwwwwwwwwwww",
-      "www..........www",
-      "wpw..rcr.r>c.w.w",
-      "w..>..^.....v..w",
-      "w...<>>vwc.^...w",
-      "w....wccccw.c..w",
-      "w.r..cwhhwc..r.w",
-      "w..r^chkwhc^r..w",
-      "w.rvwchwdhcwvr.w",
-      "w..>>^whhwc.<..w",
-      "w....w>cccw....w",
-      "w...v.^wv..>...w",
-      "w..^.r.r.r..<..w",
-      "www..........www",
-      "wwwwwwwwwwwwwwww",},
-  }
+    [22]={zoom=1, -- DOMAIN II
+    "wwwwwwwwwwwwwwww",
+    "www..........www",
+    "wpw..rcr.r>c.w.w",
+    "w..>..^.....v..w",
+    "w...<>>vwc.^...w",
+    "w....wccccw.c..w",
+    "w.r..cwhhwc..r.w",
+    "w..r^chkwhc^r..w",
+    "w.rvwchwdhcwvr.w",
+    "w..>>^whhwc.<..w",
+    "w....w>cccw....w",
+    "w...v.^wv..>...w",
+    "w..^.r.r.r..<..w",
+    "www..........www",
+    "wwwwwwwwwwwwwwww",},
+
+}
     
 end
 
