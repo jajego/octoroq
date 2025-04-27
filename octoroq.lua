@@ -282,19 +282,19 @@ function _init()
     },
     [1]={zoom=1,     -- THE CAVE
       "................",
-      "................",
+      "..........,.....",
       "................",
       "................",
       "................",
       "wwwwwwwwwwwwwwww",
-      "w.....rh......hw",
-      "wp....rh..k..hdw",
-      "w.....rh......hw",
+      "w,..,.rh......hw",
+      "wp.,..rh..k..hdw",
+      "w.;..;rh......hw",
       "wwwwwwwwwwwwwwww",
       "................",
       "................",
       "................",
-      "................",
+      ".....;..........",
       "................",
     },
     [2]={zoom=1,   -- THE BRIDGE
@@ -584,7 +584,24 @@ function _init()
       "w.............dw",
       "wwwwwwwwwwwwwwww",
     },
-    [19]={zoom=1, -- OFFICE
+    [19]={zoom=1,
+    "wwwwwwwwwwwwwwww",
+    "w......<.hhhhhdw",
+    "w......rrwwwwwww",
+    "w.c.c.ccccc.cckw",
+    "w.............cw",
+    "w.^r^^r^^r^^r^.w",
+    "w..cccccc..c.ccw",
+    "wcc.c.cccccccccw",
+    "w......c.......w",
+    "w...^r^..^r^...w",
+    "w.c...ccc...cc.w",
+    "w..^r^....^r^..w",
+    "w..ccc.ccccccc.w",
+    "w.......p......w",
+    "wwwwwwwwwwwwwwww",
+    },
+    [20]={zoom=1, -- OFFICE
       "wwwwwwwwwwwwwwww",
       "w...>.>..>.>...w",
       "w...<.<.r>.>...w",
@@ -600,7 +617,7 @@ function _init()
       "w.r.<.<r.>.>.r.w",
       "w...^.^..^.<...w",
       "wwwwwwwwwwwwwwww"},
-    [20]={zoom=1, -- LEARN TO WEAVE
+    [21]={zoom=1, -- LEARN TO WEAVE
       "wwwwwwwwwwwwwwww",
       "wv<...v.<<...r.w",
       "w.>>..v..>>..r<w",
@@ -616,7 +633,7 @@ function _init()
       "wwwwh.>..cr.<>.w",
       "wdhhh.>......>^w",
       "wwwwwwwwwwwwwwww"},
-      [21]={zoom=1, -- MINESHAFT
+      [22]={zoom=1, -- MINESHAFT
       "................",
       "................",
       "................",
@@ -633,7 +650,7 @@ function _init()
       "................",
       "................",
     },
-    [22]={zoom=1, -- DOMAIN II
+    [23]={zoom=1, -- DOMAIN II
     "wwwwwwwwwwwwwwww",
     "www..........www",
     "wpw..rcr.r>c.w.w",
@@ -649,7 +666,6 @@ function _init()
     "w..^.r.r.r..<..w",
     "www..........www",
     "wwwwwwwwwwwwwwww",},
-
 }
     
 end
@@ -1079,7 +1095,11 @@ function draw_game()
       local ch=sub(row,x+1,x+1)
       local sx,sy=x*8,y*8
       if ch=="." then
-        draw_sprite(((y%2==0)==(x%2==0)) and 83 or 84,sx,sy,z)
+        draw_sprite(83,sx,sy,z)
+      elseif ch=="," then
+        draw_sprite(84,sx,sy,z)
+      elseif char==";" then
+        draw_sprite(86,sx,sy,z)
       elseif ch=="w" then
         draw_sprite(x%2==0 and y==0 and 70 or 64,sx,sy,z)
       elseif ch=="l" then
