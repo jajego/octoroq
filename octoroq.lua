@@ -5,7 +5,7 @@ screen_mode      = "title"   -- title | levelselect | game | pause
 menu_index       = 1         -- title‑screen highlight
 level_select_idx = 1         -- level‑select highlight
 pause_index      = 1         -- pause‑menu highlight
-max_levels       = 23        -- total levels
+max_levels       = 24        -- total levels
 
 ---------------------------
 -- 0a) native pause hooks
@@ -666,6 +666,22 @@ function _init()
     "w..^.r.r.r..<..w",
     "www..........www",
     "wwwwwwwwwwwwwwww",},
+    [24]={zoom=1,
+      "wwwwwwwwwwwwwwww",
+    "w>>>>>>>>>>>vwvw",
+    "w^c.cw........vw",
+    "w^cr.cr.r.r.r.vw",
+    "w^c.c>>>>>vwcwvw",
+    "w^cr.^khhhvc.cvw",
+    "w^c.c^hhhhv.rcvw",
+    "w^cr.^hhhhvc.cvw",
+    "w^c.c^hhhdv.rcvw",
+    "w^cr.^w^<<<c.cvw",
+    "w^c.c^......rcvw",
+    "w^cr.^.crcrc.cvw",
+    "w^c.c^ccccccccvw",
+    "w^pww^<<<<<<<<<w",
+    "wwwwwwwwwwwwwwww",}
 }
     
 end
