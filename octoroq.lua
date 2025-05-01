@@ -667,21 +667,21 @@ function _init()
     "www..........www",
     "wwwwwwwwwwwwwwww",},
     [24]={zoom=1,
-      "wwwwwwwwwwwwwwww",
-    "w>>>>>>>>>>>vwvw",
-    "w^c.cw........vw",
-    "w^cr.cr.r.r.r.vw",
-    "w^c.c>>>>>vwcwvw",
-    "w^cr.^khhhvc.cvw",
-    "w^c.c^hhhhv.rcvw",
-    "w^cr.^hhhhvc.cvw",
-    "w^c.c^hhhdv.rcvw",
-    "w^cr.^w^<<<c.cvw",
-    "w^c.c^......rcvw",
-    "w^cr.^.crcrc.cvw",
-    "w^c.c^ccccccccvw",
-    "w^pww^<<<<<<<<<w",
-    "wwwwwwwwwwwwwwww",}
+      "..wwwwwwwwwwww..",
+      "..w>>>>>>>vwvw..",
+      "..wwp.......vw..",
+      "..wcr.r.r.r.vw..",
+      "..w>>>>>vwcwvw..",
+      "..w^khhhvc.cvw..",
+      "..w^hhhhv.rcvw..",
+      "..w^hhhhvc.cvw..",
+      "..w^hhhdv.rcvw..",
+      "..w^w^<<<c.cvw..",
+      "..w^......rcvw..",
+      "..w^.crcrc.cvw..",
+      "..w^ccccccccvw..",
+      "..w^<<<<<<<<<w..",
+      "..wwwwwwwwwwww..",}
 }
     
 end
@@ -1117,9 +1117,9 @@ function draw_game()
       elseif char==";" then
         draw_sprite(86,sx,sy,z)
       elseif ch=="w" then
-        draw_sprite(x%2==0 and y==0 and 70 or 64,sx,sy,z)
+        draw_sprite(x%2==0 and y==0 and 64 or 64,sx,sy,z)
       elseif ch=="l" then
-        draw_sprite(85,sx,sy,z)
+        draw_sprite(94,sx,sy,z)
       elseif ch=="g" then
         draw_sprite(36,sx,sy,z)
       elseif ch=="b" then
@@ -1134,10 +1134,10 @@ function draw_game()
   end
 
   for h in all(holes) do
-    draw_sprite(h.filled and 71 or 68,h.x,h.y,z)
+    draw_sprite(h.filled and 69 or 68,h.x,h.y,z)
   end
   if key and not key.collected then draw_sprite(128,key.x,key.y,z) end
-  if door then draw_sprite(has_key and 99 or 97,door.x,door.y,z) end
+  if door then draw_sprite(has_key and 99 or 99,door.x,door.y,z) end
 
   for r in all(rocks) do
     -- local fx=r.x+cos(fuzz_time+r.x*.1)*.15
@@ -1153,11 +1153,11 @@ function draw_game()
     print("Stuck? Press ❎ to rewind", 16, 30, 7)
   end
   if level == 0 then
-    spr(71, 72, 8)
+    spr(69, 72, 8)
     spr(1, 40, 24)
     spr(193, 48, 24)
     spr(128, 56, 24)
     spr(193, 64, 24)
-    spr(97, 72, 24)
+    spr(99, 72, 24)
   end
 end
