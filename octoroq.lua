@@ -5,7 +5,7 @@ screen_mode      = "title"   -- title | levelselect | game | pause
 menu_index       = 1         -- title‑screen highlight
 level_select_idx = 1         -- level‑select highlight
 pause_index      = 1         -- pause‑menu highlight
-max_levels       = 24        -- total levels
+max_levels       = 25        -- total levels
 
 ---------------------------
 -- 0a) native pause hooks
@@ -282,19 +282,19 @@ function _init()
     },
     [1]={zoom=1,     -- THE CAVE
       "................",
-      "..........,.....",
+      "................",
       "................",
       "................",
       "................",
       "wwwwwwwwwwwwwwww",
-      "w,..,.rh......hw",
-      "wp.,..rh..k..hdw",
-      "w.;..;rh......hw",
+      "w.....rh......hw",
+      "wp....rh..k..hdw",
+      "w.....rh......hw",
       "wwwwwwwwwwwwwwww",
       "................",
       "................",
       "................",
-      ".....;..........",
+      "................",
       "................",
     },
     [2]={zoom=1,   -- THE BRIDGE
@@ -586,6 +586,23 @@ function _init()
     },
     [19]={zoom=1,
     "wwwwwwwwwwwwwwww",
+  "w..............w",
+  "w..r........r..w",
+  "w.rwr......rwr.w",
+  "w..r..h.h.h.r..w",
+  "w...hhhhhhhh...w",
+  "w....h<^^^h....w",
+  "w..hh<dwwk>hh..w",
+  "w....h<vv>h....w",
+  "w...hhhhhhhh...w",
+  "w..r..h.h.h.r..w",
+  "w.rwr......rwr.w",
+  "w..r........r..w",
+  "w.......p......w",
+  "wwwwwwwwwwwwwwww",
+    },
+    [20]={zoom=1,
+    "wwwwwwwwwwwwwwww",
     "w......<.hhhhhdw",
     "w......rrwwwwwww",
     "w.c.c.ccccc.cckw",
@@ -601,7 +618,7 @@ function _init()
     "w.......p......w",
     "wwwwwwwwwwwwwwww",
     },
-    [20]={zoom=1, -- OFFICE
+    [21]={zoom=1, -- OFFICE
       "wwwwwwwwwwwwwwww",
       "w...>.>..>.>...w",
       "w...<.<.r>.>...w",
@@ -617,7 +634,7 @@ function _init()
       "w.r.<.<r.>.>.r.w",
       "w...^.^..^.<...w",
       "wwwwwwwwwwwwwwww"},
-    [21]={zoom=1, -- LEARN TO WEAVE
+    [22]={zoom=1, -- LEARN TO WEAVE
       "wwwwwwwwwwwwwwww",
       "wv<...v.<<...r.w",
       "w.>>..v..>>..r<w",
@@ -633,7 +650,7 @@ function _init()
       "wwwwh.>..cr.<>.w",
       "wdhhh.>......>^w",
       "wwwwwwwwwwwwwwww"},
-      [22]={zoom=1, -- MINESHAFT
+      [23]={zoom=1, -- MINESHAFT
       "................",
       "................",
       "................",
@@ -650,7 +667,7 @@ function _init()
       "................",
       "................",
     },
-    [23]={zoom=1, -- DOMAIN II
+    [24]={zoom=1, -- DOMAIN II
     "wwwwwwwwwwwwwwww",
     "www..........www",
     "wpw..rcr.r>c.w.w",
@@ -666,7 +683,7 @@ function _init()
     "w..^.r.r.r..<..w",
     "www..........www",
     "wwwwwwwwwwwwwwww",},
-    [24]={zoom=1,
+    [25]={zoom=1,
       "..wwwwwwwwwwww..",
       "..w>>>>>>>vwvw..",
       "..wwp.......vw..",
@@ -681,7 +698,7 @@ function _init()
       "..w^.crcrc.cvw..",
       "..w^ccccccccvw..",
       "..w^<<<<<<<<<w..",
-      "..wwwwwwwwwwww..",}
+      "..wwwwwwwwwwww..",},
 }
     
 end
@@ -1148,7 +1165,7 @@ function draw_game()
   draw_sprite(frame,px,py,z)
 
   print("level "..level,96,122,7)
-  print("octoroq",0,122,122)
+  print("octoroq ",0,122,122)
   if level == 1 then
     print("Stuck? Press ❎ to rewind", 16, 30, 7)
   end
