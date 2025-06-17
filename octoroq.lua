@@ -5,7 +5,7 @@ screen_mode      = "title"   -- title | levelselect | game | pause
 menu_index       = 1         -- title‑screen highlight
 level_select_idx = 1         -- level‑select highlight
 pause_index      = 1         -- pause‑menu highlight
-max_levels       = 26        -- total levels
+max_levels       = 28        -- total levels
 
 ---------------------------
 -- 0a) native pause hooks
@@ -254,10 +254,11 @@ function _init()
   last_tile_x=flr(px/8)*8
   last_tile_y=flr(py/8)*8
   forcedconveyor=false
+  l_music=0
 
   palt(0, true)
 
-  -- music(0)
+  music(0)
 
   ------------------------------------
   -- levels table
@@ -267,7 +268,7 @@ function _init()
       "................",
       ".....r>h>.......",
       "................",
-      "................",
+      "....,...........",
       "................",
       "wwwwwwwwwwwwwwww",
       "w......ww......w",
@@ -298,37 +299,36 @@ function _init()
       "................",
     },
     [2]={zoom=1,   -- THE BRIDGE
-      "wwwwwwwwwwwwwwww",
-      "w....hh....w...w",
-      "w....hhw...w...w",
-      "w....hh.rr.....w",
-      "w....hh..h.....w",
-      "w....hh.....h..w",
-      "w....hhh...hkh.w",
-      "w....hh.h...h..w",
-      "w....hh..h.....w",
-      "w....hh...h....w",
-      "w....hhrr..h...w",
-      "w....wh.p..wh..w",
-      "w....hh......h.w",
-      "w.d..hh.......hw",
-      "wwwwwwwwwwwwwwww"},
+"................",
+"................",
+"................",
+"...wwwwwwwwww...",
+"...wd......hw...",
+"...wwwwwwwwhw...",
+"...w...r...kw...",
+"...w......hhw...",
+"...w...r.r..w...",
+"...wp.......w...",
+"...wwwwwwwwww...",
+"................",
+"................",
+"................",
+},
     [3]={zoom=1,   -- GRIDLOCK
+    "................",
+    "................",
       "wwwwwwwwwwwwwwww",
       "wkhhh..........w",
       "wwwwww.hhhhh.w.w",
       "w.....hr.r.rh..w",
       "w.r...h.r.r.h..w",
-      "w......hhhhh...w",
+      "w.r....hhhhh...w",
       "w..............w",
-      "w.h............w",
-      "wwhwwwwwwwwwwwww",
-      "ww..........r..w",
-      "w.hhh..........w",
-      "w.....r........w",
-      "w....r.r.......w",
-      "w......p.....wdw",
-      "wwwwwwwwwwwwwwww"},
+      "w.p............w",
+      "w..............w",
+      "wwwwwwwwwwwwwwww",
+      "................",
+      "................",},
     [4]={zoom=1,   -- HIGHS AND LOWS
       "wwwwwwwwwwwwwwww",
       "w..p...........w",
@@ -416,13 +416,13 @@ function _init()
       "................",
     },
     [8]={zoom=2, -- CAVE II
-      "wwwwwwww",
-      "wkhhhhdw",
-      "wwr.ccww",
-      "w..rc..w",
-      "w.rrrwww",
-      "w.....pw",
-      "wwwwwwww"},
+      "1llllll2",
+      "lkhhhhdl",
+      "lwr.ccwl",
+      "l..rc..l",
+      "l.rrrwwl",
+      "l.....pl",
+      "3llllll4"},
       [9]={zoom=1, -- THIN ICE
       "wwwwwwwwwwwwwwww",
       "wpccccwcccccccw.",
@@ -524,7 +524,7 @@ function _init()
       "w.r.v^w........w",
       "w.r.vhwllllllllw",
       "w.r.vhwllllllllw",
-      "w.r.v.wlllgglllw",
+      "w.r.v.wllllllllw",
       "w.r.>^wllllllllw",
       "wwwwwwwwwwwwwwww"},
     [15]={zoom=1, -- DOMAIN
@@ -618,7 +618,23 @@ function _init()
     "w.......p......w",
     "wwwwwwwwwwwwwwww",
     },
-    [21]={zoom=1, -- OFFICE
+    [21]={zoom=1,
+    "................",
+    "....wwwwwwww....",
+    "....wkcccccw....",
+    "....wccccccw....",
+    "..wwwrrwwrwwww..",
+    "..wpw..w...w.w..",
+    "..w.w..w...w.w..",
+    "..w.w..w...w.w..",
+    "..w..r...r...w..",
+    "..w..........w..",
+    "..wwwvvvvvvwww..",
+    "....wvvvvv<w....",
+    "....wvvvvvdw....",
+    "....wwwwwwww....",
+    "................",},
+    [22]={zoom=1, -- OFFICE
       "wwwwwwwwwwwwwwww",
       "w...>.>..>.>...w",
       "w...<.<.r>.>...w",
@@ -634,7 +650,7 @@ function _init()
       "w.r.<.<r.>.>.r.w",
       "w...^.^..^.<...w",
       "wwwwwwwwwwwwwwww"},
-    [22]={zoom=1, -- LEARN TO WEAVE
+    [23]={zoom=1, -- LEARN TO WEAVE
       "wwwwwwwwwwwwwwww",
       "wv<...v.<<...r.w",
       "w.>>..v..>>..r<w",
@@ -650,7 +666,7 @@ function _init()
       "wwwwh.>..cr.<>.w",
       "wdhhh.>......>^w",
       "wwwwwwwwwwwwwwww"},
-      [23]={zoom=1, -- MINESHAFT
+      [24]={zoom=1, -- MINESHAFT
       "................",
       "................",
       "................",
@@ -667,7 +683,7 @@ function _init()
       "................",
       "................",
     },
-    [24]={zoom=1, -- DOMAIN II
+    [25]={zoom=1, -- DOMAIN II
     "wwwwwwwwwwwwwwww",
     "www..........www",
     "wpw..rcr.r>c.w.w",
@@ -683,7 +699,7 @@ function _init()
     "w..^.r.r.r..<..w",
     "www..........www",
     "wwwwwwwwwwwwwwww",},
-    [25]={zoom=1,
+    [26]={zoom=1,
       "..wwwwwwwwwwww..",
       "..w>>>>>>>vwvw..",
       "..wwp.......vw..",
@@ -699,22 +715,57 @@ function _init()
       "..w^ccccccccvw..",
       "..w^<<<<<<<<<w..",
       "..wwwwwwwwwwww..",},
-    [26]={zoom=1,
+    [27]={zoom=1,
   "................",
 "................",
 "................",
 "................",
-"....wwwwwwww....",
-"....w<<<v<<w....",
-"....wvkvr.>w....",
-"....wvrw>w>w....",
-"....wv>rvd>w....",
-"....w>p>>>^w....",
-"....wwwwwwww....",
+"....llllllll....",
+"....l<<<v<<l....",
+"....lvkvr.>l....",
+"....lvrw>w>l....",
+"....lv>rvd>l....",
+"....l>p>>>^l....",
+"....llllllll....",
 "................",
 "................",
 "................",
-"................",}
+"................",},
+    [28]={zoom=1,
+  "................",
+"................",
+"................",
+"...wwwwwwwwww...",
+"...wrhrhrhrhw...",
+"...wkrhrhrhrw...",
+"...wrhhrrhrhw...",
+"...whrhrprhrw...",
+"...wrhrhrrrhw...",
+"...whrhrhrdrw...",
+"...wrhrhrhrhw...",
+"...wwwwwwwwww...",
+"................",
+"................",
+"................",
+  },
+ 
+  --   [27]={zoom=1,
+  --   "wwwwwwwwwwwwwwww",
+  --   "wwwhhw.p..whhwww",
+  --   "wwwhkw....wdhwww",
+  --   "ww.rh.w..w.hr.ww",
+  --   "ww.hr>....<rh.ww",
+  --   "ww.rh.wrrw.hr.ww",
+  --   "www..wccccw..www",
+  --   "www..wccccw..www",
+  --   "ww...wccccw...ww",
+  --   "ww...wccccw...ww",
+  --   "ww...wccccw...ww",
+  --   "www..wccccw..www",
+  --   "ww...<....>...ww",
+  --   "ww...<....>...ww",
+  --   "wwwwwwwwwwwwwwww",
+  -- }
 }
     
 end
@@ -727,6 +778,21 @@ function load_level(lvl)
   rock_removal_positions={}
   next_rock_id=0
   forcedconveyor=false
+
+  if (level==0 or level==1) and l_music ~= 10 then
+    l_music=10
+    music(10)
+  end
+
+  if level>1 and level<11 and l_music~=22 then
+    l_music=22
+    music(22)
+  end
+
+  if level>11 and level<21 and l_music ~= 33 then
+    l_music=33
+    music(33)
+  end
 
   local actions={
     r=function(x,y) make_rock(x,y) end,
@@ -762,7 +828,7 @@ function collide(x,y,ignore_rocks,cur_rock)
   local gx,gy=flr(x/8),flr(y/8)
   local tile=sub(map[gy+1],gx+1,gx+1)
   if tile=="w" or tile=="l" then return true end
-  if tile =="d" and not has_key then return true end
+  -- if tile =="d" and not has_key then return true end
   if not ignore_rocks and find_entity_at(holes,x,y,function(e) return not e.filled end) then
     return true
   end
@@ -784,19 +850,19 @@ end
 
 -- title screen
 function update_title()
-  if btnp(2) then sfx(0) menu_index=menu_index==1 and 2 or 1 end
-  if btnp(3) then sfx(0) menu_index=menu_index==2 and 1 or 2 end
+  if btnp(2) then menu_index=menu_index==1 and 2 or 1 end
+  if btnp(3) then menu_index=menu_index==2 and 1 or 2 end
   if btnp(4) or btnp(5) then
-    if menu_index==1 then music(-1) load_level(0) screen_mode="game"
+    if menu_index==1 then load_level(0) screen_mode="game"
     else screen_mode="levelselect" end
   end
 end
 
 -- level select
 function update_level_select()
-  if btnp(2) then sfx(0) level_select_idx=level_select_idx>1 and level_select_idx-1 or max_levels end
-  if btnp(3) then sfx(0) level_select_idx=level_select_idx<max_levels and level_select_idx+1 or 1 end
-  if btnp(4) or btnp(5) then music(-1) load_level(level_select_idx) screen_mode="game" end
+  if btnp(2) then level_select_idx=level_select_idx>1 and level_select_idx-1 or max_levels end
+  if btnp(3) then level_select_idx=level_select_idx<max_levels and level_select_idx+1 or 1 end
+  if btnp(4) or btnp(5) then load_level(level_select_idx) screen_mode="game" end
   if btnp(1) then screen_mode="title" end
 end
 
@@ -806,13 +872,13 @@ function update_game()
     rewind_move_id=deserialize_state(history[#history]).move_id
   end
 
-  if btnp(4) then
-    if level + 1 > #levels then
-      load_level(0)
-    else
-      load_level(level + 1)
-    end
-  end
+  -- if btnp(4) then
+  --   if level + 1 > #levels then
+  --     load_level(0)
+  --   else
+  --     load_level(level + 1)
+  --   end
+  -- end
 
   -- rewinding animation
   if rewinding then
@@ -919,7 +985,7 @@ function do_movement_animations()
           last_tile_x,last_tile_y=cx,cy
         end
         if key and not key.collected and flr(px)==flr(key.x) and flr(py)==flr(key.y) then
-          has_key=true key.collected=true
+          has_key=true key.collected=true sfx(60,3)
         end
         if door and flr(px)==flr(door.x) and flr(py)==flr(door.y) and has_key then
           history={} rewinding=false last_action_filled=false load_level(level+1) return
@@ -936,6 +1002,13 @@ function do_movement_animations()
       if abs(r.x-r.target_x)<.5 and abs(r.y-r.target_y)<.5 then
         r.x,r.y=r.target_x,r.target_y r.moving=false
         local cr=get_crack_at(r.x,r.y)
+        if not rewinding then
+          if l_music == 22 then
+            sfx(59,3)
+          else
+            sfx(59,3)
+          end
+        end
         if cr and not cr.broken then
           cr.broken=true add(holes,{x=cr.x,y=cr.y,filled=true})
           rock_removal_positions[r.id]={x=r.x,y=r.y} del(rocks,r)
@@ -1080,6 +1153,22 @@ function draw_title()
   -- spr(68, 64, 56)
   -- spr(128, 72, 56)
 
+
+  spr(65, 40, 32)
+  spr(65, 80, 32)
+  spr(99, 48, 32)
+  spr(128, 72, 32)
+  spr(194, 56, 32)
+  spr(193, 64, 32)
+  
+  print("\^wO", 37, 50, 7)
+  print("\^wC", 45, 50, 7)
+  print("\^wT", 53, 50, 7)
+  print("\^wO", 61, 50, 7)
+  print("\^wR", 69, 50, 7)
+  print("\^wO", 77, 50, 7)
+  print("\^wQ", 85, 50, 7)
+
   spr(196, 24, 40)
   spr(197, 32, 40)
   spr(198, 40, 40)
@@ -1101,6 +1190,9 @@ function draw_title()
   spr(219, 80, 48)
   -- spr(220, 88, 48)
   -- spr(221, 96, 48)
+
+  spr(212, 24, 48)
+  spr(212, 96, 48)
 
   spr(228, 24, 56)
   spr(229, 32, 56)
@@ -1124,8 +1216,8 @@ function draw_title()
   spr(252, 88, 64)
   spr(253, 96, 64)
 
-  print((menu_index==1 and ">" or " ")..o1,38,92,10)
-  print((menu_index==2 and ">" or " ")..o2,38,102,10)
+  print((menu_index==1 and ">" or " ")..o1,38,92,7)
+  print((menu_index==2 and ">" or " ")..o2,38,102,7)
   -- print("\^w\^tOCTOROQ",37,40,7)
   print("\^-w\^-tyamsoft", 101, 123, 3)
 end
@@ -1148,11 +1240,21 @@ function draw_game()
       elseif ch=="," then
         draw_sprite(84,sx,sy,z)
       elseif char==";" then
-        draw_sprite(86,sx,sy,z)
+        draw_sprite(82,sx,sy,z)
+      elseif char==":" then
+        draw_sprite(81,sx,sy,z)
       elseif ch=="w" then
-        draw_sprite(x%2==0 and y==0 and 64 or 64,sx,sy,z)
+        draw_sprite(64,sx,sy,z)
       elseif ch=="l" then
         draw_sprite(94,sx,sy,z)
+      elseif ch=="1" then
+        draw_sprite(77,sx,sy,z)
+      elseif ch=="2" then
+        draw_sprite(126,sx,sy,z)
+      elseif ch=="3" then
+        draw_sprite(78,sx,sy,z)
+      elseif ch=="4" then
+        draw_sprite(110,sx,sy,z)
       elseif ch=="g" then
         draw_sprite(36,sx,sy,z)
       elseif ch=="b" then
