@@ -5,7 +5,7 @@ screen_mode      = "title"   -- title | levelselect | game | pause
 menu_index       = 1         -- title‑screen highlight
 level_select_idx = 1         -- level‑select highlight
 pause_index      = 1         -- pause‑menu highlight
-max_levels       = 28        -- total levels
+max_levels       = 30        -- total levels
 
 ---------------------------
 -- 0a) native pause hooks
@@ -260,6 +260,15 @@ function _init()
 
   music(0)
 
+  cartdata("octoroq_progress")
+  level_stars = {}
+  level_moves = {}
+  for i=1,max_levels do
+    level_stars[i] = dget(i) > 0 and true or false
+    level_moves[i] = dget(i + 32) > 0 and dget(i + 32) or nil
+  end
+
+
   ------------------------------------
   -- levels table
   ------------------------------------
@@ -324,7 +333,7 @@ function _init()
       "w.r...h.r.r.h..w",
       "w.r....hhhhh...w",
       "w..............w",
-      "w.p............w",
+      "w.p...........dw",
       "w..............w",
       "wwwwwwwwwwwwwwww",
       "................",
@@ -455,22 +464,6 @@ function _init()
       "w....h....h....w",
       "w......p.......w",
       "wwwwwwwwwwwwwwww",},
-      [11]={zoom=1,   -- RUINS
-      "wwwwwwwwwwwwwwww",
-      "wp.............w",
-      "w..r..rrrr..r..w",
-      "w.......w......w",
-      "w..hhhwwhhwwh..w",
-      "w..hcccccccch..w",
-      "w..h.rcwcwwch..w",
-      "w.whr.rkcwdhhw.w",
-      "w..h.rcwwwwch..w",
-      "w..hcccccccch..w",
-      "w..hwhwhhwhhw..w",
-      "w..............w",
-      "w..r..rrrr..r..w",
-      "w..............w",
-      "wwwwwwwwwwwwwwww"},
     -- [11]={zoom=2, -- BREAD TIME
     --   "wwwwwwww",
     --   "wglglglw",
@@ -479,7 +472,7 @@ function _init()
     --   "wglglglw",
     --   "wlglglgw",
     --   "wwwwwwww"},
-    [12]={zoom=1, -- AUTOMATIC
+    [11]={zoom=1, -- AUTOMATIC
       "wwwwwwwwwwwwwwww",
       "whhhhhhhhhhhhhhw",
       "whhhhhhhhhhhhhhw",
@@ -495,7 +488,7 @@ function _init()
       "whhhhhhhhhhhhhhw",
       "whhhhhhhhhhhhhhw",
       "wwwwwwwwwwwwwwww"},
-    [13]={zoom=1, -- FACTORY FLOOR
+    [12]={zoom=1, -- FACTORY FLOOR
       "wwwwwwwwwwwwwwww",
       "whhhhhhhhhhhhhhw",
       "whhhhhhhhhhhhhhw",
@@ -511,7 +504,7 @@ function _init()
       "whhhhhhhhhhhhhhw",
       "whhhhhhhhhhhhhhw",
       "wwwwwwwwwwwwwwww"},
-    [14]={zoom=1, -- BEACH
+    [13]={zoom=1, -- BEACH
       "wwwwwwwwwwwwwwww",
       "w.rv<...c...hhhw",
       "w.r.^..>..c.<d.w",
@@ -527,7 +520,7 @@ function _init()
       "w.r.v.wllllllllw",
       "w.r.>^wllllllllw",
       "wwwwwwwwwwwwwwww"},
-    [15]={zoom=1, -- DOMAIN
+    [14]={zoom=1, -- DOMAIN
       "wwwwwwwwwwwwwwww",
       "wp.............w",
       "w.wwwwwwwwwwww.w",
@@ -543,7 +536,7 @@ function _init()
       "w.wwwwwwwwwwww.w",
       "w..............w",
       "wwwwwwwwwwwwwwww"},
-    [16]={zoom=2, -- CAVE III
+    [15]={zoom=2, -- CAVE III
       "wwwwwwww",
       "w.V<<<pw",
       "w.>.rVVw",
@@ -551,7 +544,7 @@ function _init()
       "wcc<r.ww",
       "wkhhhhdw",
       "wwwwwwww"},
-    [17]={zoom=1, -- JUNKYARD
+    [16]={zoom=1, -- JUNKYARD
       "wwwwwwwwwwwwwwww",
       "wd.....Vr.....pw",
       "whhhhhhhhhhhhhhw",
@@ -567,7 +560,7 @@ function _init()
       "w..c..vc...r...w",
       "w..w^^.........w",
       "wwwwwwwwwwwwwwww"},
-    [18]={
+    [17]={
       "wwwwwwwwwwwwwwww",
       "wp.............w",
       "w.cccccccccccccw",
@@ -584,7 +577,7 @@ function _init()
       "w.............dw",
       "wwwwwwwwwwwwwwww",
     },
-    [19]={zoom=1,
+    [18]={zoom=1,
     "wwwwwwwwwwwwwwww",
   "w..............w",
   "w..r........r..w",
@@ -601,7 +594,7 @@ function _init()
   "w.......p......w",
   "wwwwwwwwwwwwwwww",
     },
-    [20]={zoom=1,
+    [19]={zoom=1,
     "wwwwwwwwwwwwwwww",
     "w......<.hhhhhdw",
     "w......rrwwwwwww",
@@ -618,7 +611,7 @@ function _init()
     "w.......p......w",
     "wwwwwwwwwwwwwwww",
     },
-    [21]={zoom=1,
+    [20]={zoom=1,
     "................",
     "....wwwwwwww....",
     "....wkcccccw....",
@@ -634,7 +627,7 @@ function _init()
     "....wvvvvvdw....",
     "....wwwwwwww....",
     "................",},
-    [22]={zoom=1, -- OFFICE
+    [21]={zoom=1, -- OFFICE
       "wwwwwwwwwwwwwwww",
       "w...>.>..>.>...w",
       "w...<.<.r>.>...w",
@@ -650,7 +643,7 @@ function _init()
       "w.r.<.<r.>.>.r.w",
       "w...^.^..^.<...w",
       "wwwwwwwwwwwwwwww"},
-    [23]={zoom=1, -- LEARN TO WEAVE
+    [22]={zoom=1, -- LEARN TO WEAVE
       "wwwwwwwwwwwwwwww",
       "wv<...v.<<...r.w",
       "w.>>..v..>>..r<w",
@@ -666,7 +659,7 @@ function _init()
       "wwwwh.>..cr.<>.w",
       "wdhhh.>......>^w",
       "wwwwwwwwwwwwwwww"},
-      [24]={zoom=1, -- MINESHAFT
+      [23]={zoom=1, -- MINESHAFT
       "................",
       "................",
       "................",
@@ -683,7 +676,7 @@ function _init()
       "................",
       "................",
     },
-    [25]={zoom=1, -- DOMAIN II
+    [24]={zoom=1, -- DOMAIN II
     "wwwwwwwwwwwwwwww",
     "www..........www",
     "wpw..rcr.r>c.w.w",
@@ -699,7 +692,7 @@ function _init()
     "w..^.r.r.r..<..w",
     "www..........www",
     "wwwwwwwwwwwwwwww",},
-    [26]={zoom=1,
+    [25]={zoom=1,
       "..wwwwwwwwwwww..",
       "..w>>>>>>>vwvw..",
       "..wwp.......vw..",
@@ -715,7 +708,7 @@ function _init()
       "..w^ccccccccvw..",
       "..w^<<<<<<<<<w..",
       "..wwwwwwwwwwww..",},
-    [27]={zoom=1,
+    [26]={zoom=1,
   "................",
 "................",
 "................",
@@ -731,7 +724,7 @@ function _init()
 "................",
 "................",
 "................",},
-    [28]={zoom=1,
+    [27]={zoom=1,
   "................",
 "................",
 "................",
@@ -859,12 +852,12 @@ function update_title()
 end
 
 -- level select
-function update_level_select()
-  if btnp(2) then level_select_idx=level_select_idx>1 and level_select_idx-1 or max_levels end
-  if btnp(3) then level_select_idx=level_select_idx<max_levels and level_select_idx+1 or 1 end
-  if btnp(4) or btnp(5) then load_level(level_select_idx) screen_mode="game" end
-  if btnp(1) then screen_mode="title" end
-end
+-- function update_level_select()
+--   if btnp(2) then level_select_idx=level_select_idx>1 and level_select_idx-1 or max_levels end
+--   if btnp(3) then level_select_idx=level_select_idx<max_levels and level_select_idx+1 or 1 end
+--   if btnp(4) or btnp(5) then load_level(level_select_idx) screen_mode="game" end
+--   if btnp(1) then screen_mode="title" end
+-- end
 
 function update_game()
   if btnp(5) and not moving and not rewinding and #history>0 then
@@ -872,13 +865,13 @@ function update_game()
     rewind_move_id=deserialize_state(history[#history]).move_id
   end
 
-  -- if btnp(4) then
-  --   if level + 1 > #levels then
-  --     load_level(0)
-  --   else
-  --     load_level(level + 1)
-  --   end
-  -- end
+  if btnp(4) then
+    if level + 1 > #levels then
+      load_level(0)
+    else
+      load_level(level + 1)
+    end
+  end
 
   -- rewinding animation
   if rewinding then
@@ -1222,11 +1215,56 @@ function draw_title()
   print("\^-w\^-tyamsoft", 101, 123, 3)
 end
 
-function draw_level_select()
-  print("SELECT LEVEL",38,30,7)
-  print("level: "..level_select_idx,50,50,10)
-  print("⬆️/⬇️ move  ❎/🅾️ pick  ➡️ back",4,110,6)
-end
+-- Replace the existing `draw_level_select` function with the new grid-based layout:
+
+-- Replace the existing `draw_level_select` function with the new grid-based layout:
+
+  function draw_level_select()
+    cls()
+    -- print("SELECT LEVEL", 40, 8, 7)
+    print("❎ to start  ➡️ back", 16, 120, 6)
+  
+    local col_x = {8, 48, 88} -- starting x positions for columns
+    local card_w, card_h = 36, 10
+    local v_spacing = 12
+  
+    for i = 1, max_levels do
+      local col = ceil(i / 10)
+      local row = (i - 1) % 10
+  
+      local x = col_x[col]
+      local y = 0 + row * v_spacing
+  
+      local colr = (i == level_select_idx) and 10 or 7
+      rectfill(x, y, x + card_w - 1, y + card_h - 1, (i == level_select_idx) and 1 or 5)
+      rect(x, y, x + card_w - 1, y + card_h - 1, colr)
+      print(i, x + 2, y + 2, colr)
+    end
+  end
+  
+  -- Replace `update_level_select` with new navigation logic for 3-column layout
+  function update_level_select()
+    local col = ceil(level_select_idx / 10)
+    local row = (level_select_idx - 1) % 10
+  
+    if btnp(2) then -- up
+      row = (row - 1 + 10) % 10
+    elseif btnp(3) then -- down
+      row = (row + 1) % 10
+    elseif btnp(0) then -- left
+      col = (col - 2 + 3) % 3 + 1
+    elseif btnp(1) then -- right
+      col = (col % 3) + 1
+    elseif btnp(4) or btnp(5) then
+      load_level(level_select_idx)
+      screen_mode = "game"
+    end
+  
+    level_select_idx = mid(1, (col - 1) * 10 + row + 1, max_levels)
+  
+    if btnp(6) then screen_mode = "title" end -- back to title
+  end
+  
 
 function draw_game()
   local z=map.zoom or 1
