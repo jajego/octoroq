@@ -370,7 +370,25 @@ function _init()
       "....w......w....",
       "....w.....dw....",
       "....wwwwwwww...."},
-    [6]={zoom=1, -- FILLING IN
+
+      [6]={zoom=2,
+
+"wwwwwwww........",
+"wk..c..w........",
+"wwwwrwrw........",
+"w...hccw........",
+"w.r.w..w........",
+"ww.pw.dw........",
+"wwwwwwww........",
+"................",
+"................",
+"................",
+"................",
+"................",
+"................",
+"................",
+"................",},
+    [7]={zoom=1, -- FILLING IN
     "................",
     "................",
     "................",
@@ -388,6 +406,7 @@ function _init()
       "................",
 
     },
+
     -- [7]={zoom=1, -- DAY AT THE LAKE
     -- "................",
     -- "................",
@@ -407,7 +426,7 @@ function _init()
     --   "................",
     --   "................",
     -- },
-      [7]={zoom=1,
+      [8]={zoom=1,
       "................",
       "................",
       "................",
@@ -424,7 +443,7 @@ function _init()
       "................",
       "................",
     },
-    [8]={zoom=2, -- CAVE II
+    [9]={zoom=2, -- CAVE II
       "1llllll2",
       "lkhhhhdl",
       "lwr.ccwl",
@@ -432,7 +451,7 @@ function _init()
       "l.rrrwwl",
       "l.....pl",
       "3llllll4"},
-      [9]={zoom=1, -- THIN ICE
+      [10]={zoom=1, -- THIN ICE
       "wwwwwwwwwwwwwwww",
       "wpccccwcccccccw.",
       ".wcccccccwcccwcw",
@@ -448,7 +467,7 @@ function _init()
       ".wcccccccwcrcwcw",
       "wdccccwccccrckw.",
       "wwwwwwwwwwwwwwww"},
-      [10]={zoom=1,
+      [11]={zoom=1,
       "................",
     "................",
     "................",
@@ -474,7 +493,7 @@ function _init()
     --   "wglglglw",
     --   "wlglglgw",
     --   "wwwwwwww"},
-    [11]={zoom=1, -- AUTOMATIC
+    [12]={zoom=1, -- AUTOMATIC
       "wwwwwwwwwwwwwwww",
       "whhhhhhhhhhhhhhw",
       "whhhhhhhhhhhhhhw",
@@ -490,7 +509,7 @@ function _init()
       "whhhhhhhhhhhhhhw",
       "whhhhhhhhhhhhhhw",
       "wwwwwwwwwwwwwwww"},
-    [12]={zoom=1, -- FACTORY FLOOR
+    [13]={zoom=1, -- FACTORY FLOOR
       "wwwwwwwwwwwwwwww",
       "whhhhhhhhhhhhhhw",
       "whhhhhhhhhhhhhhw",
@@ -506,7 +525,7 @@ function _init()
       "whhhhhhhhhhhhhhw",
       "whhhhhhhhhhhhhhw",
       "wwwwwwwwwwwwwwww"},
-      [13]={zoom=1,
+      [14]={zoom=1,
       "wwwwwwwwwwwwwwww",
     "wwkcchd........w",
     "w.wcchc.r....p.w",
@@ -523,7 +542,7 @@ function _init()
     "wllllllllllllllw",
     "wwwwwwwwwwwwwwww",
     },
-    [14]={zoom=1, -- DOMAIN
+    [15]={zoom=1, -- DOMAIN
       "wwwwwwwwwwwwwwww",
       "wp.............w",
       "w.wwwwwwwwwwww.w",
@@ -539,7 +558,7 @@ function _init()
       "w.wwwwwwwwwwww.w",
       "w..............w",
       "wwwwwwwwwwwwwwww"},
-    [15]={zoom=2, -- CAVE III
+    [16]={zoom=2, -- CAVE III
       "wwwwwwww",
       "w.V<<<pw",
       "w.>.rVVw",
@@ -547,7 +566,7 @@ function _init()
       "wcc<r.ww",
       "wkhhhhdw",
       "wwwwwwww"},
-    [16]={zoom=1, -- JUNKYARD
+    [17]={zoom=1, -- JUNKYARD
       "wwwwwwwwwwwwwwww",
       "wd.....Vr.....pw",
       "whhhhhhhhhhhhhhw",
@@ -563,7 +582,7 @@ function _init()
       "w..c..vc...r...w",
       "w..w^^.........w",
       "wwwwwwwwwwwwwwww"},
-    [17]={
+    [18]={
       "wwwwwwwwwwwwwwww",
       "wp.............w",
       "w.cccccccccccccw",
@@ -580,7 +599,7 @@ function _init()
       "w.............dw",
       "wwwwwwwwwwwwwwww",
     },
-    [18]={zoom=1,
+    [19]={zoom=1,
     "wwwwwwwwwwwwwwww",
   "w..............w",
   "w..r........r..w",
@@ -598,7 +617,7 @@ function _init()
   "wwwwwwwwwwwwwwww",
     },
 
-    [19]={zoom=2,
+    [20]={zoom=2,
 
   "1llllll2....",
   "l<<<v<<l....",
@@ -611,7 +630,7 @@ function _init()
   "................",
   "................",
   "................",},
-    [20]={zoom=1,
+    [21]={zoom=1,
     "................",
     "....wwwwwwww....",
     "....wkcccccw....",
@@ -627,7 +646,7 @@ function _init()
     "....wvvvvvdw....",
     "....wwwwwwww....",
     "................",},
-    [21]={zoom=1, -- OFFICE
+    [22]={zoom=1, -- OFFICE
       "wwwwwwwwwwwwwwww",
       "w...>.>..>.>...w",
       "w...<.<.r>.>...w",
@@ -643,7 +662,7 @@ function _init()
       "w.r.<.<r.>.>.r.w",
       "w...^.^..^.<...w",
       "wwwwwwwwwwwwwwww"},
-    [22]={zoom=1, -- LEARN TO WEAVE
+    [23]={zoom=1, -- LEARN TO WEAVE
       "wwwwwwwwwwwwwwww",
       "wv<...v.<<...r.w",
       "w.>>..v..>>..r<w",
@@ -659,7 +678,7 @@ function _init()
       "wwwwh.>..cr.<>.w",
       "wdhhh.>......>^w",
       "wwwwwwwwwwwwwwww"},
-      [23]={zoom=1, -- MINESHAFT
+      [24]={zoom=1, -- MINESHAFT
       "................",
       "................",
       "................",
@@ -676,7 +695,7 @@ function _init()
       "................",
       "................",
     },
-    [24]={zoom=1, -- DOMAIN II
+    [25]={zoom=1, -- DOMAIN II
     "wwwwwwwwwwwwwwww",
     "www..........www",
     "wpw..rcr.r>c.w.w",
@@ -692,7 +711,7 @@ function _init()
     "w..^.r.r.r..<..w",
     "www..........www",
     "wwwwwwwwwwwwwwww",},
-    [25]={zoom=1,
+    [26]={zoom=1,
       "..wwwwwwwwwwww..",
       "..w>>>>>>>vwvw..",
       "..wwp.......vw..",
@@ -708,7 +727,7 @@ function _init()
       "..w^ccccccccvw..",
       "..w^<<<<<<<<<w..",
       "..wwwwwwwwwwww..",},
-      [26]={zoom=1,
+      [27]={zoom=1,
       "wwwwwwwwwwwwwwww",
       "w......<.hhhhhdw",
       "w......rrwwwwwww",
@@ -725,7 +744,7 @@ function _init()
       "w.......p......w",
       "wwwwwwwwwwwwwwww",
       },
-      [27]={zoom=1, -- DOMAIN II
+      [28]={zoom=1, -- DOMAIN II
       "wwwwwwwwwwwwwwww",
       "w..h........h..w",
       "w.hkh......hdh.w",
@@ -742,7 +761,7 @@ function _init()
       "w......p.......w",
       "wwwwwwwwwwwwwwww",},
 
-  [28]={zoom=1, -- BEACH
+  [29]={zoom=1, -- BEACH
   "wwwwwwwwwwwwwwww",
   "w.rv<...c...hhhw",
   "w.r.^..>..c.<d.w",
@@ -758,23 +777,23 @@ function _init()
   "w.r.v.wllllllllw",
   "w.r.>^wllllllllw",
   "wwwwwwwwwwwwwwww"},
-  [29]={zoom=2,
+  [30] = {zoom=2,
+"1llllll2wwwwwwww",
+"l>..>rvl.......w",
+"l^wprwvl.......w",
+"l^^<r<vl.......w",
+"l.^r.^vl.......w",
+"l.w<<<dl.......w",
+"lkr^<<<l.......w",
+"3llllll4.......w",
+"w..............w",
+"w..............w",
+"w..............w",
+"w..............w",
+"w..............w",
+"w..............w",
+"wwwwwwwwwwwwwwww",}
 
-"wwwwwwww........",
-"wk..c..w........",
-"wwwwrwrw........",
-"w...hccw........",
-"w.r.w..w........",
-"ww.pw.dw........",
-"wwwwwwww........",
-"................",
-"................",
-"................",
-"................",
-"................",
-"................",
-"................",
-"................",}
 
  
   --   [27]={zoom=1,
@@ -812,9 +831,9 @@ function load_level(lvl)
     music(10)
   end
 
-  if level>1 and level<11 and l_music~=22 then
-    l_music=22
-    music(22)
+  if level>1 and level<11 and l_music~=33 then
+    l_music=33
+    music(33)
   end
 
   if level>11 and level<21 and l_music ~= 33 then
@@ -1013,7 +1032,7 @@ function do_movement_animations()
           last_tile_x,last_tile_y=cx,cy
         end
         if key and not key.collected and flr(px)==flr(key.x) and flr(py)==flr(key.y) then
-          has_key=true key.collected=true sfx(60,3)
+          has_key=true key.collected=true
         end
         if door and flr(px)==flr(door.x) and flr(py)==flr(door.y) and has_key then
           history={} rewinding=false last_action_filled=false load_level(level+1) return
@@ -1030,13 +1049,13 @@ function do_movement_animations()
       if abs(r.x-r.target_x)<.5 and abs(r.y-r.target_y)<.5 then
         r.x,r.y=r.target_x,r.target_y r.moving=false
         local cr=get_crack_at(r.x,r.y)
-        if not rewinding then
-          if l_music == 22 then
-            sfx(59,3)
-          else
-            sfx(59,3)
-          end
-        end
+        -- if not rewinding then
+        --   if l_music == 22 then
+        --     sfx(59,3)
+        --   else
+        --     sfx(59,3)
+        --   end
+        -- end
         if cr and not cr.broken then
           cr.broken=true add(holes,{x=cr.x,y=cr.y,filled=true})
           rock_removal_positions[r.id]={x=r.x,y=r.y} del(rocks,r)
