@@ -277,7 +277,7 @@ function _init()
       "................",
       ".....r>h>.......",
       "................",
-      "....,...........",
+      "................",
       "................",
       "wwwwwwwwwwwwwwww",
       "w......ww......w",
@@ -566,7 +566,22 @@ function _init()
       "wcc<r.ww",
       "wkhhhhdw",
       "wwwwwwww"},
-    [17]={zoom=1, -- JUNKYARD
+        [17] = {zoom=1,
+"................",
+"................",
+"................",
+"....1llllll2....",
+"....l>..>rvl....",
+"....l^wprwvl....",
+"....l^^<r<vl....",
+"....l.^r.^vl....",
+"....l.w<<<dl....",
+"....lkr^<<<l....",
+"....3llllll4....",
+"................",
+"................",
+"................",},
+    [18]={zoom=1, -- JUNKYARD
       "wwwwwwwwwwwwwwww",
       "wd.....Vr.....pw",
       "whhhhhhhhhhhhhhw",
@@ -582,7 +597,7 @@ function _init()
       "w..c..vc...r...w",
       "w..w^^.........w",
       "wwwwwwwwwwwwwwww"},
-    [18]={
+    [19]={
       "wwwwwwwwwwwwwwww",
       "wp.............w",
       "w.cccccccccccccw",
@@ -599,7 +614,7 @@ function _init()
       "w.............dw",
       "wwwwwwwwwwwwwwww",
     },
-    [19]={zoom=1,
+    [20]={zoom=1,
     "wwwwwwwwwwwwwwww",
   "w..............w",
   "w..r........r..w",
@@ -617,7 +632,7 @@ function _init()
   "wwwwwwwwwwwwwwww",
     },
 
-    [20]={zoom=2,
+    [21]={zoom=2,
 
   "1llllll2....",
   "l<<<v<<l....",
@@ -630,23 +645,23 @@ function _init()
   "................",
   "................",
   "................",},
-    [21]={zoom=1,
-    "................",
-    "....wwwwwwww....",
-    "....wkcccccw....",
-    "....wccccccw....",
-    "..wwwrrwwrwwww..",
-    "..wpw..w...w.w..",
-    "..w.w..w...w.w..",
-    "..w.w..w...w.w..",
-    "..w..r...r...w..",
-    "..w..........w..",
-    "..wwwvvvvvvwww..",
-    "....wvvvvv<w....",
-    "....wvvvvvdw....",
-    "....wwwwwwww....",
-    "................",},
-    [22]={zoom=1, -- OFFICE
+    [22]={zoom=1,
+    "llllllllllllllll",
+    "llllwwwwwwwwllll",
+    "llllwkcccccwllll",
+    "llllwccccccwllll",
+    "llwwwrrwwrwwwwll",
+    "llwpw..w...w.wll",
+    "llw.w..w...w.wll",
+    "llw.w..w...w.wll",
+    "llw..r...r...wll",
+    "llw..........wll",
+    "llwwwvvvvvvwwwll",
+    "llllwvvvvv<wllll",
+    "llllwvvvvvdwllll",
+    "llllwwwwwwwwllll",
+    "llllllllllllllll",},
+    [23]={zoom=1, -- OFFICE
       "wwwwwwwwwwwwwwww",
       "w...>.>..>.>...w",
       "w...<.<.r>.>...w",
@@ -662,7 +677,7 @@ function _init()
       "w.r.<.<r.>.>.r.w",
       "w...^.^..^.<...w",
       "wwwwwwwwwwwwwwww"},
-    [23]={zoom=1, -- LEARN TO WEAVE
+    [24]={zoom=1, -- LEARN TO WEAVE
       "wwwwwwwwwwwwwwww",
       "wv<...v.<<...r.w",
       "w.>>..v..>>..r<w",
@@ -678,7 +693,7 @@ function _init()
       "wwwwh.>..cr.<>.w",
       "wdhhh.>......>^w",
       "wwwwwwwwwwwwwwww"},
-      [24]={zoom=1, -- MINESHAFT
+      [25]={zoom=1, -- MINESHAFT
       "................",
       "................",
       "................",
@@ -695,23 +710,23 @@ function _init()
       "................",
       "................",
     },
-    [25]={zoom=1, -- DOMAIN II
-    "wwwwwwwwwwwwwwww",
-    "www..........www",
-    "wpw..rcr.r>c.w.w",
-    "w..>..^.....v..w",
-    "w...<>>vwc.^...w",
-    "w....wccccw.c..w",
-    "w.r..cwhhwc..r.w",
-    "w..r^chkwhc^r..w",
-    "w.rvwchwdhcwvr.w",
-    "w..>>^whhwc.<..w",
-    "w....w>cccw....w",
-    "w...v.^wv..>...w",
-    "w..^.r.r.r..<..w",
-    "www..........www",
-    "wwwwwwwwwwwwwwww",},
-    [26]={zoom=1,
+    [26]={zoom=1, -- DOMAIN II
+     "wwwwwwwwwwwwwwww",
+  "w.rv<...c...hhhw",
+  "w.r.^..>..c.<d.w",
+  "w.r.^..^.c.hhwww",
+  "w.r.^..^...c...w",
+  "w.r.^..<.cc.<..w",
+  "w.r.^..^<..>^..w",
+  "wpr.wwwww..wwwww",
+  "w.r.vk.........w",
+  "w.r.v^w........w",
+  "w.r.vhwllllllllw",
+  "w.r.vhwllllllllw",
+  "w.r.v.wllllllllw",
+  "w.r.>^wllllllllw",
+  "wwwwwwwwwwwwwwww"},
+    [27]={zoom=1,
       "..wwwwwwwwwwww..",
       "..w>>>>>>>vwvw..",
       "..wwp.......vw..",
@@ -727,7 +742,7 @@ function _init()
       "..w^ccccccccvw..",
       "..w^<<<<<<<<<w..",
       "..wwwwwwwwwwww..",},
-      [27]={zoom=1,
+      [28]={zoom=1,
       "wwwwwwwwwwwwwwww",
       "w......<.hhhhhdw",
       "w......rrwwwwwww",
@@ -744,7 +759,7 @@ function _init()
       "w.......p......w",
       "wwwwwwwwwwwwwwww",
       },
-      [28]={zoom=1, -- DOMAIN II
+      [29]={zoom=1, -- DOMAIN II
       "wwwwwwwwwwwwwwww",
       "w..h........h..w",
       "w.hkh......hdh.w",
@@ -761,38 +776,22 @@ function _init()
       "w......p.......w",
       "wwwwwwwwwwwwwwww",},
 
-  [29]={zoom=1, -- BEACH
-  "wwwwwwwwwwwwwwww",
-  "w.rv<...c...hhhw",
-  "w.r.^..>..c.<d.w",
-  "w.r.^..^.c.hhwww",
-  "w.r.^..^...c...w",
-  "w.r.^..<.cc.<..w",
-  "w.r.^..^<..>^..w",
-  "wpr.wwwww..wwwww",
-  "w.r.vk.........w",
-  "w.r.v^w........w",
-  "w.r.vhwllllllllw",
-  "w.r.vhwllllllllw",
-  "w.r.v.wllllllllw",
-  "w.r.>^wllllllllw",
-  "wwwwwwwwwwwwwwww"},
-  [30] = {zoom=2,
-"1llllll2wwwwwwww",
-"l>..>rvl.......w",
-"l^wprwvl.......w",
-"l^^<r<vl.......w",
-"l.^r.^vl.......w",
-"l.w<<<dl.......w",
-"lkr^<<<l.......w",
-"3llllll4.......w",
-"w..............w",
-"w..............w",
-"w..............w",
-"w..............w",
-"w..............w",
-"w..............w",
-"wwwwwwwwwwwwwwww",}
+  [30]={zoom=1, -- BEACH
+    "wwwwwwwwwwwwwwww",
+    "www..........www",
+    "wpw..rcr.r>c.w.w",
+    "w..>..^.....v..w",
+    "w...<>>vwc.^...w",
+    "w....wccccw.c..w",
+    "w.r..cwhhwc..r.w",
+    "w..r^chkwhc^r..w",
+    "w.rvwchwdhcwvr.w",
+    "w..>>^whhwc.<..w",
+    "w....w>cccw....w",
+    "w...v.^wv..>...w",
+    "w..^.r.r.r..<..w",
+    "www..........www",
+    "wwwwwwwwwwwwwwww",},
 
 
  
@@ -1032,7 +1031,7 @@ function do_movement_animations()
           last_tile_x,last_tile_y=cx,cy
         end
         if key and not key.collected and flr(px)==flr(key.x) and flr(py)==flr(key.y) then
-          has_key=true key.collected=true
+          has_key=true key.collected=true sfx(60,3)
         end
         if door and flr(px)==flr(door.x) and flr(py)==flr(door.y) and has_key then
           history={} rewinding=false last_action_filled=false load_level(level+1) return
@@ -1049,13 +1048,13 @@ function do_movement_animations()
       if abs(r.x-r.target_x)<.5 and abs(r.y-r.target_y)<.5 then
         r.x,r.y=r.target_x,r.target_y r.moving=false
         local cr=get_crack_at(r.x,r.y)
-        -- if not rewinding then
-        --   if l_music == 22 then
-        --     sfx(59,3)
-        --   else
-        --     sfx(59,3)
-        --   end
-        -- end
+        if not rewinding then
+          if l_music == 22 then
+            sfx(59,3)
+          else
+            sfx(59,3)
+          end
+        end
         if cr and not cr.broken then
           cr.broken=true add(holes,{x=cr.x,y=cr.y,filled=true})
           rock_removal_positions[r.id]={x=r.x,y=r.y} del(rocks,r)
