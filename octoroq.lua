@@ -143,6 +143,7 @@ end
 ---------------------------
 -- 3) history (100) + (de)serialization
 ---------------------------
+move_count=0
 history={}              -- array of serialized strings
 last_snapshot_table=nil -- last full table for equality check
 rewinding=false
@@ -240,6 +241,28 @@ end
 -- 4) init + level data
 ---------------------------
 
+best_moves = {}
+
+function load_progress()
+  for i=1,max_levels do
+    best_moves[i] = dget(i)
+  end
+end
+
+-- save only if new best (or first time)
+function save_progress(lvl, moves)
+  local prev = dget(lvl)
+  if prev == 0 or moves < prev then
+    dset(lvl, moves)
+    best_moves[lvl] = moves
+  end
+end
+
+-- helper to know if beaten
+function is_beaten(lvl)
+  return best_moves[lvl] > 0
+end
+
 function _init()
   screen_mode="title"
   px,py=64,64 
@@ -261,12 +284,7 @@ function _init()
   music(0)
 
   cartdata("octoroq_progress")
-  level_stars = {}
-  level_moves = {}
-  for i=1,max_levels do
-    level_stars[i] = dget(i) > 0 and true or false
-    level_moves[i] = dget(i + 32) > 0 and dget(i + 32) or nil
-  end
+  load_progress()    -- now just fills best_moves[1..max_levels]
 
 
   ------------------------------------
@@ -824,6 +842,7 @@ function load_level(lvl)
   rock_removal_positions={}
   next_rock_id=0
   forcedconveyor=false
+  move_count = 0
 
   if (level==0 or level==1) and l_music ~= 10 then
     l_music=10
@@ -1020,6 +1039,11 @@ function do_movement_animations()
     if abs(px-target_px)<.5 and abs(py-target_py)<.5 then
       px,py=target_px,target_py moving=false last_direction=nil
       if not rewinding then
+        if move_count >= 999 then
+          move_count = 999
+        else
+          move_count = move_count + 1
+        end
         local cx,cy=flr(px/8)*8,flr(py/8)*8
         if cx~=last_tile_x or cy~=last_tile_y then
           local pc=get_crack_at(last_tile_x,last_tile_y)
@@ -1034,9 +1058,12 @@ function do_movement_animations()
           has_key=true key.collected=true sfx(60,3)
         end
         if door and flr(px)==flr(door.x) and flr(py)==flr(door.y) and has_key then
+          save_progress(level, move_count)
           history={} rewinding=false last_action_filled=false load_level(level+1) return
         end
         check_conveyor_chain_player()
+      else
+        move_count = max(move_count - 1, 0)
       end
     end
   end
@@ -1278,7 +1305,7 @@ end
     print("❎ to start  ➡️ back", 16, 120, 6)
   
     local col_x = {8, 48, 88} -- starting x positions for columns
-    local card_w, card_h = 36, 10
+    local card_w, card_h = 36, 9
     local v_spacing = 12
   
     for i = 1, max_levels do
@@ -1287,11 +1314,25 @@ end
   
       local x = col_x[col]
       local y = 0 + row * v_spacing
+
+
   
-      local colr = (i == level_select_idx) and 10 or 7
+      local colr = (i == level_select_idx) and 7 or 7
       rectfill(x, y, x + card_w - 1, y + card_h - 1, (i == level_select_idx) and 1 or 5)
       rect(x, y, x + card_w - 1, y + card_h - 1, colr)
-      print(i, x + 2, y + 2, colr)
+       local label = tostring(i)
+    if is_beaten(i) then
+      -- label = label.."("..tostring(best_moves[i])..")"
+      
+    end
+
+    -- print it
+    print(label, x + 2, y + 2, colr)
+
+             if is_beaten(i) then
+      -- e.g. draw a checkmark or star sprite at top-right
+          spr(214, x + card_w - 9, y + 1)
+        end
     end
   end
   
@@ -1375,6 +1416,7 @@ function draw_game()
 
   print("level "..level,96,122,7)
   print("octoroq ",0,122,122)
+  print("count "..move_count,0,40,122)
   if level == 1 then
     print("Stuck? Press ❎ to rewind", 16, 30, 7)
   end
