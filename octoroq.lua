@@ -600,21 +600,22 @@ function _init()
 "................",
 "................",},
     [18]={zoom=1, -- JUNKYARD
-      "wwwwwwwwwwwwwwww",
-      "wd.....Vr.....pw",
-      "whhhhhhhhhhhhhhw",
-      "whhhhhh........w",
-      "whhhhhh........w",
-      "w..............w",
-      "ww.wwwwwwwwwwwww",
-      "w..<.>.........w",
-      "w...c>....c..r.w",
-      "w.c..<.v...r...w",
-      "w..c..<c.....k.w",
-      "w..c..c....r...w",
-      "w..c..vc...r...w",
-      "w..w^^.........w",
-      "wwwwwwwwwwwwwwww"},
+        "llllllllllllllll",
+    "llllwwwwwwwwllll",
+    "llllwkcccccwllll",
+    "llllwccccccwllll",
+    "llwwwrrwwrwwwwll",
+    "llwpw..w...w.wll",
+    "llw.w..w...w.wll",
+    "llw.w..w...w.wll",
+    "llw..r...r...wll",
+    "llw..........wll",
+    "llwwwvvvvvvwwwll",
+    "llllwvvvvv<wllll",
+    "llllwvvvvvdwllll",
+    "llllwwwwwwwwllll",
+    "llllllllllllllll",
+     },
     [19]={
       "wwwwwwwwwwwwwwww",
       "wp.............w",
@@ -640,7 +641,7 @@ function _init()
   "w..r..h.h.h.r..w",
   "w...hhhhhhhh...w",
   "w....h<^^^h....w",
-  "w..hh<dwwk>hh..w",
+  "w..hh<dwwk^hh..w",
   "w....h<vv>h....w",
   "w...hhhhhhhh...w",
   "w..r..h.h.h.r..w",
@@ -664,21 +665,22 @@ function _init()
   "................",
   "................",},
     [22]={zoom=1,
-    "llllllllllllllll",
-    "llllwwwwwwwwllll",
-    "llllwkcccccwllll",
-    "llllwccccccwllll",
-    "llwwwrrwwrwwwwll",
-    "llwpw..w...w.wll",
-    "llw.w..w...w.wll",
-    "llw.w..w...w.wll",
-    "llw..r...r...wll",
-    "llw..........wll",
-    "llwwwvvvvvvwwwll",
-    "llllwvvvvv<wllll",
-    "llllwvvvvvdwllll",
-    "llllwwwwwwwwllll",
-    "llllllllllllllll",},
+
+   "wwwwwwwwwwwwwwww",
+      "wd.....Vr.....pw",
+      "whhhhhhhhhhhhhhw",
+      "whhhhhh........w",
+      "whhhhhh........w",
+      "w..............w",
+      "ww.wwwwwwwwwwwww",
+      "w..<.>.........w",
+      "w...c>....c..r.w",
+      "w.c..<.v...r...w",
+      "w..c..<c.....k.w",
+      "w..c..c....r...w",
+      "w..c..vc...r...w",
+      "w..w^^.........w",
+      "wwwwwwwwwwwwwwww"},
     [23]={zoom=1, -- OFFICE
       "wwwwwwwwwwwwwwww",
       "w...>.>..>.>...w",
@@ -696,21 +698,21 @@ function _init()
       "w...^.^..^.<...w",
       "wwwwwwwwwwwwwwww"},
     [24]={zoom=1, -- LEARN TO WEAVE
-      "wwwwwwwwwwwwwwww",
-      "wv<...v.<<...r.w",
-      "w.>>..v..>>..r<w",
-      "w..<>..r>>>>...w",
-      "w>..<>..p..<<..w",
-      "w..v.<^.c..<<>.w",
-      "w.vr..<>.c.<.<>w",
-      "w.>...^<>..<...w",
-      "wv<<<<<.<>.>...w",
-      "w.....>..<>>.r.w",
-      "w>....>...<>..<w",
-      "w.r...>.>..<>..w",
-      "wwwwh.>..cr.<>.w",
-      "wdhhh.>......>^w",
-      "wwwwwwwwwwwwwwww"},
+          "wwwwwwwwwwwwwwww",
+      "w..h........h..w",
+      "w.hkh......hdh.w",
+      "w..h........h..w",
+      "whhhhhhhhhhhhhhw",
+      "w..............w",
+      "w....h....h....w",
+      "w...hch..hch...w",
+      "w....hr..rhr...w",
+      "w...cr.hh.rc...w",
+      "w...rhr..rh....w",
+      "w...hch..hch...w",
+      "w....h....h....w",
+      "w......p.......w",
+      "wwwwwwwwwwwwwwww",},
       [25]={zoom=1, -- MINESHAFT
       "................",
       "................",
@@ -778,21 +780,21 @@ function _init()
       "wwwwwwwwwwwwwwww",
       },
       [29]={zoom=1, -- DOMAIN II
-      "wwwwwwwwwwwwwwww",
-      "w..h........h..w",
-      "w.hkh......hdh.w",
-      "w..h........h..w",
-      "whhhhhhhhhhhhhhw",
-      "w..............w",
-      "w....h....h....w",
-      "w...hch..hch...w",
-      "w....hr..rhr...w",
-      "w...cr.hh.rc...w",
-      "w...rhr..rh....w",
-      "w...hch..hch...w",
-      "w....h....h....w",
-      "w......p.......w",
-      "wwwwwwwwwwwwwwww",},
+           "wwwwwwwwwwwwwwww",
+      "wv<...v.<<...r.w",
+      "w.>>..v..>>..r<w",
+      "w..<>..r>>>>...w",
+      "w>..<>..p..<<..w",
+      "w..v.<^.c..<<>.w",
+      "w.vr..<>.c.<.<>w",
+      "w.>...^<>..<...w",
+      "wv<<<<<.<>.>...w",
+      "w.....>..<>>.r.w",
+      "w>....>...<>..<w",
+      "w.r...>.>..<>..w",
+      "wwwwh.>..cr.<>.w",
+      "wdhhh.>......>^w",
+      "wwwwwwwwwwwwwwww"},
 
   [30]={zoom=1, -- BEACH
     "wwwwwwwwwwwwwwww",
@@ -1049,6 +1051,7 @@ function do_movement_animations()
           local pc=get_crack_at(last_tile_x,last_tile_y)
           if pc then
             pc.broken=true
+            sfx(63,3)
             add(holes,{x=pc.x,y=pc.y,filled=false})
             del(cracks,pc)
           end
@@ -1227,12 +1230,18 @@ function draw_title()
   -- spr(128, 72, 56)
 
 
+  spr(1,32,32)
   spr(65, 40, 32)
+  spr(65, 48, 32)
+  spr(65, 56, 32)
+  spr(65, 64, 32)
+  spr(65, 72, 32)
   spr(65, 80, 32)
-  spr(99, 48, 32)
-  spr(128, 72, 32)
-  spr(194, 56, 32)
-  spr(193, 64, 32)
+  spr(128, 88, 32)
+  -- spr(99, 48, 32)
+  -- spr(128, 72, 32)
+  -- spr(194, 56, 32)
+  -- spr(193, 64, 32)
   
   print("\^wO", 37, 50, 7)
   print("\^wC", 45, 50, 7)
@@ -1255,7 +1264,6 @@ function draw_title()
 
   -- spr(212, 24, 48)
   -- spr(213, 32, 48)
-  spr(214, 40, 48)
   spr(215, 48, 48)
   spr(216, 56, 48)
   spr(217, 64, 48)
@@ -1314,15 +1322,12 @@ end
   
       local x = col_x[col]
       local y = 0 + row * v_spacing
-
-
-  
-      local colr = (i == level_select_idx) and 7 or 7
-      rectfill(x, y, x + card_w - 1, y + card_h - 1, (i == level_select_idx) and 1 or 5)
-      rect(x, y, x + card_w - 1, y + card_h - 1, colr)
+      local colr = (i == level_select_idx) and 1 or 7
+      rectfill(x, y, x + card_w - 1, y + card_h - 1, (i == level_select_idx) and 11 or 13)
+      rect(x, y, x + card_w - 1, y + card_h - 1, 1)
        local label = tostring(i)
     if is_beaten(i) then
-      -- label = label.."("..tostring(best_moves[i])..")"
+      label = label.." ("..tostring(best_moves[i])..")"
       
     end
 
@@ -1416,7 +1421,7 @@ function draw_game()
 
   print("level "..level,96,122,7)
   print("octoroq ",0,122,122)
-  print("count "..move_count,0,40,122)
+  -- print("count "..move_count,0,40,122)
   if level == 1 then
     print("Stuck? Press ❎ to rewind", 16, 30, 7)
   end
