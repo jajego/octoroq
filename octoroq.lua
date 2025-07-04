@@ -1,3 +1,32 @@
+local fadeTable={
+ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+ {1,1,1,1,1,1,1,0,0,0,0,0,0,0,0},
+ {2,2,2,2,2,2,1,1,1,0,0,0,0,0,0},
+ {3,3,3,3,3,3,1,1,1,0,0,0,0,0,0},
+ {4,4,4,2,2,2,2,2,1,1,0,0,0,0,0},
+ {5,5,5,5,5,1,1,1,1,1,0,0,0,0,0},
+ {6,6,13,13,13,13,5,5,5,5,1,1,1,0,0},
+ {7,6,6,6,6,13,13,13,5,5,5,1,1,0,0},
+ {8,8,8,8,2,2,2,2,2,2,0,0,0,0,0},
+ {9,9,9,4,4,4,4,4,4,5,5,0,0,0,0},
+ {10,10,9,9,9,4,4,4,5,5,5,5,0,0,0},
+ {11,11,11,3,3,3,3,3,3,3,0,0,0,0,0},
+ {12,12,12,12,12,3,3,1,1,1,1,1,1,0,0},
+ {13,13,13,5,5,5,5,1,1,1,1,1,0,0,0},
+ {14,14,14,13,4,4,2,2,2,2,2,1,1,0,0},
+ {15,15,6,13,13,13,5,5,5,5,5,1,1,0,0}
+}
+
+function fade(i)
+ for c=0,15 do
+  if flr(i+1)>=16 then
+   pal(c,0)
+  else
+   pal(c,fadetable[c+1][flr(i+1)])
+  end
+ end
+end
+
 ---------------------------
 -- 0) screen / menu state
 ---------------------------
@@ -266,9 +295,11 @@ end
 function _init()
   screen_mode="title"
   px,py=64,64 
+  p_frame=0
   target_px,target_py=px,py
   pspeed=8
   frame=1
+  p_sprite=1
   moving=false
   level=0
   has_key=false
@@ -373,21 +404,21 @@ function _init()
       "w.h....hhr.r.r.w",
       "wwwwwwwwwwwwwwww"},
     [5]={zoom=1,  -- CRACKS
-      "....wwwwwwww....",
-      "....w...p..w....",
-      "....wccccccw....",
-      "....wccccccw....",
-      "....wccccccw....",
-      "....wccccccw....",
-      "....wccckccw....",
-      "....wccccccw....",
-      "....wccccccw....",
-      "....wccccccw....",
-      "....wwrrrrww....",
-      "....wwccccww....",
-      "....w......w....",
-      "....w.....dw....",
-      "....wwwwwwww...."},
+      "................",
+"................",
+"....wwwwwww.....",
+"....wwwdwww.....",
+"....w.....w.....",
+"....wcccccw.....",
+"....w.r.r.w.....",
+"....wr.r.rw.....",
+"....wcccccw.....",
+"....w.r.r.w.....",
+"....w..k..w.....",
+"....w..p..w.....",
+"....wwwwwww.....",
+"................",
+"................",},
 
       [6]={zoom=2,
 
@@ -600,7 +631,7 @@ function _init()
 "................",
 "................",},
     [18]={zoom=1, -- JUNKYARD
-        "llllllllllllllll",
+    "llllllllllllllll",
     "llllwwwwwwwwllll",
     "llllwkcccccwllll",
     "llllwccccccwllll",
@@ -851,14 +882,14 @@ function load_level(lvl)
     music(10)
   end
 
-  if level>1 and level<11 and l_music~=33 then
-    l_music=33
-    music(33)
+  if level>1 and level<11 and l_music~=-1 then
+    l_music=-1
+    music(-1)
   end
 
-  if level>11 and level<21 and l_music ~= 33 then
-    l_music=33
-    music(33)
+  if level>11 and level<21 and l_music ~= -1 then
+    l_music=-1
+    music(-1)
   end
 
   local actions={
@@ -934,18 +965,26 @@ end
 -- end
 
 function update_game()
+  if frame > 29 then
+    frame = 1
+  else
+    p_sprite = max(1, frame / 10)
+    frame = frame
+  end
+
   if btnp(5) and not moving and not rewinding and #history>0 then
     rewinding=true
     rewind_move_id=deserialize_state(history[#history]).move_id
   end
 
-  if btnp(4) then
-    if level + 1 > #levels then
-      load_level(0)
-    else
-      load_level(level + 1)
-    end
-  end
+  -- DEBUG
+  -- if btnp(4) then
+  --   if level + 1 > #levels then
+  --     load_level(0)
+  --   else
+  --     load_level(level + 1)
+  --   end
+  -- end
 
   -- rewinding animation
   if rewinding then
@@ -1051,14 +1090,17 @@ function do_movement_animations()
           local pc=get_crack_at(last_tile_x,last_tile_y)
           if pc then
             pc.broken=true
-            sfx(63,3)
+            -- sfx(63,3)
+            sfx(63)
             add(holes,{x=pc.x,y=pc.y,filled=false})
             del(cracks,pc)
           end
           last_tile_x,last_tile_y=cx,cy
         end
         if key and not key.collected and flr(px)==flr(key.x) and flr(py)==flr(key.y) then
-          has_key=true key.collected=true sfx(60,3)
+          has_key=true key.collected=true
+          -- sfx(60,3)
+          sfx(62)
         end
         if door and flr(px)==flr(door.x) and flr(py)==flr(door.y) and has_key then
           save_progress(level, move_count)
@@ -1080,9 +1122,11 @@ function do_movement_animations()
         local cr=get_crack_at(r.x,r.y)
         if not rewinding then
           if l_music == 22 then
-            sfx(59,3)
+            -- sfx(59,3)
+            sfx(59)
           else
-            sfx(59,3)
+            -- sfx(59,3)
+            sfx(59)
           end
         end
         if cr and not cr.broken then
@@ -1417,7 +1461,7 @@ function draw_game()
     -- if r.moving then fx,fy=r.x,r.y end
     draw_sprite(65,r.x,r.y,z)
   end
-  draw_sprite(frame,px,py,z)
+  draw_sprite(p_sprite,px,py,z)
 
   print("level "..level,96,122,7)
   print("octoroq ",0,122,122)
