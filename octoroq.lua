@@ -475,21 +475,21 @@ function _init()
       "wwwwwwwwwwwwwwww"
     },
     [13] = { zoom = 1,
-      "wwwwwwwwwwwwwwww",
-      "wwkcchd........w",
-      "w.wcchc.r....p.w",
-      "w..wcr Джонw..r.....w",
-      "w...w^<...r....w",
-      "wwwwwwwwwwwwwwww",
-      "wllllllllllllllw",
-      "wllllllllllllllw",
-      "wllllllllllllllw",
-      "wllllllllllllllw",
-      "wllllllllllllllw",
-      "wllllllllllllllw",
-      "wllllllllllllllw",
-      "wllllllllllllllw",
-      "wwwwwwwwwwwwwwww"
+    "wwwwwwwwwwwwwwww",
+    "wwkcchd........w",
+    "w.wcchc.r....p.w",
+    "w..wcrw..r.....w",
+    "w...w^<...r....w",
+    "wwwwwwwwwwwwwwww",
+    "wllllllllllllllw",
+    "wllllllllllllllw",
+    "wllllllllllllllw",
+    "wllllllllllllllw",
+    "wllllllllllllllw",
+    "wllllllllllllllw",
+    "wllllllllllllllw",
+    "wllllllllllllllw",
+    "wwwwwwwwwwwwwwww",
     },
     [14] = { zoom = 1,
       "wwwwwwwwwwwwwwww",
@@ -497,11 +497,11 @@ function _init()
       "w.wwwwwwwwwwww.w",
       "w.cc.........w.w",
       "w.cc.r.r.....w.w",
-      "w.cc.wwwwwVV.w.w",
-      "w.cc.hhkhhVV.w.w",
-      "w.cc.hhdhhVV.w.w",
-      "w.cc.hcwwhVV.w.w",
-      "w.cc.....c<V.w.w",
+      "w.cc.wwwwwvv.w.w",
+      "w.cc.hhkhhvv.w.w",
+      "w.cc.hhdhhvv.w.w",
+      "w.cc.hcwwhvv.w.w",
+      "w.cc.....c<v.w.w",
       "w.ccr.....<<.w.w",
       "w.cc.........w.w",
       "w.wwwwwwwwwwww.w",
@@ -515,8 +515,8 @@ function _init()
       "whhhhhhhhhhhhhhw",
       "whhhhhhhhhhhhhhw",
       "whhhhhhhhhhhhhhw",
-      "w^^^^^V<<<<<<hhw",
-      "w^^^^^Vkcwww^r.w",
+      "w^^^^^v<<<<<<hhw",
+      "w^^^^^vkcwww^r.w",
       "w<<<<<<crr.r..pw",
       "wwwwdwwcc.r.c..w",
       "whhhhhhhhcccchhw",
@@ -527,8 +527,8 @@ function _init()
     },
     [16] = { zoom = 2,
       "wwwwwwww",
-      "w.V<<<pw",
-      "w.>.rVVw",
+      "w.v<<<pw",
+      "w.>.rvvw",
       "w..rc..w",
       "wcc<r.ww",
       "wkhhhhdw",
@@ -616,7 +616,7 @@ function _init()
     },
     [22] = { zoom = 1,
       "wwwwwwwwwwwwwwww",
-      "wd.....Vr.....pw",
+      "wd.....vr.....pw",
       "whhhhhhhhhhhhhhw",
       "whhhhhh........w",
       "whhhhhh........w",
@@ -737,7 +737,7 @@ function _init()
       "wwwwwwwwwwwwwwww",
       "wv<...v.<<...r.w",
       "w.>>..v..>>..r<w",
-      "w..<>..r>>>>...w",
+      "w..<>..r>>>>.k.w",
       "w>..<>..p..<<..w",
       "w..v.<^.c..<<>.w",
       "w.vr..<>.c.<.<>w",
@@ -1171,7 +1171,7 @@ function _draw()
 end
 
 function draw_title()
-  local o1, o2 = "START GAME", "LEVEL SELECT"
+  local o1, o2 = "start game", "level select"
   spr(1, 32, 32)
   spr(65, 40, 32)
   spr(65, 48, 32)
@@ -1180,13 +1180,13 @@ function draw_title()
   spr(65, 72, 32)
   spr(65, 80, 32)
   spr(128, 88, 32)
-  print("\^wO", 37, 50, 7)
-  print("\^wC", 45, 50, 7)
-  print("\^wT", 53, 50, 7)
-  print("\^wO", 61, 50, 7)
-  print("\^wR", 69, 50, 7)
-  print("\^wO", 77, 50, 7)
-  print("\^wQ", 85, 50, 7)
+  print("\^wo", 37, 50, 7)
+  print("\^wc", 45, 50, 7)
+  print("\^wt", 53, 50, 7)
+  print("\^wo", 61, 50, 7)
+  print("\^wr", 69, 50, 7)
+  print("\^wo", 77, 50, 7)
+  print("\^wq", 85, 50, 7)
   spr(196, 24, 40)
   spr(197, 32, 40)
   spr(198, 40, 40)
@@ -1314,8 +1314,8 @@ function draw_game()
   for h in all(holes) do
     draw_sprite(h.filled and 69 or 68, h.x, h.y, z)
     if h.filled and level == 31 then
-      print("THANK YOU FOR", 36, 55, 7)
-      print("PLAYING OCTOROQ!", 33, 63, 7)
+      print("thank you for", 36, 55, 7)
+      print("playing octoroq!", 33, 63, 7)
     end
   end
   if key and not key.collected then draw_sprite(128, key.x, key.y, z) end
@@ -1331,7 +1331,7 @@ function draw_game()
   end
   print("octoroq ", 0, 122, 122)
   if level == 1 then
-    print("Stuck? Press ❎ to rewind", 16, 30, 7)
+    print("stuck? press ❎ to rewind", 16, 30, 7)
   end
   if level == 0 then
     spr(69, 72, 8)
